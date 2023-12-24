@@ -1,4 +1,5 @@
-test.aux
-test.log
-test.pdf
-test.synctex.gz
+*.aux
+*.log
+*.pdf
+*.synctex.gz
+*.mix

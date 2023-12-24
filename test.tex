@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage{amsmath}
 
 \title{Wordy Words}
 \author{Daniel Werner}
@@ -10,7 +11,15 @@
 This is a \LaTeX document. Here's an equation:
 
 \begin{equation}
+    \label{equation:spiders}
     \sum_{k=0}^n \left. n \choose k \right. = 2^n
 \end{equation}
+
+\begin{align*}
+    equ = without + num
+\end{align*}
+
+Here's a reference to that numbered equation: 
+see equation \ref{equation:spiders} 
 
 \end{document}

@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+
+\title{Freethrow Percentage Problem}
+\author{Daniel Werner}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem Statement}
+
+\
+
+A basketball player has a freethrow percentage less than 75\%
+early in the season and greater than 75\% later in the season.
+Was there necessarily a point at which their freethrow
+percentage was exactly 75\% at some point in the season?
+
+\par
+
+This problem was asked in a 
+\href{https://www.youtube.com/watch?v=vqpWwgpDs58}{youtube video}.
+
+\section*{Analysis}
+
+The equation for freethrow percentage is fairly self evident
+but it may be worth making more explicit.  The input for
+the function is a sequence of zeros and ones, a one
+representing making a freethrow and a one representing
+missing.  Let's represent the sequence as T:
+
+\begin{equation*}
+    T = \{T_1, T_2, ..., T_n\}
+\end{equation*}
+
+The freethrow computation would be:
+
+\begin{equation}
+    F(n) = \frac{\sum_{k=0}^{n} T_k}{n}
+\end{equation}
+
+So the question amounts to: does there exist a sequence T
+such that $F(n) > .75$ and $F(n - 1) < .75$?
+
+\par
+
+The first thing worth noting about this problem is that the
+order of the throws before the nth does not matter.  In other
+words, the sequence is actually irrelevant. Furthermore
+the content of F(n) must be $\frac{1 + \sum_{k=0}^{n-1} T_k}{n}$
+as per the framing of the question.  We can reduce
+the question to whether there exists an a and b such
+that all of the following are true:
+
+\begin{align*}
+    a, b \in \mathbb{N} \\
+    \frac{a}{b} < \frac{3}{4} \\
+    \frac{a + 1}{b + 1} > \frac{3}{4}
+\end{align*}
+
+It would follow that
+
+\begin{align*}
+    a < \frac{3}{4} \cdot b
+\end{align*}
+
+and
+
+\begin{align*}
+    a + 1 > \frac{3}{4} \cdot b + \frac{3}{4} \\
+    a > \frac{3}{4} \cdot b - \frac{1}{4}
+\end{align*}
+
+which combined requires that
+
+\begin{align*}
+    \frac{3}{4} \cdot b - \frac{1}{4} < &a < \frac{3}{4} * b \\
+    3b - 1 < &4a < 3b
+\end{align*}
+
+This equation cannot be satisfied because $3b$ is exactly
+one greater than $3b - 1$.  There can be no natural number
+between two other natural numbers that differ by one.
+The necessary conclusion is that there must always be a
+point in time under the given conditions at which the player
+has a freethrow percentage of exactly 75.
+
+\par
+
+This of course does nothing to explain why this is the case
+or whether there is some more general conclusion to draw.
+
+\end{document}

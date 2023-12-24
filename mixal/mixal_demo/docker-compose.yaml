@@ -1,0 +1,9 @@
+version: '3.1'
+
+services:
+  mixal:
+    image: mixal-base
+    volumes:
+      - ./files/:/opt/mixal_files/:rw
+    stdin_open: true
+    tty: true

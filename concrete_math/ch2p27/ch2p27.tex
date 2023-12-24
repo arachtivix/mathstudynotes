@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{Concrete Math Chapter 2 Problem 27}
+\author{Daniel Werner}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem Statement}
+
+Calculate $\Delta c^{\underline{x}}$ and use it to predict
+the value of $\sum_1^n (-2)^{\underline{k}}/k$.
+
+\section*{Solution}
+
+\subsection*{Calculating $\Delta c^{\underline{x}}$}
+
+\begin{align*}
+    \Delta c^{\underline{x}} &= c^{\underline{x+1}} - c^{\underline{x}} \\
+    &= c \cdot (c - 1) \cdot ... \cdot (c - X + 1) - 
+    c \cdot (c - 1) \cdot ... \cdot (c - X)
+\end{align*}
+
+The product notation may make things easier to see,
+ for $x \geq 0$ and ($c \geq x$ or $c \leq 0$):
+
+ \begin{align*}
+    c^{\underline{x+1}} - c^{\underline{x}}
+    &= \prod_{0 \leq k \leq x} (c - k)
+    - \prod_{0 \leq k \leq x - 1} (c - k) \\
+    &= (c - x) \cdot \prod_{0 \leq k \leq x - 1} (c - k)
+    - \prod_{0 \leq k \leq x - 1} (c - k) \\
+    &= (c - x - 1) \cdot \prod_{0 \leq k \leq x - 1} (c - k)c \\
+    &= (c - x - 1) \cdot ((c)(c-1)...(c-x+1)) \\
+    &= \frac{(c)(c - 1)...(c - x + 1)(c - x)(c - x - 1)}{c - x} \\
+    &= \frac{c^{\underline{x+2}}}{c - x}
+ \end{align*}
+
+ \subsection*{Some Testing}
+
+ \begin{align*}
+    5^{\underline{1+1}} - 5^{\underline{1}} &\stackrel{?}{=}
+    \frac{5^{\underline{1+2}}}{5 - 1} \\
+    5^{\underline{2}} - 5^{\underline{1}} &\stackrel{?}{=}
+    \frac{5^{\underline{3}}}{4} \\
+    5 * 4 - 5 &\stackrel{?}{=}
+    \frac{5 * 4 * 3}{4} \\
+    15 &= 15
+ \end{align*}
+
+ \begin{align*}
+    11^{\underline{4+1}} - 11^{\underline{4}} &\stackrel{?}{=}
+    \frac{11^{\underline{4 + 2}}}{11 - 4} \\
+    11 * 10 * 9 * 8 * 7 - 11 * 10 * 9 * 8
+    &\stackrel{?}{=} \frac{11 * 10 * 9 * 8 * 7 * 6}{ 7 } \\
+    11 * 10 * 9 * 8 * 6
+    &= 11 * 10 * 9 * 8 * 6
+ \end{align*}
+
+ \subsection*{Using $\Delta c^{\underline{x}}$ to solve the problem}
+
+\begin{align*}
+    \Delta c^{\underline{x}} = \frac{c^{\underline{x+2}}}{c - x}
+    \rightarrow
+    \Delta (-2)^{\underline{x}} = \frac{(-2)^{\underline{x+2}}}{-2 - x}
+    \rightarrow
+    \Delta (-2)^{\underline{x-2}} = \frac{2^{\underline{x}}}{-x}
+\end{align*}
+
+\begin{align*}
+    \sum_1^n (-2)^{\underline{k}}/k
+    = \left. \frac{(-2)^{\underline{x}}}{-x} \right|_1^{n+1}
+    = \frac{(-2)^{\underline{n + 1}}}{-n - 1} 
+    - \frac{(-2)^{\underline{1}}}{-1}
+    = 2 - \frac{(-2)^{\underline{n+1}}}{n + 1}
+\end{align*}
+
+\end{document}

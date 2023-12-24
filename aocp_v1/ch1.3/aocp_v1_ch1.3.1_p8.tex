@@ -1,0 +1,157 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{nicematrix}
+
+\title{AOCP V1 Ch 1.3.1 P8}
+\author{Daniel Werner}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem Statement}
+
+The text refers to the table on page 133, which contains
+the following as an example of what might happen when
+a mixal line 'DIV 1000' is applied under the given
+circumstances:
+
+\vspace*{1em}
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    + & \multicolumn{5}{c|}{0} & rA before \\
+    \hline
+    $+$ & \multicolumn{2}{c|}{1235} & 0 & 3 & 1 & rX before \\
+    \hline
+    $-$ & 0 & 0 & 0 & 2 & 0 & Cell 1000 \\
+    \hline
+    $+$ & 0 & \multicolumn{2}{c|}{617} & ? & ? & rA after \\
+    \hline
+    $-$ & 0 & 0 & 0 & ? & 1 & rX after \\
+    \hline
+\end{tabular}
+
+\vspace*{1em}
+
+The question asks what if rX before instead contained
+
+\vspace*{1em}
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    $-$ & \multicolumn{2}{c|}{1234} & 0 & 3 & 1 & rX before \\
+    \hline
+\end{tabular}
+
+\section*{Analysis}
+
+The combined rA and rX registers represent the quantity to
+be divided.  The book says the sign for the rX register is
+ignored, so the significance of the sign in the proposed
+change to the rX register should not change that part of the
+operation.
+
+\par
+
+The odd behavior of the original operation, where the combined
+1 and 2 fields seem to cause a result in the rA after, seem
+to point to a detail that the author wants the reader to be
+aware of.  The operation unterdaken, 'DIV 1000' does not
+specify fields, which means it should be applied to all fields.
+Presumably when an operation such as DIV is applied to all
+fields, the grouping of fields in the representation on paper
+does not affect the numerical operation.  Yet there are question
+marks on the rA after, which indicate that the operation will
+be represented differently depending on the actual underlying
+base of implementation for a given mix computer.
+
+In order to clarify the behavior of this operation, the
+same scenario can be written explicitly in binary and decimal
+forms for comparison.
+
+\subsection*{The Binary Interpretation}
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+            \hline
+            + & 000000 & 000000 & 000000 & 000000 & 000000 & rA Before \\
+            \hline
+            $+$ & 010011 & 010011 & 000000 & 000011 & 000001 & rX before \\
+            \hline
+            $-$ & 000000 & 000000 & 000000 & 000010 & 000000 & Cell 1000 \\
+            \hline
+            $+$ & 000000 & 001001 & 101001 & ? & ?? & rA after \\
+            \hline
+            $-$ & 000000 & 000000 & 000000 & ??? & 000001 & rX after \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{binary interpretation of the original operation}
+    \label{fig:binquestion}
+\end{figure}
+
+Figure \ref{fig:binquestion} represents the same data as the
+original table, only having the quantities fully spelled out
+in binary format.  For example 1235 has been converted to
+10011010011, or two successive binary
+mix computer 'bytes' of 010011 then 010011.  Similarly, interpreting 617
+as binary yields 1001101001, or mix bytes of 001001 then 101001. The
+'?' entries have been retained in the figure, but with the base
+fixed they do come out to specific values.
+
+\begin{align*}
+    rAX_{before} = &+000000,000000,000000,000000,000000,010011,\\
+    &010011,000000,000011,000001_2 \\
+    = &323748033_{10} \\
+    cell1000 = &000000,000000,000000,000010,000000_2 \\
+    = &128_{10} \\
+    rA_{after} = &| \lfloor 323748033_{10} / 128_{10} \rfloor | = 2529281_{10} \\
+    = & 001001,101001,100000,000001_2 \\
+    rX_{after} = &323748033 mod 128 \\
+    = & 000001,000001_2
+\end{align*}
+
+So for a base 2 mix machine, as per the placeholders in
+figure \ref{fig:binquestion}, $? = 100000$, $?? = 000001$,
+$??? = 000001$.
+
+\subsection*{The Decimal Interpretation}
+
+The decimal interpretation is more natural, but still requires
+some notation to signify the role that the mix 'byte' plays
+in figure \ref{fig:decquestion}.
+
+\begin{figure}
+    \vspace*{1em}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+            \hline
+            + & 00 & 00 & 00 & 00 & 00 & rA before \\
+            \hline
+            $+$ & 12 & 35 & 00 & 03 & 01 & rX before \\
+            \hline
+            $-$ & 00 & 00 & 00 & 02 & 00 & Cell 1000 \\
+            \hline
+            $+$ & 00 & 06 & 17 & ? & ?? & rA after \\
+            \hline
+            $-$ & 00 & 00 & 00 & ??? & 01 & rX after \\
+            \hline
+        \end{tabular}
+    \vspace*{1em}
+    \caption{decimal interpretation of the original operation}
+    \label{fig:decquestion}
+\end{figure}
+
+\begin{align*}
+    rAX_{before} = &+00,00,00,00,00,12,35,00,03,01_{10} \\
+    = &1235000301_{10} \\
+    cell1000 = &00,00,00,02,00_{10} \\
+    = &200_{10} \\
+    rA_{after} = &| \lfloor 1235000301_{10} / 200_{10} \rfloor | = 6175001_{10} \\
+    = & 06,17,50,01 \\
+    rX_{after} = &1235000301 mod 200 \\
+    = & 01,01_{10}
+\end{align*}
+
+\end{document}

@@ -1,0 +1,1 @@
+docker-compose run mixal /usr/local/bin/mixvm
