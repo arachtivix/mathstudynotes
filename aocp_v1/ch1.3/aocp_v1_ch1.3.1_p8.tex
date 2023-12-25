@@ -154,7 +154,7 @@ in figure \ref{fig:decquestion}.
     cell1000 = &00,00,00,02,00_{10} \\
     = &200_{10} \\
     rA_{after} = &| \lfloor 1235000301_{10} / 200_{10} \rfloor | = 6175001_{10} \\
-    = & 06,17,50,01_{10} \\
+    = & 00,06,17,50,01_{10} \\
     rX_{after} = &| 1235000301_{10} mod 200_{10} | \\
     = & 01,01_{10}
 \end{align*}
@@ -163,7 +163,31 @@ For the decimal interpretation, $? = 50$, $?? = 01$, $??? = 01$.
 
 \subsection*{Answering the Question}
 
-Having gained insight into what is happening in the p133 table,
-there are two matters left <<issues still>>: 
+The modified value for rX is:
+
+\vspace*{1em}
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    $-$ & \multicolumn{2}{c|}{1234} & 0 & 3 & 1 & rX before \\
+    \hline
+\end{tabular}
+
+\vspace*{1em}
+
+which corresponds with the base-10 encoded memory value of
+-12,34,00,03,01.  Using the decimal interpretation:
+
+\begin{align*}
+    rAX_{before} = &00,00,00,00,00,12,34,00,03,01_{10} \\
+    cell1000 = &00,00,00,02,00_{10} \\
+    rA_{after} = &00,06,17,00,01_{10} \\
+    rX_{after} = &00,00,00,01,01_{10} \\
+\end{align*}
+
+So the value of $rAX_{after}$ actually did not change with the
+new value of $rX_{before}$. The lower parts of the output are
+changed.
+
 
 \end{document}
