@@ -1,2 +1,2 @@
-I have had trouble with encoding on mixal files that I do not quite appreciate yet.  I've found the `od` tool useful,
-specifically `od -t x1 <filepath>`.
+I have had trouble with line endings from Windows.  I've found the `od` tool useful for sanity checking, since it seems the
+line ending selection in visual studio code does not behave the way I would expect. `od -t x1 <filepath>`.
