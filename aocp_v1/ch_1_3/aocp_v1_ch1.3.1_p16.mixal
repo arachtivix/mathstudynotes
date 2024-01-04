@@ -10,5 +10,4 @@ CTR		CON		2
 START	NOP
 		LDA		CTR
 		STA		0
-		
 		END	START
