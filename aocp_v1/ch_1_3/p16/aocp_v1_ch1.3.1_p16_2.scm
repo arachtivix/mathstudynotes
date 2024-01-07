@@ -10,7 +10,7 @@
     (mix-run)
     ;; get some memory locations
     (mix-pmem "0-7")
-    (mix-pmem "999-1002")
-    (mix-pmem "2999-3009")
+    (mix-pmem "999-1007")
+    (mix-pmem "2999-3007")
     ;; print the contents of registers
     (mix-pall)))
