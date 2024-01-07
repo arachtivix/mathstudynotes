@@ -21,11 +21,27 @@ Write a mix program that writes memory cells 0000-0099 to zero.
 For a verifiable, practical implementation, this program
  will have to load something into the memory cells that 
  can be read to check, rather than zeros, but the idea is
- the same.  This problem will be a good way to
- get some of the fundamentals of the GNU emulator down.
+ the same.  For the purposes of this exercise I'll start
+ with some smaller range of memory locations as the size
+ of the data is hardly the point here.  This problem will 
+ be a good way to get some of the fundamentals of the GNU emulator down.
 
 \par
 
- See file aocp\_v1\_ch1.3.1\_p16.mixal
+My first successful attempt at a solution to this problem
+basically ignored the author's suggestion to use MOVE.
+It uses the first numbered register as a counter and stores
+the empty value of the A register into memory at the
+position stored in the counter ('CTR') variable.  I could
+probably have used indexing by the numbered register rather
+than the variable.  I've also taken one of the example
+scripts from the GNU page and printed some of the relevant
+parts of the memory as part of a write-run-evaluate workflow
+that ended up working for me quite nicely once everything
+worked.
+
+\par
+
+
 
 \end{document}
