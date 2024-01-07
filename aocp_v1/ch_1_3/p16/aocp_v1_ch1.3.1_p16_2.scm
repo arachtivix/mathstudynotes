@@ -5,7 +5,7 @@
 (define main
   (lambda (args)
     ;; load the file provided as a command line argument
-    (mix-load "aocp_v1_ch1.3.1_p16_1")
+    (mix-load "aocp_v1_ch1.3.1_p16_2")
     ;; execute it
     (mix-run)
     ;; get some memory locations
