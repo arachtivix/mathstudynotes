@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{AOCP v1 ch 1.3.1 Problem 20}
+\author{Daniel Werner}
+
+\begin{document}
+
+\maketitle
+
+\section*{
+    Problem Statement
+}
+
+Compose a mixal program that writes HLT to every memory address.
+
+\section*{
+    Analysis
+}
+
+HLT is opcode 5 with a field expression of 3, which numerically evaluates to a value of 133.
+Writing the instructions to write over memory addresses that are not part of the instructions
+in the program is a matter of copying 133 into each memory location in a loop.  Replacing the
+program itself in memory must be achieved in a single, final instruction and that is where
+MOVE comes in.  The last instruction moves values from a section already full of HLT
+instructions into the memory previously occupied by the code.  Conveniently, no matter where
+the jump register ends up, it will be HLT, so no HLT is required in the Mixal description of
+the program.
+
+\end{document}
