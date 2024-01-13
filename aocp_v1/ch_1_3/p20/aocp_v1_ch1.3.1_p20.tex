@@ -18,7 +18,7 @@ Compose a mixal program that writes HLT to every memory address.
     Analysis
 }
 
-HLT is opcode 5 with a field expression of 3, which numerically evaluates to a value of 133.
+HLT is opcode 5 with a field expression of 2, which numerically evaluates to a value of 133.
 Writing the instructions to write over memory addresses that are not part of the instructions
 in the program is a matter of copying 133 into each memory location in a loop.  Replacing the
 program itself in memory must be achieved in a single, final instruction and that is where
