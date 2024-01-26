@@ -2,11 +2,9 @@
 -e main -s
 !#
 
-(define (ct s e) (if (> e s) (cons e (ct s (- e 1))) `(,s)))
-
 (define (listify-mem s e)
-  (define idxs (ct s e))
-  (map mix-cell idxs))
+  (cond ((< e s) `())
+	(else (cons (mix-cell s) (listify-mem (+ s 1) e)))))
 
 (define (validate-memory expected starting)
   (cond ((= starting 4000) #t)
@@ -17,6 +15,7 @@
 	 (display (list-ref expected 0))
 	 (display " found ")
 	 (display (mix-cell starting))
+	 (display "\n")
 	 #f)
 	(else (validate-memory (cdr expected) (+ starting 1)))))
 
@@ -28,6 +27,9 @@
     ;(mix-run)
     ;(mix-set-cell! 10 101)
     (if (validate-memory before-mem 0)
-	(display "success\n")
-	(display "failure\n"))
+	(display "memory is correct\n")
+	(display "memory is incorrect\n"))
+    (if (= (mix-reg "J") 123)
+	(display "jump register corrrect")
+	(display "jump register incorrect"))
     (mix-pall)))
