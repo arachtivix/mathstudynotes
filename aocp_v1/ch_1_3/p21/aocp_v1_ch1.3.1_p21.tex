@@ -41,6 +41,28 @@ answer to be true.
 \par
 
 The phrasing of part (b) suggests something external to the program setting
-up the value in rI4, which seems to call for some light scripting.
+up the value in rI4, which seems to call for some light scripting. The script
+in this folder loads the memory into a Sheme list, loads the program into the
+mix vm, sets the I4 register to some in-range value, runs the program, then
+compares the memory to the Scheme list and the value in the jump register to
+the value placed in the I4 register.  The output either confirms or rejects
+the outcome.
+
+\par
+
+I had to look up the answer to this question in the back of the book because
+I could not figure out how to get a program to stop if it needed to terminate
+on an arbitrary memory location. My initial ideas for the solution revolved
+around keeping any small changes that needed to occur in memory cells in
+registers as temporary values to be placed once the execution was drawing
+to a close, but the stopping question was where I really got stuck. Unintentionally
+I also found that programs that do not stop cause Emacs to get stuck as well,
+but perhaps I am just too new to Emacs to know what to do when this happens.
+
+\par
+
+The book solution does not contain any HLT instruction, so the means of stopping
+the execution is not obvious.  The script I wrote nonetheless confirms that it
+does and that it fulfills the other requirements as well.
 
 \end{document}

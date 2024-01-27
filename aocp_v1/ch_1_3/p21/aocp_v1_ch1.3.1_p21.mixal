@@ -1,4 +1,9 @@
+* This is the solution from the book -- I had to scratch my head a bit on this one.
 	ORIG	3000
-START	LDX	3999
-	LDA	3999
+START	LDA	-1,4
+	LDX	3004
+	STX	-1,4
+	JMP	-1,4
+	JMP	3005
+	STA	-1,4
 	END 	START

@@ -24,6 +24,7 @@
     (mix-load "aocp_v1_ch1.3.1_p21")
     (mix-sreg "I4" 123)
     (define before-mem (listify-mem 0 3999))
+    (mix-run)
     (if (validate-memory before-mem 0)
 	(display "memory is correct\n")
 	(display "memory is incorrect\n"))
