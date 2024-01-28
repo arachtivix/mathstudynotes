@@ -28,7 +28,10 @@
     (if (validate-memory before-mem 0)
 	(display "memory is correct\n")
 	(display "memory is incorrect\n"))
-    (if (= (mix-reg "J") 123)
-	(display "jump register corrrect")
-	(display "jump register incorrect"))
+    (cond ((= (mix-reg "J") 123)
+	   (display "jump register corrrect: ")
+	   (display (mix-reg "J")))
+	  (else
+	   (display "jump register incorrect: ")
+	   (display (mix-reg) "J"))
     (mix-pall)))

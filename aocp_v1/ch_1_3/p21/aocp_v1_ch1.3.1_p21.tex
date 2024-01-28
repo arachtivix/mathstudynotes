@@ -35,7 +35,7 @@ zero?
 
 Part (b) seems like it should be well suited to answer the question in part
 (a), but it is phrased in a way that suggests an unexpected answer, given the
-paragraph above, or at least seems to leave room for either way you migh
+paragraph above, or at least seems to leave room for either way you might
 answer to be true.
 
 \par
@@ -48,7 +48,9 @@ compares the memory to the Scheme list and the value in the jump register to
 the value placed in the I4 register.  The output either confirms or rejects
 the outcome.
 
-\par
+\subsection* {
+  Book Solution
+}
 
 I had to look up the answer to this question in the back of the book because
 I could not figure out how to get a program to stop if it needed to terminate
@@ -63,6 +65,35 @@ but perhaps I am just too new to Emacs to know what to do when this happens.
 
 The book solution does not contain any HLT instruction, so the means of stopping
 the execution is not obvious.  The script I wrote nonetheless confirms that it
-does and that it fulfills the other requirements as well.
+does in fact end and that it fulfills the other requirements as well.  After stepping through
+this program on the emulator it becomes much clearer how weird this program is:
+it has six instructions, each executing exactly once, and yet it has a run time 
+of over a thousand.  Unset memory cells have a value of zero, which evaluates to
+NOP, which the vm happily follows from the end of the program up to the last
+memory cell.  When the program reaches the last memory cell, it ends.  It's also
+worth pointing out that the jump register stays set up to the end, despite going
+one by one through all the imputed NOPs.
+
+\par
+
+It seems perhaps the problem writer may have wanted the reader to know about this 
+unusual method of stopping the program.  It's probably specified in the book and
+I just forgot it or something, so it's a good thing to know from experience gained
+by doing this problem I guess.  The last observation I guess I'll make here is
+that the MIX instruction written to the memory cell denoted by the R4 value is set
+to a JMP instruction to the last instruction in the program.  That last instruction 
+then fills that same designated memory cell again with its previous value, allowing
+the virtual machine to dance up the NOPs and complete.
+
+\par
+
+There were certainly parts of this problem that taught me a new things, but I am glad I
+did not spend much time trying to solve it because of the interesting interpretation
+involved in calling this a program that actually terminates.  My instincts I feel
+were more or less validated because I would not have imagined the scenario envisioned
+by this solution as being a clear way of meeting the acceptance criteria.  I would say
+maybe this carries if we can assume the memory range of 3007 to 3999 is in fact filled
+with zeros, but this seems like the very kind of thing the book writers might not want
+you to assume, so it is not particularly convincing to me yet.
 
 \end{document}
