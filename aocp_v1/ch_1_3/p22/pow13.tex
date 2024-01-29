@@ -21,6 +21,18 @@ when the program execution ends.
     Analysis
 }
 
-...
-
+The maximum possible value for a mix register or a memory cell
+is 1073741824 and because this system uses an explicit sign,
+the minimum is -1073741824.  For positive $x$, the largest
+possible value whose thirteenth power will fit in such a cell
+or register will be $4^{13}=67108864$ because $5^{13}=1220703125 >
+1073741824$.  This means the problem may be susceptible to a
+simple lookup table approach, which should suffice for the
+execution time version in any case and possibly for the
+program size one if we cannot get another version to less
+than the size of the lookup table plus a couple instructions
+to handle the lookup.  In my estimation, this puts a ceiling
+for the instruction size version at about 11 or 12 instructions
+as the lookup table will be 9 and all we really need is to
+set an offset and copy to the A register based on the offset.
 \end{document}
