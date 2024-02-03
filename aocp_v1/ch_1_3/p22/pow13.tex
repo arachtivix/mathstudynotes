@@ -12,8 +12,8 @@
     Problem Statement
 }
 
-Write a program that computes $x^13$ using the fewest instructions.  Write a
-program that computes $x^13$ using the least running time.  The value of $x$
+Write a program that computes $x^{13}$ using the fewest instructions.  Write a
+program that computes $x^{13}$ using the least running time.  The value of $x$
 can be found in memory cell 2000.  The result should be placed in register A
 when the program execution ends.
 
@@ -23,10 +23,17 @@ when the program execution ends.
 
 The maximum possible value for a mix register or a memory cell
 is 1073741824 and because this system uses an explicit sign,
-the minimum is -1073741824.  For positive $x$, the largest
+the minimum is -1073741824.  The limited numerical capacity ensures
+that there will be very few integer input values that will have
+results that will fit into the mix register.  For positive $x$, the largest
 possible value whose thirteenth power will fit in such a cell
 or register will be $4^{13}=67108864$ because $5^{13}=1220703125 >
-1073741824$.  This means the problem may be susceptible to a
+1073741824$.
+
+\subsuection* {
+  Lookup Table Approach
+}
+The limited set of valid inputs means the problem is susceptible to a
 simple lookup table approach, which should suffice for the
 execution time version in any case and possibly for the
 program size one if we cannot get another version to less
@@ -35,4 +42,19 @@ to handle the lookup.  In my estimation, this puts a ceiling
 for the instruction size version at about 11 or 12 instructions
 as the lookup table will be 9 and all we really need is to
 set an offset and copy to the A register based on the offset.
+
+\par
+
+After implementation, the run time seems to have come to 20 given my
+first cut implementation and 15 program instructions including the
+lookup table.  I spend a lot more time developing the
+test harness than I did with the mixal program because I would like
+to use it for automating the analysis.
+
+\subsection* {
+  Iteration Approach
+}
+
+forthcoming
+
 \end{document}

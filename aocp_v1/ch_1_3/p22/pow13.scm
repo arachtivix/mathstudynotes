@@ -52,6 +52,10 @@
       (display "result: ")
       (display result)
       (display "\n")
+      (display "Program time: ")
+      (display (mix-prog-
+time))
+      (display "\n")
       (= result expected))
     (define vals '(-4 -3 -2 -1 0 1 2 3 4))
     (define results (map runtest vals))
