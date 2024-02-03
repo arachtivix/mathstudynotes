@@ -62,4 +62,14 @@ the A register each time.  This approach yielded a program that runs in
 156 $\mu$ and has an instruction count of 27. So far the lookup table is
 doing better on both metrics.
 
+\subsection*{
+  Loop Approach
+}
+
+The third approach I took was to load the value into register A and build
+a loop that would call MUL then check a counter and loop back until twelve
+runs of the loop had taken place.  The execution time was 205, which means
+the looping instructions added 49 $\mu$ for a given run.  This program only
+took 10 lines to write, so it takes the shortest program category.
+
 \end{document}

@@ -33,7 +33,7 @@
 
 (define main
   (lambda (args)
-    (mix-compile "pow13_iter")
+    (mix-compile "pow13_loop")
     (define (runtest testval)
       (display "running test input ")
       (display testval)
@@ -41,7 +41,7 @@
       (display "program instruction count: ")
       (display (ct-nonzero-lines 0 3999))
       (display "\n")
-      (mix-load "pow13_iter")
+      (mix-load "pow13_loop")
       (mix-smem 2000 testval)
       (mix-run)
       (define result (mix-reg "A"))
