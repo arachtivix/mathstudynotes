@@ -33,15 +33,15 @@
 
 (define main
   (lambda (args)
-    (mix-compile "pow13_lookup")	 
+    (mix-compile "pow13_iter")
     (define (runtest testval)
       (display "running test input ")
       (display testval)
       (display "\n")
-      (mix-load "pow13_lookup")
       (display "program instruction count: ")
       (display (ct-nonzero-lines 0 3999))
       (display "\n")
+      (mix-load "pow13_iter")
       (mix-smem 2000 testval)
       (mix-run)
       (define result (mix-reg "A"))
@@ -53,8 +53,7 @@
       (display result)
       (display "\n")
       (display "Program time: ")
-      (display (mix-prog-
-time))
+      (display (mix-prog-time))
       (display "\n")
       (= result expected))
     (define vals '(-4 -3 -2 -1 0 1 2 3 4))

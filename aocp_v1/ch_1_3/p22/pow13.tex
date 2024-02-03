@@ -30,7 +30,7 @@ possible value whose thirteenth power will fit in such a cell
 or register will be $4^{13}=67108864$ because $5^{13}=1220703125 >
 1073741824$.
 
-\subsuection* {
+\subsection* {
   Lookup Table Approach
 }
 The limited set of valid inputs means the problem is susceptible to a
@@ -45,16 +45,21 @@ set an offset and copy to the A register based on the offset.
 
 \par
 
-After implementation, the run time seems to have come to 20 given my
+After implementation, the run time seems to have come to 20 $\mu$ given my
 first cut implementation and 15 program instructions including the
 lookup table.  I spend a lot more time developing the
 test harness than I did with the mixal program because I would like
-to use it for automating the analysis.
+to use it for automating the analysis.  The lookup approach can be
+found in pow13\_lookup.scm in this folder.
 
 \subsection* {
   Iteration Approach
 }
 
-forthcoming
+The second approach I took was to load the value into register A then
+to run MUL against register A 13 times, shifting the results back into
+the A register each time.  This approach yielded a program that runs in
+156 $\mu$ and has an instruction count of 27. So far the lookup table is
+doing better on both metrics.
 
 \end{document}
