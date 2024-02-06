@@ -17,7 +17,7 @@ program that computes $x^{13}$ using the least running time.  The value of $x$
 can be found in memory cell 2000.  The result should be placed in register A
 when the program execution ends.
 
-\section*{
+\section {
     Analysis
 }
 
@@ -30,7 +30,7 @@ possible value whose thirteenth power will fit in such a cell
 or register will be $4^{13}=67108864$ because $5^{13}=1220703125 >
 1073741824$.
 
-\subsection* {
+\subsection {
   Lookup Table Approach
 }
 The limited set of valid inputs means the problem is susceptible to a
@@ -45,31 +45,56 @@ set an offset and copy to the A register based on the offset.
 
 \par
 
-After implementation, the run time seems to have come to 20 $\mu$ given my
+After implementation, the run time seems to have come to 20 $u$ given my
 first cut implementation and 15 program instructions including the
 lookup table.  I spend a lot more time developing the
 test harness than I did with the mixal program because I would like
 to use it for automating the analysis.  The lookup approach can be
 found in pow13\_lookup.scm in this folder.
 
-\subsection* {
+\subsection {
   Iteration Approach
 }
 
 The second approach I took was to load the value into register A then
 to run MUL against register A 13 times, shifting the results back into
 the A register each time.  This approach yielded a program that runs in
-156 $\mu$ and has an instruction count of 27. So far the lookup table is
+156 $u$ and has an instruction count of 27. So far the lookup table is
 doing better on both metrics.
 
-\subsection*{
+\subsection {
   Loop Approach
 }
 
 The third approach I took was to load the value into register A and build
 a loop that would call MUL then check a counter and loop back until twelve
 runs of the loop had taken place.  The execution time was 205, which means
-the looping instructions added 49 $\mu$ for a given run.  This program only
+the looping instructions added 49 $u$ for a given run.  This program only
 took 10 lines to write, so it takes the shortest program category.
+
+\section {
+  Book Solutions
+}
+
+The solutions in the back of the book definitely contained more useful
+information.  The book spends nearly a page in the back on explanations
+and I'm taking that as some measure of the worthiness of trying to
+understand it, since other answers often seem almost dismissively terse.
+
+\subsection {
+  Minimum Time Solution Without Lookup Table
+}
+
+The book offered two minimum time solutions: a program that used different
+parts of the same register to calculate sub-parts of the final result in parallel
+and a separate program that used a lookup table.  The solution not involving
+a lookup table uses some clever tricks to get MUL calls to do more than one
+calculation effectivley upon different subsets of the fields at one time.
+This solution illustrates how shift operators can be used to facilitate this
+kind of optimization.
+
+\subsection {
+  Minimum Instructions
+}
 
 \end{document}

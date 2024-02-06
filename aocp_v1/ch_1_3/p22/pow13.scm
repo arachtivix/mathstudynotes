@@ -31,9 +31,10 @@
 	((= (car l1) (car l2)) (match-lists (cdr l1) (cdr l2)))
 	(else #f)))
 
+(define program "pow13_book_fastest1")
 (define main
   (lambda (args)
-    (mix-compile "pow13_loop")
+    (mix-compile program)
     (define (runtest testval)
       (display "running test input ")
       (display testval)
@@ -41,7 +42,7 @@
       (display "program instruction count: ")
       (display (ct-nonzero-lines 0 3999))
       (display "\n")
-      (mix-load "pow13_loop")
+      (mix-load program)
       (mix-smem 2000 testval)
       (mix-run)
       (define result (mix-reg "A"))
