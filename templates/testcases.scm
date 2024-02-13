@@ -16,4 +16,4 @@
     (display (ct-nonzero-lines 0 3999))
     (display "\n")
     (mix-load program)
-    (mix-run)
+    (mix-run)))
