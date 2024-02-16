@@ -32,7 +32,7 @@
       acc
       (reverse-helper (cdr lst) (cons (car lst) acc))))
 
-(define program "solution")
+(define program "solution_2")
 (define main
   (lambda (args)
     (mix-compile program)
