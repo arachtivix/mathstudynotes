@@ -34,9 +34,8 @@
 
 (define (run-test program input-value)
   (mix-compile program)
-  (display "instruction count: ")
-  (display (ct-nonzero-lines 0 3999))
-  (display "\n")
+  (define instruction-count (ct-nonzero-lines 0 3999))
+  (define ret (list instruction-count))
   (display "test value ")
   (display input-value)
   (display " received\n")
@@ -47,9 +46,12 @@
   (mix-smem 200 input-value)
   (mix-run)
   (mix-preg)
-  (mix-pmem "200-210"))
+  (mix-pmem "200-210")
+  ret)
 
 
 (define (main arg1)
-  (run-test "solution" 123456789)
-  (run-test "solution_2" 123456789))
+  (display (run-test "solution" 123456789))
+  (display "\n")
+  (display (run-test "solution_2" 123456789))
+  (display "\n"))
