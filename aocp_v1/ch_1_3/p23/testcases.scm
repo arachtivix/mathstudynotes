@@ -52,6 +52,7 @@
 
 (define (main arg1)
   (display (run-test "solution" 123456789))
-  (display "\n")
+  (newline)
   (display (run-test "solution_2" 123456789))
-  (display "\n"))
+  (newline)
+  (display (run-test "book_solution1" 123456789)))
