@@ -41,7 +41,7 @@
   (display " received\n")
   (display "test value mix bytes: ")
   (display (reverse (dw-mix-word input-value)))
-  (display "\n")
+  (newline)
   (mix-load program)
   (mix-smem 200 input-value)
   (mix-run)
