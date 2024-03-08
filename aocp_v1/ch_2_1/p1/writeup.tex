@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{amsmath}
 
-\title{--Placeholder--}
+\title{The Art of Computer Programming, Chapter 2.1, problem 1}
 \author{Daniel Werner}
 
 \begin{document}
@@ -12,18 +12,21 @@
     Problem Statement
 }
 
---Problem statement--
+What is the value of a) SUIT(NEXT(TOP)) and b) NEXT(NEXT(NEXT(TOP))) in situation 3?  In the book, situation 3
+contains three memory locations with cards designated by numerical values in MIX memory cells.
 
 \section*{
-    Analysis
+    Answer
 }
 
--- Analysis --
+The cards structure represents a simple linked list structure with NEXT representing the traversal of one of The
+links from one node/card to another.  The NEXT from the TOP is the second card, so NEXT(TOP) is the second card. SUIT()
+of that card is 4, or diamonds.  For b), three iterations of next from top will be past the end of the list by one, so
+one can call this $\Lambda$ as they do in the book.
 
-\subsection* {
-  Book Solution
-}
+\par
 
--- Book solution --
+I have implemented a test case that loads the cards from scenario 3 into MIX memory and then runs a MIX program that
+stores the results of scenario a in the x register.
 
 \end{document}
