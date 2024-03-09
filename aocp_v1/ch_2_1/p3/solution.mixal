@@ -1,0 +1,15 @@
+	ORIG	10
+TOP	EQU	1000	  ; The TOP link variable
+NEWCARD	EQU	1001	  ; The NEWCARD link variable
+NEXT	EQU	4:5
+	ORIG	3000
+START	STZ	NEWCARD	  ; let's make sure NEWCARD is zero to start
+	LDA	NEWCARD   ; let's also make sure the A register is zero
+	CMPA	TOP(NEXT) ; seeing if TOP is lambda (comparing to zero)
+	JE	DONE 	  ; if there were no cards, we're done here
+	LD1	TOP
+	LD2	0,1
+	ST1	NEWCARD
+	ST2	TOP
+DONE	HLT
+	END	START
