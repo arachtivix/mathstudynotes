@@ -13,3 +13,6 @@ https://www.youtube.com/watch?v=RQK_DaaX34Q
 # Guile
 ## Reference
 https://www.gnu.org/software/guile/manual/guile.html
+
+# Other People Doing Exercises
+https://github.com/justinmeiners/exercises/tree/master
