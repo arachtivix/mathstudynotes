@@ -3,8 +3,12 @@
 NEWCARD	EQU	1000 ; variable loc
 TOP	EQU	1001 ; variable loc
 BOT	EQU	1002 ; variable loc
-LAMBDA	EQU	0
 NEXT	EQU	4:5
+	ORIG	5
+LAMBDA	CON	0
+FACEUP	CON	0
+FACEDN	CON	1
+TAG	EQU	1:1
 	ORIG	3000
 START	LD1	TOP(NEXT)
 	ST1	BOT
@@ -17,5 +21,12 @@ ATBOT	LD1	BOT	; ATBOT (at bottom of the stack of cards)
 	LDA	0,1
 	ADD	NEWCARD ; LAMBDA is zero, so we can just add
 	STA	0,1
-	HLT
+CHKFLP	LD1	NEWCARD
+	LD2	0,1(TAG)
+	CMP2	FACEDN ; check if flip is needed
+	JE	DONE
+	LD2	FACEDN
+	LD1	NEWCARD
+	ST2	0,1(TAG)
+DONE	HLT
 	END	START
