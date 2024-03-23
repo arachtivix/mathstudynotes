@@ -1,8 +1,19 @@
 	ORIG	0
 	CON	0
 	ORIG	1000
-NEWCARD	EQU	0
-TOP	EQU	0
+NEWCARD	EQU	0 ; will be set by test harness
+TOP	EQU	0 ; will also be set by test harness
+LAMBDA	EQU	0
+NEXT	EQU	4:5
+BOT	EQU	0
 	ORIG	3000
-START	HLT
+START	LD1	TOP(NEXT)
+	ST1	BOT
+DO	CMP1	LAMBDA
+	JE	ATBOT
+	LD1	BOT(NEXT)
+	ST1	BOT
+	JSJ	DO
+ATBOT	NOP	0	; ATBOT (at bottom of the stack of cards)
+	HLT
 	END	START
