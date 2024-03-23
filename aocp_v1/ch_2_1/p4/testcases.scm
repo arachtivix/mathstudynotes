@@ -17,5 +17,4 @@
 
 (define main
   (lambda (args)
-    (run-test scen1 "solution")
-    ))
+    (run-test scen1 "solution")))

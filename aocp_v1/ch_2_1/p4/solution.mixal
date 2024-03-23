@@ -1,19 +1,21 @@
 	ORIG	0
 	CON	0
-	ORIG	1000
-NEWCARD	EQU	0 ; will be set by test harness
-TOP	EQU	0 ; will also be set by test harness
+NEWCARD	EQU	1000 ; variable loc
+TOP	EQU	1001 ; variable loc
+BOT	EQU	1002 ; variable loc
 LAMBDA	EQU	0
 NEXT	EQU	4:5
-BOT	EQU	0
 	ORIG	3000
 START	LD1	TOP(NEXT)
 	ST1	BOT
 DO	CMP1	LAMBDA
 	JE	ATBOT
-	LD1	BOT(NEXT)
-	ST1	BOT
+	ST1	BOT ; preserve st1 as the lowest valid card observed yet
+	LD1	0,1(NEXT)
 	JSJ	DO
-ATBOT	NOP	0	; ATBOT (at bottom of the stack of cards)
+ATBOT	LD1	BOT	; ATBOT (at bottom of the stack of cards)
+	LDA	0,1
+	ADD	NEWCARD ; LAMBDA is zero, so we can just add
+	STA	0,1
 	HLT
 	END	START

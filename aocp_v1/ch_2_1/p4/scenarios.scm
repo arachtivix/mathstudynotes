@@ -13,7 +13,8 @@
 (define queen 12)
 (define king 13)
 
-(define TOP 100)
+(define newcard 1000) ; location of the NEWCARD variable in the MIX machine
+(define top 1001) ; location of the TOP variable in the MIX machine
 (define LAMBDA 0) ; the aocp uppercase lambda/list end marker
 
 (define (card-numerical tag suit rank next)
@@ -36,8 +37,8 @@
   (place-card face-down diamonds jack LAMBDA 104)
   ; NEWCARD value set at next position but not linked up yet
   (place-card face-up clubs king LAMBDA 105)
-  (mix-smem 1000 106)
-  (mix-smem 1001 TOP) ; TOP card link variable
+  (mix-smem newcard 105)
+  (mix-smem top 100)
   (lambda ()
     (mix-preg)
     (mix-pmem 100 108)
