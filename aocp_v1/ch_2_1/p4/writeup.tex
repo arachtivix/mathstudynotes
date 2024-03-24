@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{amsmath}
 
-\title{--Placeholder--}
+\title{The Art of Computer Programming -- Chapter 2.1 Problem 4}
 \author{Daniel Werner}
 
 \begin{document}
@@ -12,18 +12,29 @@
     Problem Statement
 }
 
---Problem statement--
+Write an algorithm that places a card at the bottom of the list face down (list can be empty).
 
 \section*{
     Analysis
 }
 
--- Analysis --
+This was mostly an exercise in implementation and not in analysis.  Three salient test cases came across to me:
+\begin{enumerate}
+  \item A normal list of cards sequential in memory
+  \item A list of cards where the new card is not in sequence
+  \item An empty starting list
+\end{enumerate}
+
+The test runner I wrote here requires manual review to ascertain success.  Here I created a test handler function to convert card data to its corresponding numerical value and this was used both to place in memory before the test begins and to separately generate the expected numerical values for given memory cells' manual review afterwards.  I've included the test output in this same folder as well.
+
+\par
+
+Part of this solution counts on $\Lambda$ being zero, as it seeks simply to add the address of the next card to the last one in the pile.  If $\Lambda$ were any other value, we would need to overwrite rather than add, but this seems like a trivial change.  This would be very similar to the implementaiton of the TAG change at the end.
 
 \subsection* {
-  Book Solution
+  Book Solution / Retrospective
 }
 
--- Book solution --
+Looking at the solution in the back of the book it becomes apparent that the book meant for the reader to implement an algorithm and not write a MIXAL program, a distinction which certainly is worth keeping in mind for the future.  The algorithm expressed in the back of the book was three lines long and was written in the higher level of abstraction introduced in the chapter materials.  Nonetheless, it does seem worthwhile to have implemented this in MIXAL, as one had to pass through the algorithm, if only implicitly, to get to the implementation.
 
 \end{document}
