@@ -61,11 +61,11 @@
     (mix-pmem 1000 1005)
     (display "Expected ")
     (newline)
-    (display (card-numerical face-up spades 2 105))
+    (display (card-numerical face-up spades 2 104))
     (newline)
     (display (card-numerical face-down diamonds jack LAMBDA))
     (newline)
-    (display "in memory locations 100 and 105 respectively\n")))
+    (display "in memory locations 100 and 104 respectively\n")))
 
 (define (scen3)
   (display "SCENARIO: list starts out empty\n")

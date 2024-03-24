@@ -25,10 +25,10 @@ rI5: + 00 00 (0000)	rI6: + 00 00 (0000)
 1005: + 00 00 00 00 00 (0000000000)
 Starting testRunning ...
 ... done
-Elapsed time: 78 /Total program time: 78 (Total uptime: 78)
+Elapsed time: 84 /Total program time: 84 (Total uptime: 84)
 rA: + 01 02 11 01 41 (0017346665)
 rX: + 00 00 00 00 00 (0000000000)
-rJ: + 46 60 (3004)
+rJ: + 47 07 (3015)
 rI1: + 01 41 (0105)	rI2: + 00 01 (0001)	
 rI3: + 00 00 (0000)	rI4: + 00 00 (0000)	
 rI5: + 00 00 (0000)	rI6: + 00 00 (0000)	
@@ -71,7 +71,7 @@ rI5: + 00 00 (0000)	rI6: + 00 00 (0000)
 1005: + 00 00 00 00 00 (0000000000)
 Starting testRunning ...
 ... done
-Elapsed time: 40 /Total program time: 40 (Total uptime: 118)
+Elapsed time: 46 /Total program time: 46 (Total uptime: 130)
 0100: + 00 04 02 01 40 (0001056872)
 0101: + 00 00 00 00 00 (0000000000)
 0102: + 00 00 00 00 00 (0000000000)
@@ -88,9 +88,9 @@ Elapsed time: 40 /Total program time: 40 (Total uptime: 118)
 1004: + 00 00 00 00 00 (0000000000)
 1005: + 00 00 00 00 00 (0000000000)
 Expected 
-1056873
+1056872
 17346560
-in memory locations 100 and 105 respectively
+in memory locations 100 and 104 respectively
 mixasm solution
 
 
@@ -111,7 +111,7 @@ rI5: + 00 00 (0000)	rI6: + 00 00 (0000)
 1005: + 00 00 00 00 00 (0000000000)
 Starting testRunning ...
 ... done
-Elapsed time: 38 /Total program time: 38 (Total uptime: 156)
+Elapsed time: 32 /Total program time: 32 (Total uptime: 162)
 0100: + 01 04 02 00 00 (0017833984)
 0101: + 00 00 00 00 00 (0000000000)
 0102: + 00 00 00 00 00 (0000000000)
@@ -122,7 +122,7 @@ Elapsed time: 38 /Total program time: 38 (Total uptime: 156)
 0107: + 00 00 00 00 00 (0000000000)
 0108: + 00 00 00 00 00 (0000000000)
 1000: + 00 00 00 01 36 (0000000100)
-1001: + 00 00 00 00 00 (0000000000)
+1001: + 00 00 00 01 36 (0000000100)
 1002: + 00 00 00 00 00 (0000000000)
 1003: + 00 00 00 00 00 (0000000000)
 1004: + 00 00 00 00 00 (0000000000)
