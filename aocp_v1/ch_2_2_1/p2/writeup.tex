@@ -1,0 +1,318 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{The Art of Computer Programming -- Chapter 2.2, problem 2}
+\author{Daniel Werner}
+
+\begin{document}
+
+\maketitle
+
+\section*{
+    Problem Statement
+}
+
+Is it possible to use a stack to permute the input sequence 1 2 3 4 5 6 into the output sequence 3 2 5 6 4 1?
+
+\section*{
+    Analysis
+}
+
+We can get close, but not quite:
+\newline
+1 2 3 4 5 6 | |
+\newline
+2 3 4 5 6 | 1 |
+\newline
+2 3 4 5 6 | | 1
+\newline
+3 4 5 6 | 2 | 1
+\newline
+4 5 6 | 3 2 | 1
+\newline
+5 6 | 4 3 2 | 1
+\newline
+5 6 | 3 2 | 4 1
+\newline
+6 | 5 3 2 | 4 1
+\newline
+| 6 5 3 2 | 4 1
+\newline
+| 5 3 2 | 6 4 1
+\newline
+| 3 2 | 5 6 4 1
+\newline
+| 2 | 3 5 6 4 1
+\newline
+Only remaining move is (| | 2 3 5 6 4 1). Being able to get close does not prove much though.  Examining a smaller scale might help.  The stack could be used to fully reverse any input simply by inserting all then removing all.  The stack could nominally be used to maintain the same order by inserting then immediately removing each element in turn.
+
+\par
+I wrote some python code to generate all possible permutations for 1 2 3 4 and look for all possible permutations accessible using the stack.  Here are the 132 possible permutations reachable using a stack for a given input array.  The code just simulates each possible choice that a program could make for what to do next in any given scenario.  The
+
+\par
+$\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 6 | 1 2 3 4 5 |  $\rightarrow$  | 1 2 3 4 5 6 |  $\rightarrow$  | 1 2 3 4 5 | 6 $\rightarrow$  | 1 2 3 4 | 6 5 $\rightarrow$  | 1 2 3 | 6 5 4 $\rightarrow$  | 1 2 | 6 5 4 3 $\rightarrow$  | 1 | 6 5 4 3 2 $\rightarrow$  |  | 6 5 4 3 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 6 | 1 2 3 4 5 |  $\rightarrow$ 6 | 1 2 3 4 | 5 $\rightarrow$  | 1 2 3 4 6 | 5 $\rightarrow$  | 1 2 3 4 | 5 6 $\rightarrow$  | 1 2 3 | 5 6 4 $\rightarrow$  | 1 2 | 5 6 4 3 $\rightarrow$  | 1 | 5 6 4 3 2 $\rightarrow$  |  | 5 6 4 3 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 6 | 1 2 3 4 5 |  $\rightarrow$ 6 | 1 2 3 4 | 5 $\rightarrow$ 6 | 1 2 3 | 5 4 $\rightarrow$  | 1 2 3 6 | 5 4 $\rightarrow$  | 1 2 3 | 5 4 6 $\rightarrow$  | 1 2 | 5 4 6 3 $\rightarrow$  | 1 | 5 4 6 3 2 $\rightarrow$  |  | 5 4 6 3 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 6 | 1 2 3 4 5 |  $\rightarrow$ 6 | 1 2 3 4 | 5 $\rightarrow$ 6 | 1 2 3 | 5 4 $\rightarrow$ 6 | 1 2 | 5 4 3 $\rightarrow$  | 1 2 6 | 5 4 3 $\rightarrow$  | 1 2 | 5 4 3 6 $\rightarrow$  | 1 | 5 4 3 6 2 $\rightarrow$  |  | 5 4 3 6 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 6 | 1 2 3 4 5 |  $\rightarrow$ 6 | 1 2 3 4 | 5 $\rightarrow$ 6 | 1 2 3 | 5 4 $\rightarrow$ 6 | 1 2 | 5 4 3 $\rightarrow$ 6 | 1 | 5 4 3 2 $\rightarrow$  | 1 6 | 5 4 3 2 $\rightarrow$  | 1 | 5 4 3 2 6 $\rightarrow$  |  | 5 4 3 2 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 6 | 1 2 3 4 5 |  $\rightarrow$ 6 | 1 2 3 4 | 5 $\rightarrow$ 6 | 1 2 3 | 5 4 $\rightarrow$ 6 | 1 2 | 5 4 3 $\rightarrow$ 6 | 1 | 5 4 3 2 $\rightarrow$ 6 |  | 5 4 3 2 1 $\rightarrow$  | 6 | 5 4 3 2 1 $\rightarrow$  |  | 5 4 3 2 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 6 | 1 2 3 5 | 4 $\rightarrow$  | 1 2 3 5 6 | 4 $\rightarrow$  | 1 2 3 5 | 4 6 $\rightarrow$  | 1 2 3 | 4 6 5 $\rightarrow$  | 1 2 | 4 6 5 3 $\rightarrow$  | 1 | 4 6 5 3 2 $\rightarrow$  |  | 4 6 5 3 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 6 | 1 2 3 5 | 4 $\rightarrow$ 6 | 1 2 3 | 4 5 $\rightarrow$  | 1 2 3 6 | 4 5 $\rightarrow$  | 1 2 3 | 4 5 6 $\rightarrow$  | 1 2 | 4 5 6 3 $\rightarrow$  | 1 | 4 5 6 3 2 $\rightarrow$  |  | 4 5 6 3 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 6 | 1 2 3 5 | 4 $\rightarrow$ 6 | 1 2 3 | 4 5 $\rightarrow$ 6 | 1 2 | 4 5 3 $\rightarrow$  | 1 2 6 | 4 5 3 $\rightarrow$  | 1 2 | 4 5 3 6 $\rightarrow$  | 1 | 4 5 3 6 2 $\rightarrow$  |  | 4 5 3 6 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 6 | 1 2 3 5 | 4 $\rightarrow$ 6 | 1 2 3 | 4 5 $\rightarrow$ 6 | 1 2 | 4 5 3 $\rightarrow$ 6 | 1 | 4 5 3 2 $\rightarrow$  | 1 6 | 4 5 3 2 $\rightarrow$  | 1 | 4 5 3 2 6 $\rightarrow$  |  | 4 5 3 2 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 6 | 1 2 3 5 | 4 $\rightarrow$ 6 | 1 2 3 | 4 5 $\rightarrow$ 6 | 1 2 | 4 5 3 $\rightarrow$ 6 | 1 | 4 5 3 2 $\rightarrow$ 6 |  | 4 5 3 2 1 $\rightarrow$  | 6 | 4 5 3 2 1 $\rightarrow$  |  | 4 5 3 2 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 5 6 | 1 2 | 4 3 $\rightarrow$ 6 | 1 2 5 | 4 3 $\rightarrow$  | 1 2 5 6 | 4 3 $\rightarrow$  | 1 2 5 | 4 3 6 $\rightarrow$  | 1 2 | 4 3 6 5 $\rightarrow$  | 1 | 4 3 6 5 2 $\rightarrow$  |  | 4 3 6 5 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 5 6 | 1 2 | 4 3 $\rightarrow$ 6 | 1 2 5 | 4 3 $\rightarrow$ 6 | 1 2 | 4 3 5 $\rightarrow$  | 1 2 6 | 4 3 5 $\rightarrow$  | 1 2 | 4 3 5 6 $\rightarrow$  | 1 | 4 3 5 6 2 $\rightarrow$  |  | 4 3 5 6 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 5 6 | 1 2 | 4 3 $\rightarrow$ 6 | 1 2 5 | 4 3 $\rightarrow$ 6 | 1 2 | 4 3 5 $\rightarrow$ 6 | 1 | 4 3 5 2 $\rightarrow$  | 1 6 | 4 3 5 2 $\rightarrow$  | 1 | 4 3 5 2 6 $\rightarrow$  |  | 4 3 5 2 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 5 6 | 1 2 | 4 3 $\rightarrow$ 6 | 1 2 5 | 4 3 $\rightarrow$ 6 | 1 2 | 4 3 5 $\rightarrow$ 6 | 1 | 4 3 5 2 $\rightarrow$ 6 |  | 4 3 5 2 1 $\rightarrow$  | 6 | 4 3 5 2 1 $\rightarrow$  |  | 4 3 5 2 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 5 6 | 1 2 | 4 3 $\rightarrow$ 5 6 | 1 | 4 3 2 $\rightarrow$ 6 | 1 5 | 4 3 2 $\rightarrow$  | 1 5 6 | 4 3 2 $\rightarrow$  | 1 5 | 4 3 2 6 $\rightarrow$  | 1 | 4 3 2 6 5 $\rightarrow$  |  | 4 3 2 6 5 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 5 6 | 1 2 | 4 3 $\rightarrow$ 5 6 | 1 | 4 3 2 $\rightarrow$ 6 | 1 5 | 4 3 2 $\rightarrow$ 6 | 1 | 4 3 2 5 $\rightarrow$  | 1 6 | 4 3 2 5 $\rightarrow$  | 1 | 4 3 2 5 6 $\rightarrow$  |  | 4 3 2 5 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 5 6 | 1 2 | 4 3 $\rightarrow$ 5 6 | 1 | 4 3 2 $\rightarrow$ 6 | 1 5 | 4 3 2 $\rightarrow$ 6 | 1 | 4 3 2 5 $\rightarrow$ 6 |  | 4 3 2 5 1 $\rightarrow$  | 6 | 4 3 2 5 1 $\rightarrow$  |  | 4 3 2 5 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 5 6 | 1 2 | 4 3 $\rightarrow$ 5 6 | 1 | 4 3 2 $\rightarrow$ 5 6 |  | 4 3 2 1 $\rightarrow$ 6 | 5 | 4 3 2 1 $\rightarrow$  | 5 6 | 4 3 2 1 $\rightarrow$  | 5 | 4 3 2 1 6 $\rightarrow$  |  | 4 3 2 1 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 5 6 | 1 2 3 4 |  $\rightarrow$ 5 6 | 1 2 3 | 4 $\rightarrow$ 5 6 | 1 2 | 4 3 $\rightarrow$ 5 6 | 1 | 4 3 2 $\rightarrow$ 5 6 |  | 4 3 2 1 $\rightarrow$ 6 | 5 | 4 3 2 1 $\rightarrow$ 6 |  | 4 3 2 1 5 $\rightarrow$  | 6 | 4 3 2 1 5 $\rightarrow$  |  | 4 3 2 1 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 6 | 1 2 4 5 | 3 $\rightarrow$  | 1 2 4 5 6 | 3 $\rightarrow$  | 1 2 4 5 | 3 6 $\rightarrow$  | 1 2 4 | 3 6 5 $\rightarrow$  | 1 2 | 3 6 5 4 $\rightarrow$  | 1 | 3 6 5 4 2 $\rightarrow$  |  | 3 6 5 4 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 6 | 1 2 4 5 | 3 $\rightarrow$ 6 | 1 2 4 | 3 5 $\rightarrow$  | 1 2 4 6 | 3 5 $\rightarrow$  | 1 2 4 | 3 5 6 $\rightarrow$  | 1 2 | 3 5 6 4 $\rightarrow$  | 1 | 3 5 6 4 2 $\rightarrow$  |  | 3 5 6 4 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 6 | 1 2 4 5 | 3 $\rightarrow$ 6 | 1 2 4 | 3 5 $\rightarrow$ 6 | 1 2 | 3 5 4 $\rightarrow$  | 1 2 6 | 3 5 4 $\rightarrow$  | 1 2 | 3 5 4 6 $\rightarrow$  | 1 | 3 5 4 6 2 $\rightarrow$  |  | 3 5 4 6 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 6 | 1 2 4 5 | 3 $\rightarrow$ 6 | 1 2 4 | 3 5 $\rightarrow$ 6 | 1 2 | 3 5 4 $\rightarrow$ 6 | 1 | 3 5 4 2 $\rightarrow$  | 1 6 | 3 5 4 2 $\rightarrow$  | 1 | 3 5 4 2 6 $\rightarrow$  |  | 3 5 4 2 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 6 | 1 2 4 5 | 3 $\rightarrow$ 6 | 1 2 4 | 3 5 $\rightarrow$ 6 | 1 2 | 3 5 4 $\rightarrow$ 6 | 1 | 3 5 4 2 $\rightarrow$ 6 |  | 3 5 4 2 1 $\rightarrow$  | 6 | 3 5 4 2 1 $\rightarrow$  |  | 3 5 4 2 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 5 6 | 1 2 | 3 4 $\rightarrow$ 6 | 1 2 5 | 3 4 $\rightarrow$  | 1 2 5 6 | 3 4 $\rightarrow$  | 1 2 5 | 3 4 6 $\rightarrow$  | 1 2 | 3 4 6 5 $\rightarrow$  | 1 | 3 4 6 5 2 $\rightarrow$  |  | 3 4 6 5 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 5 6 | 1 2 | 3 4 $\rightarrow$ 6 | 1 2 5 | 3 4 $\rightarrow$ 6 | 1 2 | 3 4 5 $\rightarrow$  | 1 2 6 | 3 4 5 $\rightarrow$  | 1 2 | 3 4 5 6 $\rightarrow$  | 1 | 3 4 5 6 2 $\rightarrow$  |  | 3 4 5 6 2 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 5 6 | 1 2 | 3 4 $\rightarrow$ 6 | 1 2 5 | 3 4 $\rightarrow$ 6 | 1 2 | 3 4 5 $\rightarrow$ 6 | 1 | 3 4 5 2 $\rightarrow$  | 1 6 | 3 4 5 2 $\rightarrow$  | 1 | 3 4 5 2 6 $\rightarrow$  |  | 3 4 5 2 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 5 6 | 1 2 | 3 4 $\rightarrow$ 6 | 1 2 5 | 3 4 $\rightarrow$ 6 | 1 2 | 3 4 5 $\rightarrow$ 6 | 1 | 3 4 5 2 $\rightarrow$ 6 |  | 3 4 5 2 1 $\rightarrow$  | 6 | 3 4 5 2 1 $\rightarrow$  |  | 3 4 5 2 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 5 6 | 1 2 | 3 4 $\rightarrow$ 5 6 | 1 | 3 4 2 $\rightarrow$ 6 | 1 5 | 3 4 2 $\rightarrow$  | 1 5 6 | 3 4 2 $\rightarrow$  | 1 5 | 3 4 2 6 $\rightarrow$  | 1 | 3 4 2 6 5 $\rightarrow$  |  | 3 4 2 6 5 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 5 6 | 1 2 | 3 4 $\rightarrow$ 5 6 | 1 | 3 4 2 $\rightarrow$ 6 | 1 5 | 3 4 2 $\rightarrow$ 6 | 1 | 3 4 2 5 $\rightarrow$  | 1 6 | 3 4 2 5 $\rightarrow$  | 1 | 3 4 2 5 6 $\rightarrow$  |  | 3 4 2 5 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 5 6 | 1 2 | 3 4 $\rightarrow$ 5 6 | 1 | 3 4 2 $\rightarrow$ 6 | 1 5 | 3 4 2 $\rightarrow$ 6 | 1 | 3 4 2 5 $\rightarrow$ 6 |  | 3 4 2 5 1 $\rightarrow$  | 6 | 3 4 2 5 1 $\rightarrow$  |  | 3 4 2 5 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 5 6 | 1 2 | 3 4 $\rightarrow$ 5 6 | 1 | 3 4 2 $\rightarrow$ 5 6 |  | 3 4 2 1 $\rightarrow$ 6 | 5 | 3 4 2 1 $\rightarrow$  | 5 6 | 3 4 2 1 $\rightarrow$  | 5 | 3 4 2 1 6 $\rightarrow$  |  | 3 4 2 1 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 5 6 | 1 2 4 | 3 $\rightarrow$ 5 6 | 1 2 | 3 4 $\rightarrow$ 5 6 | 1 | 3 4 2 $\rightarrow$ 5 6 |  | 3 4 2 1 $\rightarrow$ 6 | 5 | 3 4 2 1 $\rightarrow$ 6 |  | 3 4 2 1 5 $\rightarrow$  | 6 | 3 4 2 1 5 $\rightarrow$  |  | 3 4 2 1 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 5 6 | 1 4 | 3 2 $\rightarrow$ 6 | 1 4 5 | 3 2 $\rightarrow$  | 1 4 5 6 | 3 2 $\rightarrow$  | 1 4 5 | 3 2 6 $\rightarrow$  | 1 4 | 3 2 6 5 $\rightarrow$  | 1 | 3 2 6 5 4 $\rightarrow$  |  | 3 2 6 5 4 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 5 6 | 1 4 | 3 2 $\rightarrow$ 6 | 1 4 5 | 3 2 $\rightarrow$ 6 | 1 4 | 3 2 5 $\rightarrow$  | 1 4 6 | 3 2 5 $\rightarrow$  | 1 4 | 3 2 5 6 $\rightarrow$  | 1 | 3 2 5 6 4 $\rightarrow$  |  | 3 2 5 6 4 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 5 6 | 1 4 | 3 2 $\rightarrow$ 6 | 1 4 5 | 3 2 $\rightarrow$ 6 | 1 4 | 3 2 5 $\rightarrow$ 6 | 1 | 3 2 5 4 $\rightarrow$  | 1 6 | 3 2 5 4 $\rightarrow$  | 1 | 3 2 5 4 6 $\rightarrow$  |  | 3 2 5 4 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 5 6 | 1 4 | 3 2 $\rightarrow$ 6 | 1 4 5 | 3 2 $\rightarrow$ 6 | 1 4 | 3 2 5 $\rightarrow$ 6 | 1 | 3 2 5 4 $\rightarrow$ 6 |  | 3 2 5 4 1 $\rightarrow$  | 6 | 3 2 5 4 1 $\rightarrow$  |  | 3 2 5 4 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 5 6 | 1 4 | 3 2 $\rightarrow$ 5 6 | 1 | 3 2 4 $\rightarrow$ 6 | 1 5 | 3 2 4 $\rightarrow$  | 1 5 6 | 3 2 4 $\rightarrow$  | 1 5 | 3 2 4 6 $\rightarrow$  | 1 | 3 2 4 6 5 $\rightarrow$  |  | 3 2 4 6 5 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 5 6 | 1 4 | 3 2 $\rightarrow$ 5 6 | 1 | 3 2 4 $\rightarrow$ 6 | 1 5 | 3 2 4 $\rightarrow$ 6 | 1 | 3 2 4 5 $\rightarrow$  | 1 6 | 3 2 4 5 $\rightarrow$  | 1 | 3 2 4 5 6 $\rightarrow$  |  | 3 2 4 5 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 5 6 | 1 4 | 3 2 $\rightarrow$ 5 6 | 1 | 3 2 4 $\rightarrow$ 6 | 1 5 | 3 2 4 $\rightarrow$ 6 | 1 | 3 2 4 5 $\rightarrow$ 6 |  | 3 2 4 5 1 $\rightarrow$  | 6 | 3 2 4 5 1 $\rightarrow$  |  | 3 2 4 5 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 5 6 | 1 4 | 3 2 $\rightarrow$ 5 6 | 1 | 3 2 4 $\rightarrow$ 5 6 |  | 3 2 4 1 $\rightarrow$ 6 | 5 | 3 2 4 1 $\rightarrow$  | 5 6 | 3 2 4 1 $\rightarrow$  | 5 | 3 2 4 1 6 $\rightarrow$  |  | 3 2 4 1 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 5 6 | 1 4 | 3 2 $\rightarrow$ 5 6 | 1 | 3 2 4 $\rightarrow$ 5 6 |  | 3 2 4 1 $\rightarrow$ 6 | 5 | 3 2 4 1 $\rightarrow$ 6 |  | 3 2 4 1 5 $\rightarrow$  | 6 | 3 2 4 1 5 $\rightarrow$  |  | 3 2 4 1 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 4 5 6 |  | 3 2 1 $\rightarrow$ 5 6 | 4 | 3 2 1 $\rightarrow$ 6 | 4 5 | 3 2 1 $\rightarrow$  | 4 5 6 | 3 2 1 $\rightarrow$  | 4 5 | 3 2 1 6 $\rightarrow$  | 4 | 3 2 1 6 5 $\rightarrow$  |  | 3 2 1 6 5 4
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 4 5 6 |  | 3 2 1 $\rightarrow$ 5 6 | 4 | 3 2 1 $\rightarrow$ 6 | 4 5 | 3 2 1 $\rightarrow$ 6 | 4 | 3 2 1 5 $\rightarrow$  | 4 6 | 3 2 1 5 $\rightarrow$  | 4 | 3 2 1 5 6 $\rightarrow$  |  | 3 2 1 5 6 4
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 4 5 6 |  | 3 2 1 $\rightarrow$ 5 6 | 4 | 3 2 1 $\rightarrow$ 6 | 4 5 | 3 2 1 $\rightarrow$ 6 | 4 | 3 2 1 5 $\rightarrow$ 6 |  | 3 2 1 5 4 $\rightarrow$  | 6 | 3 2 1 5 4 $\rightarrow$  |  | 3 2 1 5 4 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 4 5 6 |  | 3 2 1 $\rightarrow$ 5 6 | 4 | 3 2 1 $\rightarrow$ 5 6 |  | 3 2 1 4 $\rightarrow$ 6 | 5 | 3 2 1 4 $\rightarrow$  | 5 6 | 3 2 1 4 $\rightarrow$  | 5 | 3 2 1 4 6 $\rightarrow$  |  | 3 2 1 4 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 4 5 6 | 1 2 3 |  $\rightarrow$ 4 5 6 | 1 2 | 3 $\rightarrow$ 4 5 6 | 1 | 3 2 $\rightarrow$ 4 5 6 |  | 3 2 1 $\rightarrow$ 5 6 | 4 | 3 2 1 $\rightarrow$ 5 6 |  | 3 2 1 4 $\rightarrow$ 6 | 5 | 3 2 1 4 $\rightarrow$ 6 |  | 3 2 1 4 5 $\rightarrow$  | 6 | 3 2 1 4 5 $\rightarrow$  |  | 3 2 1 4 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 6 | 1 3 4 5 | 2 $\rightarrow$  | 1 3 4 5 6 | 2 $\rightarrow$  | 1 3 4 5 | 2 6 $\rightarrow$  | 1 3 4 | 2 6 5 $\rightarrow$  | 1 3 | 2 6 5 4 $\rightarrow$  | 1 | 2 6 5 4 3 $\rightarrow$  |  | 2 6 5 4 3 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 6 | 1 3 4 5 | 2 $\rightarrow$ 6 | 1 3 4 | 2 5 $\rightarrow$  | 1 3 4 6 | 2 5 $\rightarrow$  | 1 3 4 | 2 5 6 $\rightarrow$  | 1 3 | 2 5 6 4 $\rightarrow$  | 1 | 2 5 6 4 3 $\rightarrow$  |  | 2 5 6 4 3 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 6 | 1 3 4 5 | 2 $\rightarrow$ 6 | 1 3 4 | 2 5 $\rightarrow$ 6 | 1 3 | 2 5 4 $\rightarrow$  | 1 3 6 | 2 5 4 $\rightarrow$  | 1 3 | 2 5 4 6 $\rightarrow$  | 1 | 2 5 4 6 3 $\rightarrow$  |  | 2 5 4 6 3 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 6 | 1 3 4 5 | 2 $\rightarrow$ 6 | 1 3 4 | 2 5 $\rightarrow$ 6 | 1 3 | 2 5 4 $\rightarrow$ 6 | 1 | 2 5 4 3 $\rightarrow$  | 1 6 | 2 5 4 3 $\rightarrow$  | 1 | 2 5 4 3 6 $\rightarrow$  |  | 2 5 4 3 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 6 | 1 3 4 5 | 2 $\rightarrow$ 6 | 1 3 4 | 2 5 $\rightarrow$ 6 | 1 3 | 2 5 4 $\rightarrow$ 6 | 1 | 2 5 4 3 $\rightarrow$ 6 |  | 2 5 4 3 1 $\rightarrow$  | 6 | 2 5 4 3 1 $\rightarrow$  |  | 2 5 4 3 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 5 6 | 1 3 | 2 4 $\rightarrow$ 6 | 1 3 5 | 2 4 $\rightarrow$  | 1 3 5 6 | 2 4 $\rightarrow$  | 1 3 5 | 2 4 6 $\rightarrow$  | 1 3 | 2 4 6 5 $\rightarrow$  | 1 | 2 4 6 5 3 $\rightarrow$  |  | 2 4 6 5 3 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 5 6 | 1 3 | 2 4 $\rightarrow$ 6 | 1 3 5 | 2 4 $\rightarrow$ 6 | 1 3 | 2 4 5 $\rightarrow$  | 1 3 6 | 2 4 5 $\rightarrow$  | 1 3 | 2 4 5 6 $\rightarrow$  | 1 | 2 4 5 6 3 $\rightarrow$  |  | 2 4 5 6 3 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 5 6 | 1 3 | 2 4 $\rightarrow$ 6 | 1 3 5 | 2 4 $\rightarrow$ 6 | 1 3 | 2 4 5 $\rightarrow$ 6 | 1 | 2 4 5 3 $\rightarrow$  | 1 6 | 2 4 5 3 $\rightarrow$  | 1 | 2 4 5 3 6 $\rightarrow$  |  | 2 4 5 3 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 5 6 | 1 3 | 2 4 $\rightarrow$ 6 | 1 3 5 | 2 4 $\rightarrow$ 6 | 1 3 | 2 4 5 $\rightarrow$ 6 | 1 | 2 4 5 3 $\rightarrow$ 6 |  | 2 4 5 3 1 $\rightarrow$  | 6 | 2 4 5 3 1 $\rightarrow$  |  | 2 4 5 3 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 5 6 | 1 3 | 2 4 $\rightarrow$ 5 6 | 1 | 2 4 3 $\rightarrow$ 6 | 1 5 | 2 4 3 $\rightarrow$  | 1 5 6 | 2 4 3 $\rightarrow$  | 1 5 | 2 4 3 6 $\rightarrow$  | 1 | 2 4 3 6 5 $\rightarrow$  |  | 2 4 3 6 5 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 5 6 | 1 3 | 2 4 $\rightarrow$ 5 6 | 1 | 2 4 3 $\rightarrow$ 6 | 1 5 | 2 4 3 $\rightarrow$ 6 | 1 | 2 4 3 5 $\rightarrow$  | 1 6 | 2 4 3 5 $\rightarrow$  | 1 | 2 4 3 5 6 $\rightarrow$  |  | 2 4 3 5 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 5 6 | 1 3 | 2 4 $\rightarrow$ 5 6 | 1 | 2 4 3 $\rightarrow$ 6 | 1 5 | 2 4 3 $\rightarrow$ 6 | 1 | 2 4 3 5 $\rightarrow$ 6 |  | 2 4 3 5 1 $\rightarrow$  | 6 | 2 4 3 5 1 $\rightarrow$  |  | 2 4 3 5 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 5 6 | 1 3 | 2 4 $\rightarrow$ 5 6 | 1 | 2 4 3 $\rightarrow$ 5 6 |  | 2 4 3 1 $\rightarrow$ 6 | 5 | 2 4 3 1 $\rightarrow$  | 5 6 | 2 4 3 1 $\rightarrow$  | 5 | 2 4 3 1 6 $\rightarrow$  |  | 2 4 3 1 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 5 6 | 1 3 4 | 2 $\rightarrow$ 5 6 | 1 3 | 2 4 $\rightarrow$ 5 6 | 1 | 2 4 3 $\rightarrow$ 5 6 |  | 2 4 3 1 $\rightarrow$ 6 | 5 | 2 4 3 1 $\rightarrow$ 6 |  | 2 4 3 1 5 $\rightarrow$  | 6 | 2 4 3 1 5 $\rightarrow$  |  | 2 4 3 1 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 5 6 | 1 4 | 2 3 $\rightarrow$ 6 | 1 4 5 | 2 3 $\rightarrow$  | 1 4 5 6 | 2 3 $\rightarrow$  | 1 4 5 | 2 3 6 $\rightarrow$  | 1 4 | 2 3 6 5 $\rightarrow$  | 1 | 2 3 6 5 4 $\rightarrow$  |  | 2 3 6 5 4 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 5 6 | 1 4 | 2 3 $\rightarrow$ 6 | 1 4 5 | 2 3 $\rightarrow$ 6 | 1 4 | 2 3 5 $\rightarrow$  | 1 4 6 | 2 3 5 $\rightarrow$  | 1 4 | 2 3 5 6 $\rightarrow$  | 1 | 2 3 5 6 4 $\rightarrow$  |  | 2 3 5 6 4 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 5 6 | 1 4 | 2 3 $\rightarrow$ 6 | 1 4 5 | 2 3 $\rightarrow$ 6 | 1 4 | 2 3 5 $\rightarrow$ 6 | 1 | 2 3 5 4 $\rightarrow$  | 1 6 | 2 3 5 4 $\rightarrow$  | 1 | 2 3 5 4 6 $\rightarrow$  |  | 2 3 5 4 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 5 6 | 1 4 | 2 3 $\rightarrow$ 6 | 1 4 5 | 2 3 $\rightarrow$ 6 | 1 4 | 2 3 5 $\rightarrow$ 6 | 1 | 2 3 5 4 $\rightarrow$ 6 |  | 2 3 5 4 1 $\rightarrow$  | 6 | 2 3 5 4 1 $\rightarrow$  |  | 2 3 5 4 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 5 6 | 1 4 | 2 3 $\rightarrow$ 5 6 | 1 | 2 3 4 $\rightarrow$ 6 | 1 5 | 2 3 4 $\rightarrow$  | 1 5 6 | 2 3 4 $\rightarrow$  | 1 5 | 2 3 4 6 $\rightarrow$  | 1 | 2 3 4 6 5 $\rightarrow$  |  | 2 3 4 6 5 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 5 6 | 1 4 | 2 3 $\rightarrow$ 5 6 | 1 | 2 3 4 $\rightarrow$ 6 | 1 5 | 2 3 4 $\rightarrow$ 6 | 1 | 2 3 4 5 $\rightarrow$  | 1 6 | 2 3 4 5 $\rightarrow$  | 1 | 2 3 4 5 6 $\rightarrow$  |  | 2 3 4 5 6 1
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 5 6 | 1 4 | 2 3 $\rightarrow$ 5 6 | 1 | 2 3 4 $\rightarrow$ 6 | 1 5 | 2 3 4 $\rightarrow$ 6 | 1 | 2 3 4 5 $\rightarrow$ 6 |  | 2 3 4 5 1 $\rightarrow$  | 6 | 2 3 4 5 1 $\rightarrow$  |  | 2 3 4 5 1 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 5 6 | 1 4 | 2 3 $\rightarrow$ 5 6 | 1 | 2 3 4 $\rightarrow$ 5 6 |  | 2 3 4 1 $\rightarrow$ 6 | 5 | 2 3 4 1 $\rightarrow$  | 5 6 | 2 3 4 1 $\rightarrow$  | 5 | 2 3 4 1 6 $\rightarrow$  |  | 2 3 4 1 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 5 6 | 1 4 | 2 3 $\rightarrow$ 5 6 | 1 | 2 3 4 $\rightarrow$ 5 6 |  | 2 3 4 1 $\rightarrow$ 6 | 5 | 2 3 4 1 $\rightarrow$ 6 |  | 2 3 4 1 5 $\rightarrow$  | 6 | 2 3 4 1 5 $\rightarrow$  |  | 2 3 4 1 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 4 5 6 |  | 2 3 1 $\rightarrow$ 5 6 | 4 | 2 3 1 $\rightarrow$ 6 | 4 5 | 2 3 1 $\rightarrow$  | 4 5 6 | 2 3 1 $\rightarrow$  | 4 5 | 2 3 1 6 $\rightarrow$  | 4 | 2 3 1 6 5 $\rightarrow$  |  | 2 3 1 6 5 4
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 4 5 6 |  | 2 3 1 $\rightarrow$ 5 6 | 4 | 2 3 1 $\rightarrow$ 6 | 4 5 | 2 3 1 $\rightarrow$ 6 | 4 | 2 3 1 5 $\rightarrow$  | 4 6 | 2 3 1 5 $\rightarrow$  | 4 | 2 3 1 5 6 $\rightarrow$  |  | 2 3 1 5 6 4
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 4 5 6 |  | 2 3 1 $\rightarrow$ 5 6 | 4 | 2 3 1 $\rightarrow$ 6 | 4 5 | 2 3 1 $\rightarrow$ 6 | 4 | 2 3 1 5 $\rightarrow$ 6 |  | 2 3 1 5 4 $\rightarrow$  | 6 | 2 3 1 5 4 $\rightarrow$  |  | 2 3 1 5 4 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 4 5 6 |  | 2 3 1 $\rightarrow$ 5 6 | 4 | 2 3 1 $\rightarrow$ 5 6 |  | 2 3 1 4 $\rightarrow$ 6 | 5 | 2 3 1 4 $\rightarrow$  | 5 6 | 2 3 1 4 $\rightarrow$  | 5 | 2 3 1 4 6 $\rightarrow$  |  | 2 3 1 4 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 4 5 6 | 1 3 | 2 $\rightarrow$ 4 5 6 | 1 | 2 3 $\rightarrow$ 4 5 6 |  | 2 3 1 $\rightarrow$ 5 6 | 4 | 2 3 1 $\rightarrow$ 5 6 |  | 2 3 1 4 $\rightarrow$ 6 | 5 | 2 3 1 4 $\rightarrow$ 6 |  | 2 3 1 4 5 $\rightarrow$  | 6 | 2 3 1 4 5 $\rightarrow$  |  | 2 3 1 4 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 5 6 | 3 4 | 2 1 $\rightarrow$ 6 | 3 4 5 | 2 1 $\rightarrow$  | 3 4 5 6 | 2 1 $\rightarrow$  | 3 4 5 | 2 1 6 $\rightarrow$  | 3 4 | 2 1 6 5 $\rightarrow$  | 3 | 2 1 6 5 4 $\rightarrow$  |  | 2 1 6 5 4 3
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 5 6 | 3 4 | 2 1 $\rightarrow$ 6 | 3 4 5 | 2 1 $\rightarrow$ 6 | 3 4 | 2 1 5 $\rightarrow$  | 3 4 6 | 2 1 5 $\rightarrow$  | 3 4 | 2 1 5 6 $\rightarrow$  | 3 | 2 1 5 6 4 $\rightarrow$  |  | 2 1 5 6 4 3
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 5 6 | 3 4 | 2 1 $\rightarrow$ 6 | 3 4 5 | 2 1 $\rightarrow$ 6 | 3 4 | 2 1 5 $\rightarrow$ 6 | 3 | 2 1 5 4 $\rightarrow$  | 3 6 | 2 1 5 4 $\rightarrow$  | 3 | 2 1 5 4 6 $\rightarrow$  |  | 2 1 5 4 6 3
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 5 6 | 3 4 | 2 1 $\rightarrow$ 6 | 3 4 5 | 2 1 $\rightarrow$ 6 | 3 4 | 2 1 5 $\rightarrow$ 6 | 3 | 2 1 5 4 $\rightarrow$ 6 |  | 2 1 5 4 3 $\rightarrow$  | 6 | 2 1 5 4 3 $\rightarrow$  |  | 2 1 5 4 3 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 5 6 | 3 4 | 2 1 $\rightarrow$ 5 6 | 3 | 2 1 4 $\rightarrow$ 6 | 3 5 | 2 1 4 $\rightarrow$  | 3 5 6 | 2 1 4 $\rightarrow$  | 3 5 | 2 1 4 6 $\rightarrow$  | 3 | 2 1 4 6 5 $\rightarrow$  |  | 2 1 4 6 5 3
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 5 6 | 3 4 | 2 1 $\rightarrow$ 5 6 | 3 | 2 1 4 $\rightarrow$ 6 | 3 5 | 2 1 4 $\rightarrow$ 6 | 3 | 2 1 4 5 $\rightarrow$  | 3 6 | 2 1 4 5 $\rightarrow$  | 3 | 2 1 4 5 6 $\rightarrow$  |  | 2 1 4 5 6 3
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 5 6 | 3 4 | 2 1 $\rightarrow$ 5 6 | 3 | 2 1 4 $\rightarrow$ 6 | 3 5 | 2 1 4 $\rightarrow$ 6 | 3 | 2 1 4 5 $\rightarrow$ 6 |  | 2 1 4 5 3 $\rightarrow$  | 6 | 2 1 4 5 3 $\rightarrow$  |  | 2 1 4 5 3 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 5 6 | 3 4 | 2 1 $\rightarrow$ 5 6 | 3 | 2 1 4 $\rightarrow$ 5 6 |  | 2 1 4 3 $\rightarrow$ 6 | 5 | 2 1 4 3 $\rightarrow$  | 5 6 | 2 1 4 3 $\rightarrow$  | 5 | 2 1 4 3 6 $\rightarrow$  |  | 2 1 4 3 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 5 6 | 3 4 | 2 1 $\rightarrow$ 5 6 | 3 | 2 1 4 $\rightarrow$ 5 6 |  | 2 1 4 3 $\rightarrow$ 6 | 5 | 2 1 4 3 $\rightarrow$ 6 |  | 2 1 4 3 5 $\rightarrow$  | 6 | 2 1 4 3 5 $\rightarrow$  |  | 2 1 4 3 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 4 5 6 |  | 2 1 3 $\rightarrow$ 5 6 | 4 | 2 1 3 $\rightarrow$ 6 | 4 5 | 2 1 3 $\rightarrow$  | 4 5 6 | 2 1 3 $\rightarrow$  | 4 5 | 2 1 3 6 $\rightarrow$  | 4 | 2 1 3 6 5 $\rightarrow$  |  | 2 1 3 6 5 4
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 4 5 6 |  | 2 1 3 $\rightarrow$ 5 6 | 4 | 2 1 3 $\rightarrow$ 6 | 4 5 | 2 1 3 $\rightarrow$ 6 | 4 | 2 1 3 5 $\rightarrow$  | 4 6 | 2 1 3 5 $\rightarrow$  | 4 | 2 1 3 5 6 $\rightarrow$  |  | 2 1 3 5 6 4
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 4 5 6 |  | 2 1 3 $\rightarrow$ 5 6 | 4 | 2 1 3 $\rightarrow$ 6 | 4 5 | 2 1 3 $\rightarrow$ 6 | 4 | 2 1 3 5 $\rightarrow$ 6 |  | 2 1 3 5 4 $\rightarrow$  | 6 | 2 1 3 5 4 $\rightarrow$  |  | 2 1 3 5 4 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 4 5 6 |  | 2 1 3 $\rightarrow$ 5 6 | 4 | 2 1 3 $\rightarrow$ 5 6 |  | 2 1 3 4 $\rightarrow$ 6 | 5 | 2 1 3 4 $\rightarrow$  | 5 6 | 2 1 3 4 $\rightarrow$  | 5 | 2 1 3 4 6 $\rightarrow$  |  | 2 1 3 4 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 3 4 5 6 | 1 2 |  $\rightarrow$ 3 4 5 6 | 1 | 2 $\rightarrow$ 3 4 5 6 |  | 2 1 $\rightarrow$ 4 5 6 | 3 | 2 1 $\rightarrow$ 4 5 6 |  | 2 1 3 $\rightarrow$ 5 6 | 4 | 2 1 3 $\rightarrow$ 5 6 |  | 2 1 3 4 $\rightarrow$ 6 | 5 | 2 1 3 4 $\rightarrow$ 6 |  | 2 1 3 4 5 $\rightarrow$  | 6 | 2 1 3 4 5 $\rightarrow$  |  | 2 1 3 4 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 6 | 2 3 4 5 | 1 $\rightarrow$  | 2 3 4 5 6 | 1 $\rightarrow$  | 2 3 4 5 | 1 6 $\rightarrow$  | 2 3 4 | 1 6 5 $\rightarrow$  | 2 3 | 1 6 5 4 $\rightarrow$  | 2 | 1 6 5 4 3 $\rightarrow$  |  | 1 6 5 4 3 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 6 | 2 3 4 5 | 1 $\rightarrow$ 6 | 2 3 4 | 1 5 $\rightarrow$  | 2 3 4 6 | 1 5 $\rightarrow$  | 2 3 4 | 1 5 6 $\rightarrow$  | 2 3 | 1 5 6 4 $\rightarrow$  | 2 | 1 5 6 4 3 $\rightarrow$  |  | 1 5 6 4 3 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 6 | 2 3 4 5 | 1 $\rightarrow$ 6 | 2 3 4 | 1 5 $\rightarrow$ 6 | 2 3 | 1 5 4 $\rightarrow$  | 2 3 6 | 1 5 4 $\rightarrow$  | 2 3 | 1 5 4 6 $\rightarrow$  | 2 | 1 5 4 6 3 $\rightarrow$  |  | 1 5 4 6 3 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 6 | 2 3 4 5 | 1 $\rightarrow$ 6 | 2 3 4 | 1 5 $\rightarrow$ 6 | 2 3 | 1 5 4 $\rightarrow$ 6 | 2 | 1 5 4 3 $\rightarrow$  | 2 6 | 1 5 4 3 $\rightarrow$  | 2 | 1 5 4 3 6 $\rightarrow$  |  | 1 5 4 3 6 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 6 | 2 3 4 5 | 1 $\rightarrow$ 6 | 2 3 4 | 1 5 $\rightarrow$ 6 | 2 3 | 1 5 4 $\rightarrow$ 6 | 2 | 1 5 4 3 $\rightarrow$ 6 |  | 1 5 4 3 2 $\rightarrow$  | 6 | 1 5 4 3 2 $\rightarrow$  |  | 1 5 4 3 2 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 5 6 | 2 3 | 1 4 $\rightarrow$ 6 | 2 3 5 | 1 4 $\rightarrow$  | 2 3 5 6 | 1 4 $\rightarrow$  | 2 3 5 | 1 4 6 $\rightarrow$  | 2 3 | 1 4 6 5 $\rightarrow$  | 2 | 1 4 6 5 3 $\rightarrow$  |  | 1 4 6 5 3 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 5 6 | 2 3 | 1 4 $\rightarrow$ 6 | 2 3 5 | 1 4 $\rightarrow$ 6 | 2 3 | 1 4 5 $\rightarrow$  | 2 3 6 | 1 4 5 $\rightarrow$  | 2 3 | 1 4 5 6 $\rightarrow$  | 2 | 1 4 5 6 3 $\rightarrow$  |  | 1 4 5 6 3 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 5 6 | 2 3 | 1 4 $\rightarrow$ 6 | 2 3 5 | 1 4 $\rightarrow$ 6 | 2 3 | 1 4 5 $\rightarrow$ 6 | 2 | 1 4 5 3 $\rightarrow$  | 2 6 | 1 4 5 3 $\rightarrow$  | 2 | 1 4 5 3 6 $\rightarrow$  |  | 1 4 5 3 6 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 5 6 | 2 3 | 1 4 $\rightarrow$ 6 | 2 3 5 | 1 4 $\rightarrow$ 6 | 2 3 | 1 4 5 $\rightarrow$ 6 | 2 | 1 4 5 3 $\rightarrow$ 6 |  | 1 4 5 3 2 $\rightarrow$  | 6 | 1 4 5 3 2 $\rightarrow$  |  | 1 4 5 3 2 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 5 6 | 2 3 | 1 4 $\rightarrow$ 5 6 | 2 | 1 4 3 $\rightarrow$ 6 | 2 5 | 1 4 3 $\rightarrow$  | 2 5 6 | 1 4 3 $\rightarrow$  | 2 5 | 1 4 3 6 $\rightarrow$  | 2 | 1 4 3 6 5 $\rightarrow$  |  | 1 4 3 6 5 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 5 6 | 2 3 | 1 4 $\rightarrow$ 5 6 | 2 | 1 4 3 $\rightarrow$ 6 | 2 5 | 1 4 3 $\rightarrow$ 6 | 2 | 1 4 3 5 $\rightarrow$  | 2 6 | 1 4 3 5 $\rightarrow$  | 2 | 1 4 3 5 6 $\rightarrow$  |  | 1 4 3 5 6 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 5 6 | 2 3 | 1 4 $\rightarrow$ 5 6 | 2 | 1 4 3 $\rightarrow$ 6 | 2 5 | 1 4 3 $\rightarrow$ 6 | 2 | 1 4 3 5 $\rightarrow$ 6 |  | 1 4 3 5 2 $\rightarrow$  | 6 | 1 4 3 5 2 $\rightarrow$  |  | 1 4 3 5 2 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 5 6 | 2 3 | 1 4 $\rightarrow$ 5 6 | 2 | 1 4 3 $\rightarrow$ 5 6 |  | 1 4 3 2 $\rightarrow$ 6 | 5 | 1 4 3 2 $\rightarrow$  | 5 6 | 1 4 3 2 $\rightarrow$  | 5 | 1 4 3 2 6 $\rightarrow$  |  | 1 4 3 2 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 5 6 | 2 3 4 | 1 $\rightarrow$ 5 6 | 2 3 | 1 4 $\rightarrow$ 5 6 | 2 | 1 4 3 $\rightarrow$ 5 6 |  | 1 4 3 2 $\rightarrow$ 6 | 5 | 1 4 3 2 $\rightarrow$ 6 |  | 1 4 3 2 5 $\rightarrow$  | 6 | 1 4 3 2 5 $\rightarrow$  |  | 1 4 3 2 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 5 6 | 2 4 | 1 3 $\rightarrow$ 6 | 2 4 5 | 1 3 $\rightarrow$  | 2 4 5 6 | 1 3 $\rightarrow$  | 2 4 5 | 1 3 6 $\rightarrow$  | 2 4 | 1 3 6 5 $\rightarrow$  | 2 | 1 3 6 5 4 $\rightarrow$  |  | 1 3 6 5 4 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 5 6 | 2 4 | 1 3 $\rightarrow$ 6 | 2 4 5 | 1 3 $\rightarrow$ 6 | 2 4 | 1 3 5 $\rightarrow$  | 2 4 6 | 1 3 5 $\rightarrow$  | 2 4 | 1 3 5 6 $\rightarrow$  | 2 | 1 3 5 6 4 $\rightarrow$  |  | 1 3 5 6 4 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 5 6 | 2 4 | 1 3 $\rightarrow$ 6 | 2 4 5 | 1 3 $\rightarrow$ 6 | 2 4 | 1 3 5 $\rightarrow$ 6 | 2 | 1 3 5 4 $\rightarrow$  | 2 6 | 1 3 5 4 $\rightarrow$  | 2 | 1 3 5 4 6 $\rightarrow$  |  | 1 3 5 4 6 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 5 6 | 2 4 | 1 3 $\rightarrow$ 6 | 2 4 5 | 1 3 $\rightarrow$ 6 | 2 4 | 1 3 5 $\rightarrow$ 6 | 2 | 1 3 5 4 $\rightarrow$ 6 |  | 1 3 5 4 2 $\rightarrow$  | 6 | 1 3 5 4 2 $\rightarrow$  |  | 1 3 5 4 2 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 5 6 | 2 4 | 1 3 $\rightarrow$ 5 6 | 2 | 1 3 4 $\rightarrow$ 6 | 2 5 | 1 3 4 $\rightarrow$  | 2 5 6 | 1 3 4 $\rightarrow$  | 2 5 | 1 3 4 6 $\rightarrow$  | 2 | 1 3 4 6 5 $\rightarrow$  |  | 1 3 4 6 5 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 5 6 | 2 4 | 1 3 $\rightarrow$ 5 6 | 2 | 1 3 4 $\rightarrow$ 6 | 2 5 | 1 3 4 $\rightarrow$ 6 | 2 | 1 3 4 5 $\rightarrow$  | 2 6 | 1 3 4 5 $\rightarrow$  | 2 | 1 3 4 5 6 $\rightarrow$  |  | 1 3 4 5 6 2
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 5 6 | 2 4 | 1 3 $\rightarrow$ 5 6 | 2 | 1 3 4 $\rightarrow$ 6 | 2 5 | 1 3 4 $\rightarrow$ 6 | 2 | 1 3 4 5 $\rightarrow$ 6 |  | 1 3 4 5 2 $\rightarrow$  | 6 | 1 3 4 5 2 $\rightarrow$  |  | 1 3 4 5 2 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 5 6 | 2 4 | 1 3 $\rightarrow$ 5 6 | 2 | 1 3 4 $\rightarrow$ 5 6 |  | 1 3 4 2 $\rightarrow$ 6 | 5 | 1 3 4 2 $\rightarrow$  | 5 6 | 1 3 4 2 $\rightarrow$  | 5 | 1 3 4 2 6 $\rightarrow$  |  | 1 3 4 2 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 5 6 | 2 4 | 1 3 $\rightarrow$ 5 6 | 2 | 1 3 4 $\rightarrow$ 5 6 |  | 1 3 4 2 $\rightarrow$ 6 | 5 | 1 3 4 2 $\rightarrow$ 6 |  | 1 3 4 2 5 $\rightarrow$  | 6 | 1 3 4 2 5 $\rightarrow$  |  | 1 3 4 2 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 4 5 6 |  | 1 3 2 $\rightarrow$ 5 6 | 4 | 1 3 2 $\rightarrow$ 6 | 4 5 | 1 3 2 $\rightarrow$  | 4 5 6 | 1 3 2 $\rightarrow$  | 4 5 | 1 3 2 6 $\rightarrow$  | 4 | 1 3 2 6 5 $\rightarrow$  |  | 1 3 2 6 5 4
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 4 5 6 |  | 1 3 2 $\rightarrow$ 5 6 | 4 | 1 3 2 $\rightarrow$ 6 | 4 5 | 1 3 2 $\rightarrow$ 6 | 4 | 1 3 2 5 $\rightarrow$  | 4 6 | 1 3 2 5 $\rightarrow$  | 4 | 1 3 2 5 6 $\rightarrow$  |  | 1 3 2 5 6 4
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 4 5 6 |  | 1 3 2 $\rightarrow$ 5 6 | 4 | 1 3 2 $\rightarrow$ 6 | 4 5 | 1 3 2 $\rightarrow$ 6 | 4 | 1 3 2 5 $\rightarrow$ 6 |  | 1 3 2 5 4 $\rightarrow$  | 6 | 1 3 2 5 4 $\rightarrow$  |  | 1 3 2 5 4 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 4 5 6 |  | 1 3 2 $\rightarrow$ 5 6 | 4 | 1 3 2 $\rightarrow$ 5 6 |  | 1 3 2 4 $\rightarrow$ 6 | 5 | 1 3 2 4 $\rightarrow$  | 5 6 | 1 3 2 4 $\rightarrow$  | 5 | 1 3 2 4 6 $\rightarrow$  |  | 1 3 2 4 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 4 5 6 | 2 3 | 1 $\rightarrow$ 4 5 6 | 2 | 1 3 $\rightarrow$ 4 5 6 |  | 1 3 2 $\rightarrow$ 5 6 | 4 | 1 3 2 $\rightarrow$ 5 6 |  | 1 3 2 4 $\rightarrow$ 6 | 5 | 1 3 2 4 $\rightarrow$ 6 |  | 1 3 2 4 5 $\rightarrow$  | 6 | 1 3 2 4 5 $\rightarrow$  |  | 1 3 2 4 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 5 6 | 3 4 | 1 2 $\rightarrow$ 6 | 3 4 5 | 1 2 $\rightarrow$  | 3 4 5 6 | 1 2 $\rightarrow$  | 3 4 5 | 1 2 6 $\rightarrow$  | 3 4 | 1 2 6 5 $\rightarrow$  | 3 | 1 2 6 5 4 $\rightarrow$  |  | 1 2 6 5 4 3
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 5 6 | 3 4 | 1 2 $\rightarrow$ 6 | 3 4 5 | 1 2 $\rightarrow$ 6 | 3 4 | 1 2 5 $\rightarrow$  | 3 4 6 | 1 2 5 $\rightarrow$  | 3 4 | 1 2 5 6 $\rightarrow$  | 3 | 1 2 5 6 4 $\rightarrow$  |  | 1 2 5 6 4 3
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 5 6 | 3 4 | 1 2 $\rightarrow$ 6 | 3 4 5 | 1 2 $\rightarrow$ 6 | 3 4 | 1 2 5 $\rightarrow$ 6 | 3 | 1 2 5 4 $\rightarrow$  | 3 6 | 1 2 5 4 $\rightarrow$  | 3 | 1 2 5 4 6 $\rightarrow$  |  | 1 2 5 4 6 3
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 5 6 | 3 4 | 1 2 $\rightarrow$ 6 | 3 4 5 | 1 2 $\rightarrow$ 6 | 3 4 | 1 2 5 $\rightarrow$ 6 | 3 | 1 2 5 4 $\rightarrow$ 6 |  | 1 2 5 4 3 $\rightarrow$  | 6 | 1 2 5 4 3 $\rightarrow$  |  | 1 2 5 4 3 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 5 6 | 3 4 | 1 2 $\rightarrow$ 5 6 | 3 | 1 2 4 $\rightarrow$ 6 | 3 5 | 1 2 4 $\rightarrow$  | 3 5 6 | 1 2 4 $\rightarrow$  | 3 5 | 1 2 4 6 $\rightarrow$  | 3 | 1 2 4 6 5 $\rightarrow$  |  | 1 2 4 6 5 3
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 5 6 | 3 4 | 1 2 $\rightarrow$ 5 6 | 3 | 1 2 4 $\rightarrow$ 6 | 3 5 | 1 2 4 $\rightarrow$ 6 | 3 | 1 2 4 5 $\rightarrow$  | 3 6 | 1 2 4 5 $\rightarrow$  | 3 | 1 2 4 5 6 $\rightarrow$  |  | 1 2 4 5 6 3
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 5 6 | 3 4 | 1 2 $\rightarrow$ 5 6 | 3 | 1 2 4 $\rightarrow$ 6 | 3 5 | 1 2 4 $\rightarrow$ 6 | 3 | 1 2 4 5 $\rightarrow$ 6 |  | 1 2 4 5 3 $\rightarrow$  | 6 | 1 2 4 5 3 $\rightarrow$  |  | 1 2 4 5 3 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 5 6 | 3 4 | 1 2 $\rightarrow$ 5 6 | 3 | 1 2 4 $\rightarrow$ 5 6 |  | 1 2 4 3 $\rightarrow$ 6 | 5 | 1 2 4 3 $\rightarrow$  | 5 6 | 1 2 4 3 $\rightarrow$  | 5 | 1 2 4 3 6 $\rightarrow$  |  | 1 2 4 3 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 5 6 | 3 4 | 1 2 $\rightarrow$ 5 6 | 3 | 1 2 4 $\rightarrow$ 5 6 |  | 1 2 4 3 $\rightarrow$ 6 | 5 | 1 2 4 3 $\rightarrow$ 6 |  | 1 2 4 3 5 $\rightarrow$  | 6 | 1 2 4 3 5 $\rightarrow$  |  | 1 2 4 3 5 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 4 5 6 |  | 1 2 3 $\rightarrow$ 5 6 | 4 | 1 2 3 $\rightarrow$ 6 | 4 5 | 1 2 3 $\rightarrow$  | 4 5 6 | 1 2 3 $\rightarrow$  | 4 5 | 1 2 3 6 $\rightarrow$  | 4 | 1 2 3 6 5 $\rightarrow$  |  | 1 2 3 6 5 4
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 4 5 6 |  | 1 2 3 $\rightarrow$ 5 6 | 4 | 1 2 3 $\rightarrow$ 6 | 4 5 | 1 2 3 $\rightarrow$ 6 | 4 | 1 2 3 5 $\rightarrow$  | 4 6 | 1 2 3 5 $\rightarrow$  | 4 | 1 2 3 5 6 $\rightarrow$  |  | 1 2 3 5 6 4
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 4 5 6 |  | 1 2 3 $\rightarrow$ 5 6 | 4 | 1 2 3 $\rightarrow$ 6 | 4 5 | 1 2 3 $\rightarrow$ 6 | 4 | 1 2 3 5 $\rightarrow$ 6 |  | 1 2 3 5 4 $\rightarrow$  | 6 | 1 2 3 5 4 $\rightarrow$  |  | 1 2 3 5 4 6
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 4 5 6 |  | 1 2 3 $\rightarrow$ 5 6 | 4 | 1 2 3 $\rightarrow$ 5 6 |  | 1 2 3 4 $\rightarrow$ 6 | 5 | 1 2 3 4 $\rightarrow$  | 5 6 | 1 2 3 4 $\rightarrow$  | 5 | 1 2 3 4 6 $\rightarrow$  |  | 1 2 3 4 6 5
+\newline
+ $\rightarrow$ 1 2 3 4 5 6 |  |  $\rightarrow$ 2 3 4 5 6 | 1 |  $\rightarrow$ 2 3 4 5 6 |  | 1 $\rightarrow$ 3 4 5 6 | 2 | 1 $\rightarrow$ 3 4 5 6 |  | 1 2 $\rightarrow$ 4 5 6 | 3 | 1 2 $\rightarrow$ 4 5 6 |  | 1 2 3 $\rightarrow$ 5 6 | 4 | 1 2 3 $\rightarrow$ 5 6 |  | 1 2 3 4 $\rightarrow$ 6 | 5 | 1 2 3 4 $\rightarrow$ 6 |  | 1 2 3 4 5 $\rightarrow$  | 6 | 1 2 3 4 5 $\rightarrow$  |  | 1 2 3 4 5 6
+\newline
+
+\end{document}
