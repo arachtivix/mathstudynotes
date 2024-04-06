@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{The Art of Computer Programming -- Chapter 2.2.1 Problem 3}
+\author{Daniel Werner}
+
+\begin{document}
+
+\maketitle
+
+\section*{
+    Problem Statement
+}
+
+Using the S and X notation defined in the book to describe permutations derrived using a stack, formulate a rule to distinguish valid ('admissible') S and X patterns from invalid ones.  Furthermore demonstrate that no two distinct admissible patterns will generate the same permutation.
+
+\section*{
+    Analysis
+}
+
+There are two valid moves in this notation: 'S' meaning to move a car from the input to the stack and 'X' meaning to take a car off the stack and place it into the output.  These operations each have one obvious problem that can occur: 'S' can fail if there are no cars left in the input and 'X' can fail if there are no cars in the stack.  Those would seem to be really the only limitations on 'S' and 'X' as candidates for being the next action in a sequence, as one need not care what is getting transferred as long as there is a thing to be transferred.  Similarly there are no error cases for the output as it should be capable of accepting whatever comes its way.  The rule proposed should simply implement these checks in a manner that uses as few resources as needed to keep track.
+
+\subsection*{Rule}
+
+Iterating each character in the pattern in order from the start, keep a running count: increment for each 'S' and decrement it for each 'X'.  If at any particular point the count is zero, no sequence continuing with 'X' immediately following will be admissible.  If you reach the end of the pattern and the count is not zero, it is not admissible in this case either (see other observations at the end, second paragraph).
+
+\subsection*{Distinct permutation per admissible pattern}
+
+Generating an admissible pattern can be characterized as the act of choosing the next character in the pattern, analogous as already established to either enqueueing from the input or dequeing to the output.  For the purposes of this analysis, I will treat moving an inupt element straight to the output as actually being the composition of adding it to the queue and immediately removing it and putting it into the output.  There are three categories of situations in which the state of this problem could fall:
+\begin{enumerate}
+  \item Only dequeue moves are left
+  \item Only an enqueue move is left
+  \item There is a choice between a dequeue move or an enqueue move
+\end{enumerate}
+
+Situation 1 is easiest, as if only dequeue moves remain, the remaining entities that have not been output have only a single possible order: remove one at a time from the stack.  If the choices made before this situation arose lead here, there is only one valid sequence of all 'X' characters remaining, corresponding to the single valid order of the remaining elements.
+
+\par
+
+Situation 2 characterizes the first move of any scenario in this framework, but it occurs any time the stack gets completely emptied out as well.  In the trivial case where the input is empty, this means the only admissible pattern is an empty one, corresponding to the single empty permutation that you can get from a zero element input.  In the case of non-empty input, there is only one admissible next character, and that is 'S', corresponding to the only choice of move available: to queue the first input.  This one-to-one mapping of the notation to the possible actions in the model seem sufficent to demonstrate they are the same thing.
+
+\par
+
+Situation 3 similarly maps directly to the model.  To the extent that the model allows for either a dequeue or an enqueue action, the pattern will allow for either an 'S' or an 'X' and then re-evaluate the situation again based on which of the three categories the situation then falls under.
+
+\par
+
+\subsection*{Other observations}
+
+It is interesting to note the recursive nature of this problem: no matter what sequence of moves preceded this state, the remaining input characters represent a clean start as far as the admissible sequences go.  In other words, if the stack is empty, the sequence starting from any step where this is the case should itself be an admissible pattern.  The same cannot be said for subsequences starting when the stack is not empty, in fact possibly the opposite conclusion might be drawn, but I have not tried to demonstrate this.
+
+With a known input size, the application of the rule at each step will allow for one or two possible next characters from the start, until the end where both rules prohibit a next character, at which point the sequence is complete.  A pattern that has not reached the end will not produce a permutation, but instead a permutation of a subset of the input, which seems not to fall within the intention of admissibility here.  The consequence is that all admissible patterns will have the same length, one 'S' and one 'X' for each input entity.
+
+\end{document}
