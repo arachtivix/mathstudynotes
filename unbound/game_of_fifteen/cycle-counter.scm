@@ -8,10 +8,15 @@
 	 (vector-set! output curr-idx start-idx)
 	 (traverse-cycle start-idx nxt input output))))
 
-(define (eval-upto idx upto input output)
+(define (check idx input output)
+  (define pre (vector-ref output idx))
   (traverse-cycle idx idx input output)
-  (if (<= (+ 1 idx) upto)
-      (eval-upto (+ 1 idx) upto input output)))
+  (define post (vector-ref output idx))
+  (define contrib (if (= pre post) 0 1))
+  (+ contrib
+     (if (< (+ 1 idx) (vector-length input))
+	 (check (+ 1 idx) input output)
+	 0)))
 
 (define (count-cycles vec)
   (display vec)
@@ -22,14 +27,16 @@
   (newline)
   (display cycle-start)
   (newline)
-  (eval-upto 0 (- vlen 1) vec cycle-start)
+  (define cycles-count (check 0 vec cycle-start))
   (display cycle-start)
+  (newline)
+  (display cycles-count)
   (newline))
 
 (define main
   (lambda (args)
     (display "counting cycles")
     (newline)
-    (define input #(2 0 1 3 4))
+    (define input #(2 3 4 5 0 1 6))
     (count-cycles input)
     (newline)))
