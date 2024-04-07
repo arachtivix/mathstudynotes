@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{The Art of Computer Programming -- Chapter 2.2.1 Problem 4}
+\author{Daniel Werner}
+
+\begin{document}
+
+\maketitle
+
+\section*{
+    Problem Statement
+}
+
+Find a simple formula for the number of permutations on n elements that can be obtained with a stack like that in exercise 2.
+
+\section*{
+    Analysis
+}
+
+Some information gathered from the previous problems:
+\begin{enumerate}
+  \item For a given input size $n$, there will be $2n$ characters in its 'S' and 'X' representation.
+  \item Valid 'S' and 'X' representations can be identified by applying a simple counting rule that ensures there are the same number of S and X characters and that the running total of X never exceeds the running total of S.
+\end{enumerate}
+
+With this information, I will attempt to construct a recurrence that accurately models the 'S' and 'X' notation rules, then attempt to reduce that recurrence to a closed form.
+
+\par
+
+One way I have considered to start on this problem is to consider special/simplifying cases first.  If the stack is limited in size, it could make the analysis easier by seeing what happens when its usage is allowed to increase.  I'll treat this like another parameter to our function, so whereas I am ultimately looking for $a_n$ as a function of $n$, for now I will look at $a_{m,n}$ where $m$ is the maximum stack size and $n$ is still the input size.  It is easy to see that:
+
+\begin{equation*}
+  a_{0,n} = 1
+\end{equation*}
+
+for any value of $n$.  This is because $a_{0,n}$ just means we never use the stack -- the output can only accept the same order as the input, which is exactly one permutation.  The question of $a_{1,n}$ is more interesting.  This function is like saying you can take any single input and move it as far back as you like:
+
+\begin{equation*}
+  \{ p_1,p_2,...p_{n-1},p_{n} \}
+  \rightarrow
+  \{ p_2,p_3,...p_{n-1},p_{n},p_{1} \}
+\end{equation*}
+
+This is not a complete description though, as when the new position for $a_1$ is less than $n$, there is the opportunity to move another element back as well:
+
+\begin{equation*}
+  \{ p_1,p_2,...p_{n-1},p_{n} \}
+  \rightarrow
+  \{ p_2,p_3,...,p_k,p_1,p_{k+1}...p_{n-1},p_{n} \}
+\end{equation*}
+
+The remaining tail sequence $\{p_{k+1},...,p_n\}$ can be treated the same recrusively as the larger sequence, this time with $n - k$ elements. So for $a_{1,n}$, you can look at it as having $n$ choices of where to put the first character in the sequence (including keeping it where it is) and walking a tree of possibilities from each choice.  This self similarity allows me to express all these choices as a sum:
+
+\begin{equation}
+  a_{1,n} = 1 + \sum_{k=1}^{n-1} a_{1,k}
+\end{equation}
+
+This sum nicely adheres to the clearly demonstrable base case of $a_{1,0} = 1$, as mentioned before since the number of permutations available for a zero length input is 1, regardless of maximum stack size.  While this is not even a decent form for the solution to $a_{1,n}$, it would be nice to check some values to make sure this is right.  Some modification on the script I wrote for problem 2 should help to find small values of this problem with the stack size restricted to 1.  Both the simulation and the sum seem to agree that:
+
+\begin{equation*}
+  a_{1,n} = 2^{n -1}
+\end{equation*}
+
+\par
+
+---- to be continued ----
+
+\end{document}
