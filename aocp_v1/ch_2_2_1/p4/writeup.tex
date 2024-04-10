@@ -71,8 +71,8 @@ This is interesting, but I do not see the path forward yet.
 If I knew the insertion patterns for all valid permutations on $n - 1$, the only valid ones involving the nth element would be after $n - 1$ occurrences of S.  If the last S occurs in position $p_k$, then there would be $n - p + 1$ places for the additional S somewhere in the sequence and then another count of spaces available for the additional X that would have to occur (at any time) after that. Here are the valid patterns for 2-element inputs:
 
 \begin{align*}
-  SXSX \rightarrow \{1~2\} \\
-  SSXX \rightarrow \{2~1\}
+  SXSX = \{1~2\} \\
+  SSXX = \{2~1\}
 \end{align*}
 
 Adding another input element, tracing back to which pattern can be said to be the parent, using lowercase for the parent and upper for the child:
