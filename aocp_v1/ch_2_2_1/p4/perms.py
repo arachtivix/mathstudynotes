@@ -32,5 +32,5 @@ def genInput(size):
         ret.append(str(n))
     return ret
 
-for n in range(1, 11):
+for n in range(1, 15):
     print(f"{n} -> {sim(genInput(n),[],[],n)}")

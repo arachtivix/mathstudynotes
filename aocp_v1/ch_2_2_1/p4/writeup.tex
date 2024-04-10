@@ -26,9 +26,9 @@ Some information gathered from the previous problems:
 
 With this information, I will attempt to construct a recurrence that accurately models the 'S' and 'X' notation rules, then attempt to reduce that recurrence to a closed form.
 
-\par
+\subsection*{Approach 1: special cases (dead end so far)}
 
-One way I have considered to start on this problem is to consider special/simplifying cases first.  If the stack is limited in size, it could make the analysis easier by seeing what happens when its usage is allowed to increase.  I'll treat this like another parameter to our function, so whereas I am ultimately looking for $a_n$ as a function of $n$, for now I will look at $a_{m,n}$ where $m$ is the maximum stack size and $n$ is still the input size.  It is easy to see that:
+One way I have considered to start on this problem is to consider special or simplifying cases first.  If the stack is limited in size, it could make the analysis easier by seeing what happens when its usage is allowed to increase.  I'll treat this like another parameter to our function, so whereas I am ultimately looking for $a_n$ as a function of $n$, for now I will look at $a_{m,n}$ where $m$ is the maximum stack size and $n$ is still the input size.  It is easy to see that:
 
 \begin{equation*}
   a_{0,n} = 1
@@ -64,6 +64,111 @@ This sum nicely adheres to the clearly demonstrable base case of $a_{1,0} = 1$, 
 
 \par
 
----- to be continued ----
+This is interesting, but I do not see the path forward yet.
+
+\subsection*{Approach 2: reasoning with the 'SX' form}
+
+If I knew the insertion patterns for all valid permutations on $n - 1$, the only valid ones involving the nth element would be after $n - 1$ occurrences of S.  If the last S occurs in position $p_k$, then there would be $n - p + 1$ places for the additional S somewhere in the sequence and then another count of spaces available for the additional X that would have to occur (at any time) after that. Here are the valid patterns for 2-element inputs:
+
+\begin{align*}
+  SXSX \rightarrow \{1~2\} \\
+  SSXX \rightarrow \{2~1\}
+\end{align*}
+
+Adding another input element, tracing back to which pattern can be said to be the parent, using lowercase for the parent and upper for the child:
+
+\begin{align*}
+  SXSX \rightarrow \{ SXSXsx, SXSsxX \} &= \{\{1~2~3\},\{1~3~2\}\} \\
+  SSXX \rightarrow \{ SSsxXX,SSXsxX,SSXXsx \} &= \{\{3~2~1\},\{2~3~1\},\{2~1~3\}\}
+\end{align*}
+
+This seems quite nice, but not perfectly useful yet.  Since there are no remaining S's, this means only the location of the inserted S is meaningful, as the Xs do the same thing whether they are from the new pattern or the old.  The reason this does not seem immediately useful though is that there is still the question of how to count trailing Xs on the patterns from the permutations on $n - 1$ elements.
+
+\par
+
+I can see that this turns on the number of trailing Xs and it should be helpful to think of the patterns provided by adding an 'sx' to a pattern with k trailing X's will result in a single new pattern with k + 1 trailing X's, a single with k traling X's, and so forth down to a pattern with a single trailing x from the insertion itself.  SXSX yields two new patterns and SSXX yeilds three because the latter has one more trailing.
+
+\par
+
+For a given pattern ending in k X's, the number of resulting children is:
+
+\begin{align}
+  direct~child~count=trailing~X~count + 1
+\end{align}
+
+Each child will have a certain trailing X count and there will be one of each.  It turns out to be a little helpful to just ignore the characters preceding the last Xs and tally the counts of those with the same numer of last Xs.  Take the transition from $a_2$ to $a_3$:
+
+\begin{align*}
+  a_2 = \{SXSX,SSXX\} \rightarrow a_3 =
+  \left\{
+    \begin{aligned}
+      & SXSXSX, SXSXSSX, SSSXXX, \\
+      & SSXSXX, SSXXSX
+    \end{aligned}
+  \right\}
+\end{align*}
+
+The same in abbreviated, grouped form:
+
+\begin{align*}
+  a_2 = \{1 * ...SX,1 * ...SXX\} \rightarrow a_3 =
+  \left\{
+    \begin{aligned}
+      & 2 * ...SX, 2 * ...SXX, \\
+      & 1 * ...SXXX
+    \end{aligned}
+  \right\}
+\end{align*}
+
+Because any ...SXXX could be turned into a ...SXXXX or a ...stay a SXXX, or get demoted to a SXX or a SX,
+
+\begin{align*}
+  \{1 * ...SXXX\} \rightarrow
+  \left\{
+    \begin{aligned}
+      & 1 * ...SX, 1 * ...SXX, 1 * ...SXXX, \\
+      & 1 * ...SXXXX
+    \end{aligned}
+  \right\}
+\end{align*}
+
+But this is not a scenario that happens by itself in the process.  Instead, we get the combined, where:
+
+
+
+\begin{align*}
+  a_3 = 
+  \left\{
+    \begin{aligned}
+      & 2 * ...SX, 2 * ...SXX, \\
+      & 1 * ...SXXX
+    \end{aligned}
+  \right\} \rightarrow a_4 =
+  \left\{
+    \begin{aligned}
+      & 5 * ...SX, 5 * ...SXX, 3 * ...SXXX, \\
+      & 1 * ...SXXXX
+    \end{aligned}
+  \right\}
+\end{align*}
+
+\par
+
+A table will help to start the efforts to make this process possibly easier to track:
+
+\begin{table}[h!]
+\centering
+ \begin{tabular}{|c | c | c | c | c | c | c|} 
+ \hline
+ $n$ & $a_n$ & ...SX & ...SXX & ...SXXX & ...SXXXX & ...SXXXXX \\ [0.5ex] 
+ \hline
+ 1 & 1 & 1 &  &  &  & \\ 
+ 2 & 2 & 1 & 1 &  &  & \\
+ 3 & 5 & 2 & 2 & 1 &  & \\
+ 4 & 14 & 5 & 5 & 3 & 1 & \\
+ 5 & 42 & 14 & 14 & 9 & 4 & 1 \\
+ \hline
+ \end{tabular}
+\end{table}
 
 \end{document}
