@@ -243,4 +243,14 @@ Also good.
   &a_4 = 2 a_{3} + \sum_{k=3}^{4} b_{4,k} = 2 * 5 + b_{4,3} + b_{4,4} = 10 + 3 + 1 = 14
 \end{align*}
 
+One observation I can easily make about this recurrence is that its closed form will have an exponential term.  The formula for $a_n$ plainly is a multiple of $a_{n-1}$ with some more added on after.  The sums in this recurrence are really cramping my style though.  There must be a better way.
+
+\par
+
+While manually constructing the same table of values during a scratch session on the problem, I noticed that while the summation approach is not wrong, it may be looking at the problem from an overly complicated viewpoint.  Each of the rows adds up to $a_n$, as already explained, but summing the sections that make up the next row can be derived from $a_{n-1}$ and the last value of $b_{n-1,m}$ not part of the successor, i.e.:
+
+\begin{equation}
+  b_{n,m} = a_{n-1} - b_{n-1,m-2} \hspace{1cm} where~m>2,n>2
+\end{equation}
+
 \end{document}
