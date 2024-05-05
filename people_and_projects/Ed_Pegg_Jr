@@ -1,0 +1,15 @@
+While searching for resources on the 'reflection principle' in AOCP vol 1 P 2.2.1#4, I found this interesting but somewhat broken and seemingly abandonded site:
+
+https://www.cut-the-knot.org/Curriculum/Combinatorics/ReflectionPrinciple.shtml
+
+with resources written in java, apparently meant to run as applets, zipped up in this repo:
+
+https://github.com/edpegg/CutTheKnot-Java
+
+I was brave and downloaded the zip files briefly, but have discovered class files instead of source files.  This is disappointing.
+
+Also,
+
+https://en.wikipedia.org/wiki/Ed_Pegg_Jr.
+
+It's not clear whose code this really was/is because the site seems to belong to Alexander Bogomolny and the repo belongs to Ed.  Either way it seems like someone does not appreciate the difference between source and compiled classes and it has the vague smell of misfortune as there does seem to be evidence of someone's work being lost here.
