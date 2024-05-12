@@ -8,15 +8,21 @@
 (def starting-board (vec (repeat board-size true)))
 
 (defn is-valid-pos
-  [xy]
-  (and (< (get xy 0) board-width)
-       (< (get xy 1) board-width)
+  [xy dim]
+  (and (< (get xy 0) dim)
+       (< (get xy 1) dim)
        (>= (get xy 0) 0)
        (>= (get xy 1) 0)))
 
 (defn to-xy
   [pos]
   (vector (mod pos board-width) (int (/ pos board-width))))
+
+(defn to-int
+  [xy side-len]
+  (let [x (get xy 0)
+        y (get xy 1)]
+    (+ (* side-len y) x)))
 
 (def all-coords
   (map to-xy (range board-size)))
@@ -85,3 +91,16 @@
         :else (let [dv (dir-vec from-xy to-xy)
                     next-place (add-vecs from-xy dv)]
           (cons from-xy (from-to next-place to-xy)))))
+
+(def test-board-1
+  [true true false
+   true false false
+   true false true])
+
+(defn taken-by
+  "get xy vecs for places taken going going 'from' exl 'to' incl"
+  [from to board dim]
+  (let [path (from-to from to)]
+    (filter
+     #(and (is-valid-pos % dim) (get board (to-int % dim)))
+     (rest (from-to from to)))))
