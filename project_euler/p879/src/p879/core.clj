@@ -44,3 +44,17 @@
         (map
          reduce-vec
          all-coords)))
+
+(defn gen-all-vecs
+  [pos-vecs]
+  (cond
+    (= (count pos-vecs) 0) '()
+    :else (let [curr (first pos-vecs)
+                tail (gen-all-vecs (rest pos-vecs))
+                x (get curr 0)
+                y (get curr 1)
+                neg-vec (cond (= x 0) (list x (* -1 y))
+                              :else (list (* -1 x) y))]
+            (conj tail curr (into [] neg-vec)))))
+
+(def all-vecs (gen-all-vecs unq-pos-vecs))
