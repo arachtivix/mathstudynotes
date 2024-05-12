@@ -45,6 +45,12 @@
          reduce-vec
          all-coords)))
 
+(defn scale-vec
+  [xy sx sy]
+  (let [x (get xy 0)
+        y (get xy 1)]
+  (vector (* sx x) (* sy y))))
+
 (defn gen-all-vecs
   [pos-vecs]
   (cond
@@ -53,8 +59,29 @@
                 tail (gen-all-vecs (rest pos-vecs))
                 x (get curr 0)
                 y (get curr 1)
-                neg-vec (cond (= x 0) (vector x (* -1 y))
-                              :else (vector (* -1 x) y))]
-            (conj tail curr neg-vec))))
+                sv1 (scale-vec curr -1 1)
+                sv2 (scale-vec curr 1 -1)
+                sv3 (scale-vec curr -1 -1)]
+            (conj tail curr sv1 sv2 sv3))))
 
-(def all-vecs (gen-all-vecs unq-pos-vecs))
+(def all-vecs (into #{}
+                    (gen-all-vecs unq-pos-vecs)))
+
+(defn add-vecs
+  [x1y1 x2y2]
+  (let [x1 (get x1y1 0)
+        y1 (get x1y1 1)
+        x2 (get x2y2 0)
+        y2 (get x2y2 1)]
+    (vector (+ x1 x2) (+ y1 y2))))
+
+(defn dir-vec
+  [from-xy to-xy]
+  (reduce-vec (add-vecs (scale-vec from-xy -1 -1) to-xy)))
+
+(defn from-to
+  [from-xy to-xy]
+  (cond (= from-xy to-xy) (list to-xy)
+        :else (let [dv (dir-vec from-xy to-xy)
+                    next-place (add-vecs from-xy dv)]
+          (cons from-xy (from-to next-place to-xy)))))
