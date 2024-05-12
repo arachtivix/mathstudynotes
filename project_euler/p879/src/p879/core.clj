@@ -53,8 +53,8 @@
                 tail (gen-all-vecs (rest pos-vecs))
                 x (get curr 0)
                 y (get curr 1)
-                neg-vec (cond (= x 0) (list x (* -1 y))
-                              :else (list (* -1 x) y))]
-            (conj tail curr (into [] neg-vec)))))
+                neg-vec (cond (= x 0) (vector x (* -1 y))
+                              :else (vector (* -1 x) y))]
+            (conj tail curr neg-vec))))
 
 (def all-vecs (gen-all-vecs unq-pos-vecs))
