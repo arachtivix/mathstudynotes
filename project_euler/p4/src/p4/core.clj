@@ -32,7 +32,6 @@
 
 (defn result-coll
   []
-  #(first %)
   (filter
    check-divisor
    (iter-two-combos all-pdrome-cands all-three-digit-divisors)))
