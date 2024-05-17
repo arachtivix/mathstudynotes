@@ -99,4 +99,72 @@ existing ones.  In $f_2$ we added $1 \cdot 2$.  In $f_3$ we added
 $1 \cdot 3$ and $2 \cdot 3$.  In $f_4$ we added $1 \cdot 4$, $2 \cdot 4$,
 and $3 \cdot 4$.
 
+\begin{equation*}
+    1 \cdot (n + 1) + 2 \cdot (n + 1) + ... + (n) \cdot (n + 1)
+    = (n + 1) \sum_{0 < i \le n} i
+\end{equation*}
+
+Because the above captures the difference between $f_n$ and $f_{n + 1}$,
+we can write a recurrence formula for $f_n$ that uses it:
+
+\begin{align*}
+    f_{n + 1} &= f_n + 2 (n + 1) \sum_{0 < i \le n} i
+    \\
+    &= f_n + 2 (n + 1) \frac{n^2 + n}{2}
+    \\
+    &= f_n + n^3 + 2n^2 + n
+\end{align*}
+
+Now this recurrence can be solved assuming the genal form (an informed guess):
+
+\begin{equation*}
+    f_n = \alpha n^4 + \beta n^3 + \gamma n^2 + \delta n + \theta
+\end{equation*}
+
+We know $f_0 = 0$ so:
+
+\begin{align*}
+    f_0 &= 0 = \alpha 0^4 + \beta 0^3 + \gamma 0^2 + \delta 0 + \theta
+    \\
+    \theta &= 0
+\end{align*}
+
+We know $f_1 = 0$, $f_2 = 4$, $f_3 = 22$, $f_4 = 70$, so through
+ similar means:
+
+\begin{align*}
+    \alpha + \beta + \gamma + \delta = 0
+    \\
+    16 \alpha + 8 \beta + 4 \gamma + 2 \delta = 4
+    \\
+    81 \alpha + 27 \beta + 9 \gamma + 3 \delta = 22
+    \\
+    256 \alpha + 64 \beta + 16 \gamma + 4 \delta = 70
+\end{align*}
+
+I'm not going to lie: I used Wolfram to solve the system of equations:
+
+\begin{align*}
+    \alpha = \frac{1}{4} \\
+    \beta = \frac{1}{6} \\
+    \gamma = \frac{-1}{4} \\
+    \delta = \frac{-1}{6}
+\end{align*}
+
+\begin{equation}
+    f_n = \frac{n^4}{4} + \frac{n^3}{6} - \frac{n^2}{4} - \frac{n}{6}
+    = \frac{3n^4 + 2n^3 - 3n^2 - 2n}{12} 
+\end{equation}
+
+\begin{equation*}
+    f_{10} = \frac{30000 + 2000 - 300 - 20}{12} = \frac{31680}{12} = 2640
+\end{equation*}
+
+The value for $f_{10}$ checks out.
+
+\begin{equation*}
+    f_{100} = \frac{300000000 + 2000000 - 30000 - 200}{12} = 25164150
+\end{equation*}
+
+
 \end{document}
