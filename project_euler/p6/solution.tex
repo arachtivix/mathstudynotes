@@ -51,12 +51,12 @@ parts of these expressions:
 \begin{align*}
     \sum_{0 < i, j \le n} i j
     &=
-    \sum_{0 < i=j \le n} i j
-    + 2 \cdot \sum_{0 < i < j \le n} i j
+    \left(\sum_{0 < i=j \le n} i j \right)
+    + 2 \cdot \left( \sum_{0 < i < j \le n} i j\right)
     \\
     &=
-    \sum_{0 < i = j \le n} i^2
-    + 2 \cdot \sum_{0 < i < j \le n} i j
+    \left(\sum_{0 < i = j \le n} i^2\right)
+    + 2 \cdot \left(\sum_{0 < i < j \le n} i j\right)
 \end{align*}
 
 Substituting in $\left( \sum_{0 < i, j \le n} i j \right)$
@@ -64,10 +64,10 @@ in the larger expression:
 
 \begin{align*}
     \left( \sum_{0 < i \le n} i \right)^2 
-    - \sum_{0 < i \le n} i^2 &=
-    \sum_{0 < i = j \le n} i^2
-    + 2 \sum_{0 < i < j \le n} i j
-    - \sum_{0 < i = j \le n} i^2
+    - \left(\sum_{0 < i \le n} i^2\right) &=
+    \left(\sum_{0 < i = j \le n} i^2\right)
+    + 2 \left(\sum_{0 < i < j \le n} i j\right)
+    - \left(\sum_{0 < i = j \le n} i^2\right)
     \\
     &= 2 \cdot \sum_{0 < i < j \le n} i j
 \end{align*}
