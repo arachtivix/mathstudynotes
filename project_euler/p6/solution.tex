@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{nicematrix}
+
+\title{Project Euler P6}
+\author{Daniel Werner}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem Statement}
+
+https://projecteuler.net/problem=6
+
+\section*{Solution}
+
+\begin{equation*}
+    \left( \sum_{0 < i \le n} i \right)^2 
+    - \sum_{0 < i \le n} i^2 =
+    \sum_{0 < i, j \le n} i j
+    - \sum_{0 < i = j \le n} i^2
+\end{equation*}
+
+The above on the left represents the exact formulation
+from the question.  The right represents a two-index
+representation of the same.  The part with
+$\sum_{0 < i \le n} i^2 = \sum_{0 < i = j \le n} i^2$
+is not terribly far a journey.  The part with 
+$\left( \sum_{0 < i \le n} i \right)^2
+= \sum_{0 < i, j \le n} i j$ is the case simply because
+the latter represents a sum with any two-tuple $i$ and
+$j$ from the same range 1 to n because that is what
+happens when you multiply two sums of terms: each
+individual term forms a square in a grid and the sum of the
+entire grid represents the given two-index expression.  Here
+are some small values for later comparison:
+
+\begin{align*}
+    f_0 &= 0 \\
+    f_1 &= 1^2 - 1^2 = 0 \\
+    f_2 &= (1 + 2)^2 - (1^2 + 2^2) = 9 - 5 = 4 \\
+    f_3 &= (1 + 2 + 3)^2 - (1^2 + 2^2 + 3^2) = 36 - 14 = 22 \\
+    f_4 &= (1 + 2 + 3 + 4)^2 - (1^2 + 2^2 + 3^2 + 4^2) = 100 - 30 = 70
+\end{align*}
+
+A little more
+manipulation of the sum demonstrates how you can recombine
+parts of these expressions:
+
+\begin{align*}
+    \sum_{0 < i, j \le n} i j
+    &=
+    \sum_{0 < i=j \le n} i j
+    + 2 \cdot \sum_{0 < i < j \le n} i j
+    \\
+    &=
+    \sum_{0 < i = j \le n} i^2
+    + 2 \cdot \sum_{0 < i < j \le n} i j
+\end{align*}
+
+Substituting in $\left( \sum_{0 < i, j \le n} i j \right)$
+in the larger expression:
+
+\begin{align*}
+    \left( \sum_{0 < i \le n} i \right)^2 
+    - \sum_{0 < i \le n} i^2 &=
+    \sum_{0 < i = j \le n} i^2
+    + 2 \sum_{0 < i < j \le n} i j
+    - \sum_{0 < i = j \le n} i^2
+    \\
+    &= 2 \cdot \sum_{0 < i < j \le n} i j
+\end{align*}
+
+This manipulation actually turns out to be rather intuitive: the square of
+the sum of the first n integers contains the sum of the first n squares,
+then on top all of the other ordered two-tuples of 1 through n.  Since
+there is an ij for every ji, we can just take each order-insensitive
+two-tuple twice.  This sum in itself is quite simple to implement in code,
+but we can go further.  Let's start by verifying some small values first though:
+
+\begin{align*}
+    f_n = 2 \cdot \sum_{0 < i < j \le n} i j
+\end{align*}
+
+\begin{align*}
+    f_0 &= 2 \cdot 0 = 0 \\
+    f_1 &= 2 \cdot 0 = 0 \\
+    f_2 &= 2 \cdot (1 \cdot 2) = 4 \\
+    f_3 &= 2 \cdot (1 \cdot 2 + 1 \cdot 3 + 2 \cdot 3) = 22 \\
+    f_4 &= 2 \cdot (1 \cdot 2 + 1 \cdot 3 + 1 \cdot 4 \\
+    & + 2 \cdot 3 + 2 \cdot 4 + 3 \cdot 4) = 70
+\end{align*}
+
+The small values check out nicely.  Considering the pattern setup in the checks
+above shows that from step to step starting from $f_2$ the terms in the sum
+remain the same, only adding new values from the last iteration, not changing
+existing ones.  In $f_2$ we added $1 \cdot 2$.  In $f_3$ we added
+$1 \cdot 3$ and $2 \cdot 3$.  In $f_4$ we added $1 \cdot 4$, $2 \cdot 4$,
+and $3 \cdot 4$.
+
+\end{document}
