@@ -21,9 +21,9 @@
         :else (let [[gt :as prev-primes] (n-primes (- n 1))]
                 (cons (next-prime (+ 2 gt) prev-primes) prev-primes))))
 
-
-(defn factorize
-  ([n] (factorize n '(1) '(2)))
+; get a list of prime factors in their frequencies
+(defn factorize-partial
+  ([n] (factorize-partial n '() '(2)))
   ([n [:as pfs] [top-test-factor :as primes]]
    (cond (= n 1)
          pfs
@@ -36,3 +36,19 @@
                 pfs
                 (cons (next-prime top-test-factor primes)
                       primes)))))
+
+(defn relevant-freqs
+  [n]
+  (dissoc
+   (frequencies
+    (factorize-partial n))
+   n))
+
+(defn divisor-count
+  [n]
+  (apply *
+         (reduce
+          (fn [coll [k v]]
+            (cons (+ 1 v) coll))
+          '()
+          (relevant-freqs n))))
