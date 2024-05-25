@@ -4,11 +4,15 @@
 ; made a slightly handier way of getting a specific number of primes
 ; tonight
 (defn next-prime
-  [start prev-primes]
-  (first
-   (filter
-    #(not (some (fn [x] (= 0 (mod % x))) prev-primes))
-    (iterate #(+ 2 %) start))))
+  ([start]
+   (next-prime start '()))
+  ([start [p & rp :as prev-primes]]
+  (cond (nil? p) 2
+        (= p 2) 3
+        :else (first
+               (filter
+                #(not (some (fn [x] (= 0 (mod % x))) prev-primes))
+                (iterate #(+ 2 %) start))))))
 
 (defn n-primes
   [n]
@@ -18,3 +22,17 @@
                 (cons (next-prime (+ 2 gt) prev-primes) prev-primes))))
 
 
+(defn factorize
+  ([n] (factorize n '(1) '(2)))
+  ([n [:as pfs] [top-test-factor :as primes]]
+   (cond (= n 1)
+         pfs
+         (= 0 (mod n top-test-factor))
+         (recur (/ n top-test-factor)
+                (cons top-test-factor pfs)
+                primes)
+         :else
+         (recur n
+                pfs
+                (cons (next-prime top-test-factor primes)
+                      primes)))))
