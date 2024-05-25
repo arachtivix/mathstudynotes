@@ -37,6 +37,9 @@
                 (cons (next-prime top-test-factor primes)
                       primes)))))
 
+
+; if n is prime, it will show up, but we do not want this for the
+; purposes of the count
 (defn relevant-freqs
   [n]
   (dissoc
@@ -46,9 +49,11 @@
 
 (defn divisor-count
   [n]
-  (apply *
-         (reduce
-          (fn [coll [k v]]
-            (cons (+ 1 v) coll))
-          '()
-          (relevant-freqs n))))
+  (let [rfs (relevant-freqs n)]
+    (cond (= 0 (count rfs)) 2
+          :else (apply *
+                       (reduce
+                        (fn [coll [k v]]
+                          (cons (+ 1 v) coll))
+                        '()
+                        rfs)))))
