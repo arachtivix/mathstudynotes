@@ -21,21 +21,25 @@
         :else (let [[gt :as prev-primes] (n-primes (- n 1))]
                 (cons (next-prime (+ 2 gt) prev-primes) prev-primes))))
 
+(def primes
+  (into []
+        (reverse (n-primes 3000))))
+
 ; get a list of prime factors in their frequencies
 (defn factorize-partial
-  ([n] (factorize-partial n '() '(2)))
-  ([n [:as pfs] [top-test-factor :as primes]]
-   (cond (= n 1)
-         pfs
-         (= 0 (mod n top-test-factor))
-         (recur (/ n top-test-factor)
-                (cons top-test-factor pfs)
-                primes)
-         :else
-         (recur n
-                pfs
-                (cons (next-prime top-test-factor primes)
-                      primes)))))
+  ([n] (factorize-partial n '() 0))
+  ([n [:as pfs] prime-idx]
+   (let [top-test-factor (get primes prime-idx)]
+     (cond (= n 1)
+           pfs
+           (= 0 (mod n top-test-factor))
+           (recur (/ n top-test-factor)
+                  (cons top-test-factor pfs)
+                  prime-idx)
+           :else
+           (recur n
+                  pfs
+                  (+ prime-idx 1))))))
 
 
 ; if n is prime, it will show up, but we do not want this for the
@@ -65,7 +69,7 @@
     (cond (< 500 cnt) n
           :else (recur (+ n nn) (+ 1 nn)))))
 
-(def answ (solve 1 2))
+;(def answ (solve 1 2))
 
 
 ; this seems like it must be a sub-optimal solution
