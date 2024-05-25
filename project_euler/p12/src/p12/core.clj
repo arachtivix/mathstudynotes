@@ -69,8 +69,4 @@
     (cond (< 500 cnt) n
           :else (recur (+ n nn) (+ 1 nn)))))
 
-;(def answ (solve 1 2))
-
-
-; this seems like it must be a sub-optimal solution
-; it eventually gets us to 76576500
+(def answ (solve 1 2))
