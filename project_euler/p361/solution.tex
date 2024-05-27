@@ -116,13 +116,13 @@ Another way I can see of looking at this is as frames between the powers of 2.  
     0 \\
     1 \\
     10 \\
-    0110 \\
+    1001 \\
     10010110 \\
-    0110100110010110 \\
+    1001011001101001 \\
     10010110011010010110100110010110 \\
 \end{center}
 
-This figure was easy to assemble because the whole structure is just a binary tree where each pair of entries is just the children of an entry on the layer above.  1 goes to 01 and 0 goes to 10.  It is from this view it becomes clear that you'll never see three 1's or three 0's in a row.  Each child pair is either 01 or 10 and no combination of 01 and 10 will ever contain any triple.  The whole sequence is composed of 01 and 10 parts put on as units.  Therefore no $n$ that contains a triple will ever be present in $T_n$.  It strikes me as necessary to demonstrate that no other limiting factor is present here, but for now it may be useful to see what results we get back for just removing binary expansions that contain three or more repeat bits.
+This figure was easy to assemble because the whole structure is just a binary tree where each pair of entries is just the children of an entry on the layer above.  1 goes to 10 and 0 goes to 01.  It is from this view it becomes clear that you'll never see three 1's or three 0's in a row.  Each child pair is either 01 or 10 and no combination of 01 and 10 will ever contain any triple.  The whole sequence is composed of 01 and 10 parts put on as units.  Therefore no $n$ that contains a triple will ever be present in $T_n$.  It strikes me as necessary to demonstrate that no other limiting factor is present here, but for now it may be useful to see what results we get back for just removing binary expansions that contain three or more repeat bits.
 
 \par
 
