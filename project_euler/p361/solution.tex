@@ -21,7 +21,7 @@ See https://projecteuler.net/problem=361
 
 wip
 
-\section*{Solution}
+\section*{Analysis}
 
 For the purposes of the analysis, I will refer to the rules for T respectively by their occurrence as R1, R2, and R3.
 
@@ -130,7 +130,7 @@ Although the sequence for $A$ is not fully constructed, it could be helpful now 
 
 \begin{center}
     \begin{tabular}{c | c | c}
-        n & $b_{n}$ & appears in $A_n$ \\
+        n & $b_{n}$ & appears in $A$ \\
         \hline
         0 & 0 & yes \\
         1 & 1 & yes \\
@@ -160,6 +160,19 @@ A few ideas rolling around:
     \item Any number whose remainder after dividing by $2^4$ that comes out as 7 will have the last three digits make the number impossible to get in $A$
     \item Any number not in the point above whose remainder after dividing by $2^5$ is greater than or equal to 14 will be impossible.
 \end{itemize}
+
+\subsection*{Research Break}
+
+After making some headway on my own, I've decided to give the problem some reading time.  The wikipedia article for Thue-Morse indicates another way of generating the sequence, each digit in the sequence being the mod 2 of the ones count in the binary expansion.  That's interesting, but not immediately useful as far as I can tell.  There were some interesting references to suggested applications for the sequence in game theory and negotiation.  I also resisted buying more math books from the references section, so I am proud of myself.  Nothing I read in the article neatly conformed to the question at hand in this problem, to my admittedly limited understanding anywa, so it seems I'll need to continue looking for resources or return to tinkering myself.
+
+https://people.math.sc.edu/cooper/ThueMorseDueling.pdf
+
+I do not have any understanding of the expression for the Thue-Morse expression involving indeterminates.  This expression was on the wikipedia page though, so maybe I will follow up on this later.  It seems important that the T-M sequence does not overlap or produce 'squares' (a contiguously repeat sub-sequence).  Section 5.3 "Partitions of the set of integers" seems promising for the current problem.
+
+https://users.math.msu.edu/users/bsagan/Papers/Old/rtm.pdf
+https://cs.uwaterloo.ca/~shallit/Papers/ubiq15.pdf
+
+
 
 \par
 
