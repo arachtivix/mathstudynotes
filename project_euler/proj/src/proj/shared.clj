@@ -1,9 +1,4 @@
-
-(ns p3.core
-  (:require [clojure.math :as math])
-  (:gen-class))
-
-(def q 600851475143)
+(ns proj.shared)
 
 (defn up-by-twos
   [start] (lazy-seq (cons start (up-by-twos (+ start 2)))))
@@ -25,4 +20,5 @@
          (let [nn (/ n first-factor)]
            (conj (get-factors nn try-factors) first-factor))
         :else (recur n remain))))
+
 
