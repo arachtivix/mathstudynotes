@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+
+\title{LibreTexts Math Partial Fractions}
+\author{Daniel Werner}
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercise 11.4.1 Problem Statement}
+
+Find the partial fraction decomposition of the following expression.
+
+\begin{equation*}
+    \frac{x}{(x-3)(x-2)}
+\end{equation*}
+
+\section*{Solution}
+
+
+\begin{equation*}
+    \frac{x}{(x-3)(x-2)} = \frac{A}{x-3} + \frac{B}{x-2}
+\end{equation*}
+\begin{equation*}
+    x = A \cdot (x-2) + B \cdot (x - 3)
+\end{equation*}
+\begin{equation*}
+    x = Ax - 2A + Bx - 3B
+\end{equation*}
+\begin{equation*}
+    x = (A + B)x - 2A - 3B
+\end{equation*}
+\begin{equation*}
+    A + B = 1
+\end{equation*}
+\begin{equation*}
+    2A + 3B = 0
+\end{equation*}
+Subtracting one equation from the other:
+\begin{equation*}
+    2A + 3B = 0
+\end{equation*}
+\begin{equation*}
+    2A + 2B = 2
+\end{equation*}
+\begin{equation*}
+    B = -2
+\end{equation*}
+\begin{equation*}
+    A = 3
+\end{equation*}
+\begin{equation*}
+    \frac{x}{(x-3)(x-2)} = \frac{3}{x-3} - \frac{2}{x-2}
+\end{equation*}
+
+\section*{Exercise 11.4.2 Problem Statement}
+
+Find the partial fraction decomposition of the expression with repeated linear factors.
+
+\begin{equation*}
+    \frac{6x - 11}{(x-1)^2}
+\end{equation*}
+
+\section*{Solution}
+
+\begin{equation*}
+    \frac{6x - 11}{(x-1)^2} = \frac{A}{x - 1} + \frac{B}{(x - 1)^2}
+\end{equation*}
+\begin{equation*}
+    6x - 11 = (x - 1) \cdot A + B
+\end{equation*}
+\begin{equation*}
+    6x - 11 = x A + (B - A)
+\end{equation*}
+\begin{equation*}
+    A = 6
+\end{equation*}
+\begin{equation*}
+    B - A = -11
+\end{equation*}
+\begin{equation*}
+    B = -5
+\end{equation*}
+\begin{equation*}
+    \frac{6x - 11}{(x-1)^2} = \frac{6}{x - 1} - \frac{5}{(x - 1)^2}
+\end{equation*}
+
+\section*{Exercise 11.4.3 Problem Statement}
+
+Find a partial fraction decomposition of the given expression.
+
+\begin{equation*}
+    \frac{5x^2 - 6x + 7}{(x-1)(x^2 + 1)}
+\end{equation*}
+
+\section*{Solution}
+
+\begin{equation*}
+    \frac{5x^2 - 6x + 7}{(x-1)(x^2 + 1)}
+    =
+    \frac{A}{x - 1} + \frac{Bx + C}{x^2 + 1}
+\end{equation*}
+\begin{equation*}
+    5x^2 - 6x + 7
+    =
+    A (x^2 + 1) + (Bx + C)(x - 1)
+\end{equation*}
+\begin{equation*}
+    5x^2 - 6x + 7
+    =
+    Ax^2 + A + Bx^2 - Bx + Cx - C
+\end{equation*}
+\begin{equation*}
+    5x^2 - 6x + 7
+    =
+    (A + B)x^2 + (C - B)x + (A - C)
+\end{equation*}
+\begin{align*}
+    &A + B = 5 \\
+    &C - B = -6 \\
+    &A - C = 7 \\ \\
+    &A + B + C - B = 5 + (-6) \\
+    &A + C = -1 \\
+    &A + C + A - C = 7 + (-1) \\
+    &2A = 6 \\
+    &A = 3 \\
+    &B = 2 \\
+    &C = -4 \\
+\end{align*}
+\begin{equation*}
+    \frac{5x^2 - 6x + 7}{(x-1)(x^2 + 1)}
+    =
+    \frac{3}{x - 1} + \frac{2x - 4}{x^2 + 1}
+\end{equation*}
+
+\end{document}
