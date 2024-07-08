@@ -1,5 +1,5 @@
-(ns cutcake.core)
-
+(ns cutcake.core
+  (:require [clojure.data.json :as json]))
 (symbol :LEFTY) ; Lefty cuts north-south
 (symbol :RITA) ; Rita cuts east-west
 
@@ -50,7 +50,9 @@
         :else (throw (Exception. "not sure what happened"))))
 
 (defn cutcake
-  [w h known]
+  ([w h]
+  (cutcake w h {}))
+  ([w h known]
   (cond (= w 1) (assoc known [w h] (* -1 (- h 1)))
         (= h 1) (assoc known [w h] (- w 1))
         :else (let [subs (reduce
@@ -60,5 +62,7 @@
                           (get-unknown-pieces w h known))
                     l-best (eval-opts (cut-opts w h :LEFTY) subs :LEFTY)
                     r-best (eval-opts (cut-opts w h :RITA) subs :RITA)]
-                (assoc subs [w h] (simplicity-rule l-best r-best)))))
+                (assoc subs [w h] (simplicity-rule l-best r-best))))))
 
+
+(spit "asfd.json" (json/write-str (cutcake 5 5)))
