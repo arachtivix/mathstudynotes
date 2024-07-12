@@ -1,5 +1,6 @@
 (ns cutcake.core
-  (:require [clojure.data.json :as json]))
+  (:require [clojure.data.json :as json]
+            [hiccup2.core :as h]))
 (symbol :LEFTY) ; Lefty cuts north-south
 (symbol :RITA) ; Rita cuts east-west
 
@@ -65,4 +66,21 @@
                 (assoc subs [w h] (simplicity-rule l-best r-best))))))
 
 
-(spit "asfd.json" (json/write-str (cutcake 5 5)))
+(defn svg-rect
+  [x y w h]
+  (h/html [:rect {:width w :height h :x x :y y :stroke "green"
+                  :stroke-width 1 :fill "yellow"}]))
+
+(defn cake-to-svg
+  [rect-w rect-h cells-w cells-h]
+  (let [svg-w (* rect-w cells-w)
+        svg-h (* rect-h cells-h)]
+    (h/html [:svg {:width svg-w :height svg-h}
+             (map
+              (fn [[i j]]
+                (svg-rect (* i rect-w) (* j rect-h) rect-w rect-h))
+              (for [i (range cells-w) j (range cells-h)] [i j]))])))
+
+(defn page-it
+  [contents]
+  (str (h/html [:html [:head [:title "an amazing page"]] [:body contents]])))
