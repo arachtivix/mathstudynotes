@@ -30,6 +30,24 @@
    (if (= player :LEFTY) max min)
    (map #(eval-opt % cache) opts)))
 
+(defn single-move-results
+  ([board player]
+   (single-move-results '() (first board) (rest board) player))
+  ([left-pile curr right-pile player]
+   (let [w (get curr 0)
+         h (get curr 1)
+         opts (cut-opts w h player)]
+     (cons
+      (map
+       #(concat left-pile % right-pile)
+       (cut-opts w h player))
+      (if (= 0 (count right-pile)) '()
+          (single-move-results (cons curr left-pile)
+                               (first right-pile)
+                               (rest right-pile)
+                               player))))))
+     
+
 (defn get-unknown-pieces
   [w h known]
   (let [opts (cut-opts w h)
@@ -65,7 +83,7 @@
                     r-best (eval-opts (cut-opts w h :RITA) subs :RITA)]
                 (assoc subs [w h] (simplicity-rule l-best r-best))))))
 
-
+; svg/html functions
 (defn svg-rect
   [x y w h]
   (h/html [:rect {:width w :height h :x x :y y :stroke "green"
