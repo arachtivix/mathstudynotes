@@ -10,13 +10,13 @@
    {:LEFTY (cut-opts w h :LEFTY)
     :RITA (cut-opts w h :RITA)})
   ([w h p]
-  (cond (= p :LEFTY) (map
-                     (fn [n] (list [(- w n) h] [n h]))
-                     (range 1 (+ 1 (int (/ w 2)))))
-        (= p :RITA) (map
-                    (fn [n] (list [w (- h n)] [w n]))
-                    (range 1 (+ 1 (int (/ h 2)))))
-        :else (throw (Exception. "invalid player")))))
+   (cond (= p :LEFTY) (map
+                       (fn [n] (list [(- w n) h] [n h]))
+                       (range 1 (+ 1 (int (/ w 2)))))
+         (= p :RITA) (map
+                      (fn [n] (list [w (- h n)] [w n]))
+                      (range 1 (+ 1 (int (/ h 2)))))
+         :else (throw (Exception. "invalid player")))))
 
 (defn eval-opt
   [opt cache]
@@ -32,20 +32,21 @@
 
 (defn single-move-results
   ([board player]
-   (single-move-results '() (first board) (rest board) player))
+   (apply concat (single-move-results '() (first board) (rest board) player)))
   ([left-pile curr right-pile player]
-   (let [w (get curr 0)
-         h (get curr 1)
-         opts (cut-opts w h player)]
-     (cons
-      (map
-       #(concat left-pile % right-pile)
-       (cut-opts w h player))
-      (if (= 0 (count right-pile)) '()
-          (single-move-results (cons curr left-pile)
-                               (first right-pile)
-                               (rest right-pile)
-                               player))))))
+   (if (nil? curr) '()
+       (let [w (get curr 0)
+             h (get curr 1)
+             opts (cut-opts w h player)]
+         (cons
+          (map
+           #(concat left-pile % right-pile)
+           (cut-opts w h player))
+          (if (= 0 (count right-pile)) '()
+              (single-move-results (cons curr left-pile)
+                                   (first right-pile)
+                                   (rest right-pile)
+                                   player)))))))
      
 
 (defn get-unknown-pieces
@@ -93,12 +94,36 @@
   [rect-w rect-h cells-w cells-h]
   (let [svg-w (* rect-w cells-w)
         svg-h (* rect-h cells-h)]
-    (h/html [:svg {:width svg-w :height svg-h}
-             (map
-              (fn [[i j]]
-                (svg-rect (* i rect-w) (* j rect-h) rect-w rect-h))
-              (for [i (range cells-w) j (range cells-h)] [i j]))])))
+    (apply vector
+           :svg
+           {:width svg-w :height svg-h}
+           (map
+            (fn [[i j]]
+              (svg-rect (* i rect-w) (* j rect-h) rect-w rect-h))
+            (for [i (range cells-w) j (range cells-h)] [i j])))))
+
+(defn render-cake-list
+  [ls rect-w rect-h]
+  (apply vector :span
+         (map
+          (fn [[w h]]
+            (cake-to-svg rect-w rect-h w h))
+          ls)))
+
+(defn render-opts
+  [board player]
+  (let [opts (single-move-results board player)]
+    (apply vector :div
+           (map
+            #(render-cake-list %1 10 10)
+            (single-move-results board player)))))
+
 
 (defn page-it
   [contents]
   (str (h/html [:html [:head [:title "an amazing page"]] [:body contents]])))
+
+(defn render-options
+  [board player]
+  (let [p-opts (single-move-results board player)]
+    (page-it (cake-list-div (single-move-results board player)))))
