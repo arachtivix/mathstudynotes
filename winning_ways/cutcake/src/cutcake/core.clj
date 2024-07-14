@@ -3,6 +3,8 @@
             [hiccup2.core :as h]))
 (symbol :LEFTY) ; Lefty cuts north-south
 (symbol :RITA) ; Rita cuts east-west
+(def bootstrap-url "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css")
+(def bootstrap-js "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js")
 
 ; give the cuts possible, eliminating duplicates due to symmetry
 (defn cut-opts
@@ -104,10 +106,12 @@
 
 (defn render-cake-list
   [ls rect-w rect-h]
-  (apply vector :span
+  (apply vector
+         :div
+         {:class "p-3"}
          (map
           (fn [[w h]]
-            (cake-to-svg rect-w rect-h w h))
+            [:span {:class "p-1"} (cake-to-svg rect-w rect-h w h)])
           ls)))
 
 (defn render-opts
@@ -118,12 +122,20 @@
             #(render-cake-list %1 10 10)
             (single-move-results board player)))))
 
+(def bootstrap-css
+  [:link {:rel "stylesheet" :href bootstrap-url}])
+
+(def bootstrap-js
+  [:script {:src bootstrap-js}])
 
 (defn page-it
   [contents]
-  (str (h/html [:html [:head [:title "an amazing page"]] [:body contents]])))
+  (str (h/html [:html [:head
+                       bootstrap-css
+                       bootstrap-js
+                       [:title "an amazing page"]]
+                [:body [:div {:class "container"} contents]]])))
 
-(defn render-options
-  [board player]
-  (let [p-opts (single-move-results board player)]
-    (page-it (cake-list-div (single-move-results board player)))))
+(defn demo
+  []
+  (spit "index.html" (page-it (render-opts '([5 7]) :RITA))))
