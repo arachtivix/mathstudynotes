@@ -1,6 +1,7 @@
 (ns cutcake.core
   (:require [clojure.data.json :as json]
-            [hiccup2.core :as h]))
+            [hiccup2.core :as h]
+            [clojure.java.io :as io]))
 (symbol :LEFTY) ; Lefty cuts north-south
 (symbol :RITA) ; Rita cuts east-west
 (def bootstrap-url "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css")
@@ -128,14 +129,25 @@
 (def bootstrap-js
   [:script {:src bootstrap-js}])
 
+
 (defn page-it
   [contents]
-  (str (h/html [:html [:head
-                       bootstrap-css
-                       bootstrap-js
-                       [:title "an amazing page"]]
-                [:body [:div {:class "container"} contents]]])))
+  (str (h/html [:html
+                [:head
+                 bootstrap-css
+                 bootstrap-js
+                 [:title "an amazing page"]]
+                [:body
+                 [:div {:class "container"} contents]]])))
 
 (defn demo
   []
   (spit "index.html" (page-it (render-opts '([5 7]) :RITA))))
+
+(defn make-page
+  [board]
+  (let [filename (str (clojure.string/join "_" (flatten board)) ".html")
+        filepath (str "cutcake_pages/" filename)
+        file (io/file filepath)]
+    (if (.exists file) (println filename " file exists")
+        (spit filepath (page-it (render-opts board :RITA))))))
