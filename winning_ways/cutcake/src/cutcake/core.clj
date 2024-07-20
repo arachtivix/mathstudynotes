@@ -140,14 +140,27 @@
                 [:body
                  [:div {:class "container"} contents]]])))
 
-(defn demo
-  []
-  (spit "index.html" (page-it (render-opts '([5 7]) :RITA))))
+(defn remove-ones
+  [board]
+  (filter #(not= [1 1] %) board))
+
+(defn simplify-boards
+  [boards]
+  (filter
+   #(> (count %) 0)
+   (map remove-ones boards)))
 
 (defn make-page
-  [board]
-  (let [filename (str (clojure.string/join "_" (flatten board)) ".html")
+  [board player]
+  (let [player-name (if (= player :RITA) "rita" "lefty")
+        filename (str (clojure.string/join "_" (flatten board))
+                      player-name ".html")
         filepath (str "cutcake_pages/" filename)
-        file (io/file filepath)]
+        file (io/file filepath)
+        other-player (if (= player :RITA) :LEFTY :RITA)]
     (if (.exists file) (println filename " file exists")
-        (spit filepath (page-it (render-opts board :RITA))))))
+        (do
+          (spit filepath (page-it (render-opts board :RITA)))
+          (let [children (single-move-results board other-player)
+                simplified (simplify-boards children)]
+            (for [c simplified] (make-page c other-player)))))))
