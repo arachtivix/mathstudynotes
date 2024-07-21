@@ -44,13 +44,13 @@
          (cons
           (map
            #(concat left-pile % right-pile)
-           (cut-opts w h player))
+           opts)
           (if (= 0 (count right-pile)) '()
               (single-move-results (cons curr left-pile)
                                    (first right-pile)
                                    (rest right-pile)
                                    player)))))))
-     
+
 
 (defn get-unknown-pieces
   [w h known]
@@ -87,6 +87,10 @@
                     r-best (eval-opts (cut-opts w h :RITA) subs :RITA)]
                 (assoc subs [w h] (simplicity-rule l-best r-best))))))
 
+(defn remove-ones
+  [board]
+  (filter #(not= [1 1] %) board))
+
 ; svg/html functions
 (defn svg-rect
   [x y w h]
@@ -115,13 +119,35 @@
             [:span {:class "p-1"} (cake-to-svg rect-w rect-h w h)])
           ls)))
 
+(defn calc-filename
+  [board player]
+  (let [simplified-board (remove-ones board)
+        player-name (if (= player :RITA) "rita" "lefty")]
+    (str (clojure.string/join "_" (flatten board))
+         player-name ".html")))
+
+(defn calc-filepath
+  [board player]
+  (let [filename (calc-filename board player)]
+    (str "cutcake_pages/" filename)))
+
 (defn render-opts
   [board player]
-  (let [opts (single-move-results board player)]
+  (let [opts (single-move-results board player)
+        other-player (if (= player :RITA) :LEFTY :RITA)]
     (apply vector :div
            (map
-            #(render-cake-list %1 10 10)
+            (fn [move-result]
+              [:a {:href (calc-filename move-result other-player)}
+               (render-cake-list move-result 10 10)])
             (single-move-results board player)))))
+
+(defn render-choice
+  [board player]
+  [:div
+   [:span player]
+   [:span (render-cake-list board 40 40)]
+   [:span (render-opts board player)]])
 
 (def bootstrap-css
   [:link {:rel "stylesheet" :href bootstrap-url}])
@@ -140,27 +166,14 @@
                 [:body
                  [:div {:class "container"} contents]]])))
 
-(defn remove-ones
-  [board]
-  (filter #(not= [1 1] %) board))
-
-(defn simplify-boards
-  [boards]
-  (filter
-   #(> (count %) 0)
-   (map remove-ones boards)))
-
 (defn make-page
   [board player]
-  (let [player-name (if (= player :RITA) "rita" "lefty")
-        filename (str (clojure.string/join "_" (flatten board))
-                      player-name ".html")
-        filepath (str "cutcake_pages/" filename)
+  (let [filepath (calc-filepath board player)
         file (io/file filepath)
-        other-player (if (= player :RITA) :LEFTY :RITA)]
-    (if (.exists file) (println filename " file exists")
+        other-player (if (= player :RITA) :LEFTY :RITA)
+        simplified-board (remove-ones board)]
+    (if (.exists file) (println filepath " file exists")
         (do
-          (spit filepath (page-it (render-opts board :RITA)))
-          (let [children (single-move-results board other-player)
-                simplified (simplify-boards children)]
-            (for [c simplified] (make-page c other-player)))))))
+          (spit filepath (page-it (render-choice simplified-board player)))
+          (let [children (single-move-results simplified-board player)]
+            (for [c children] (make-page c other-player)))))))
