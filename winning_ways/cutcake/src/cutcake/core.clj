@@ -139,14 +139,14 @@
            (map
             (fn [move-result]
               [:a {:href (calc-filename move-result other-player)}
-               (render-cake-list move-result 10 10)])
-            (single-move-results board player)))))
+               (render-cake-list move-result 20 20)])
+            opts))))
 
 (defn render-choice
   [board player]
   [:div
    [:span player]
-   [:span (render-cake-list board 40 40)]
+   [:span (render-cake-list board 50 50)]
    [:span (render-opts board player)]])
 
 (def bootstrap-css
@@ -162,9 +162,12 @@
                 [:head
                  bootstrap-css
                  bootstrap-js
-                 [:title "an amazing page"]]
+                 [:title "Cut Cake"]]
                 [:body
-                 [:div {:class "container"} contents]]])))
+                 {:style "text-align: center; background-color: #AACCFF"}
+                 [:div
+                  {:class "container"}
+                  contents]]])))
 
 (defn make-page
   [board player]
@@ -172,7 +175,7 @@
         file (io/file filepath)
         other-player (if (= player :RITA) :LEFTY :RITA)
         simplified-board (remove-ones board)]
-    (if (.exists file) (println filepath " file exists")
+    (if (not (.exists file))
         (do
           (spit filepath (page-it (render-choice simplified-board player)))
           (let [children (single-move-results simplified-board player)]
