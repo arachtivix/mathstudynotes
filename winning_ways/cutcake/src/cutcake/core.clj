@@ -43,14 +43,14 @@
              opts (cut-opts w h player)]
          (cons
           (map
-           #(concat left-pile % right-pile)
+           (fn [m] {:left left-pile :middle m :right right-pile})
+           ;#(concat left-pile % right-pile)
            opts)
           (if (= 0 (count right-pile)) '()
               (single-move-results (cons curr left-pile)
                                    (first right-pile)
                                    (rest right-pile)
                                    player)))))))
-
 
 (defn get-unknown-pieces
   [w h known]
@@ -93,12 +93,12 @@
 
 ; svg/html functions
 (defn svg-rect
-  [x y w h]
+  [x y w h color]
   (h/html [:rect {:width w :height h :x x :y y :stroke "green"
-                  :stroke-width 1 :fill "yellow"}]))
+                  :stroke-width 1 :fill color}]))
 
 (defn cake-to-svg
-  [rect-w rect-h cells-w cells-h]
+  [rect-w rect-h cells-w cells-h color]
   (let [svg-w (* rect-w cells-w)
         svg-h (* rect-h cells-h)]
     (apply vector
@@ -106,17 +106,17 @@
            {:width svg-w :height svg-h}
            (map
             (fn [[i j]]
-              (svg-rect (* i rect-w) (* j rect-h) rect-w rect-h))
+              (svg-rect (* i rect-w) (* j rect-h) rect-w rect-h color))
             (for [i (range cells-w) j (range cells-h)] [i j])))))
 
 (defn render-cake-list
-  [ls rect-w rect-h]
+  [ls rect-w rect-h color]
   (apply vector
-         :div
+         :span
          {:class "p-3"}
          (map
           (fn [[w h]]
-            [:span {:class "p-1"} (cake-to-svg rect-w rect-h w h)])
+            [:span {:class "p-1"} (cake-to-svg rect-w rect-h w h color)])
           ls)))
 
 (defn calc-filename
@@ -137,17 +137,21 @@
         other-player (if (= player :RITA) :LEFTY :RITA)]
     (apply vector :div
            (map
-            (fn [move-result]
-              [:a {:href (calc-filename move-result other-player)}
-               (render-cake-list move-result 20 20)])
+            (fn [{left :left
+                  middle :middle
+                  right :right}]
+              [:div [:a {:href (calc-filename (concat left middle right) other-player)}
+               (render-cake-list left 20 20 "yellow")
+               (render-cake-list middle 30 30 "red")
+               (render-cake-list right 20 20 "yellow")]])
             opts))))
 
-(defn render-choice
+(defn render-current-state
   [board player]
   [:div
    [:span player]
-   [:span (render-cake-list board 50 50)]
-   [:span (render-opts board player)]])
+   [:div (render-cake-list board 50 50 "yellow")]
+   [:div (render-opts board player)]])
 
 (def bootstrap-css
   [:link {:rel "stylesheet" :href bootstrap-url}])
@@ -177,6 +181,8 @@
         simplified-board (remove-ones board)]
     (if (not (.exists file))
         (do
-          (spit filepath (page-it (render-choice simplified-board player)))
+          (spit filepath (page-it (render-current-state simplified-board player)))
           (let [children (single-move-results simplified-board player)]
-            (for [c children] (make-page c other-player)))))))
+            (for [c children] (make-page
+                               (concat (:left c) (:middle c) (:right c))
+                               other-player)))))))
