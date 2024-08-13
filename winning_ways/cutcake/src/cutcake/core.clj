@@ -2,8 +2,8 @@
   (:require [clojure.data.json :as json]
             [hiccup2.core :as h]
             [clojure.java.io :as io]))
-(symbol :LEFTY) ; Lefty cuts north-south
-(symbol :RITA) ; Rita cuts east-west
+; Lefty cuts north-south
+; Rita cuts east-west
 (def bootstrap-url "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css")
 (def bootstrap-js "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js")
 
@@ -47,7 +47,7 @@
            ;#(concat left-pile % right-pile)
            opts)
           (if (= 0 (count right-pile)) '()
-              (single-move-results (cons curr left-pile)
+              (single-move-results (concat left-pile (list curr))
                                    (first right-pile)
                                    (rest right-pile)
                                    player)))))))
@@ -140,10 +140,12 @@
             (fn [{left :left
                   middle :middle
                   right :right}]
-              [:div [:a {:href (calc-filename (concat left middle right) other-player)}
-               (render-cake-list left 20 20 "yellow")
-               (render-cake-list middle 30 30 "red")
-               (render-cake-list right 20 20 "yellow")]])
+              [:div
+               {:class "p-3"}
+               [:a {:href (calc-filename (concat left middle right) other-player)}
+                (render-cake-list left 20 20 "yellow")
+                (render-cake-list middle 30 30 "orange")
+                (render-cake-list right 20 20 "yellow")]])
             opts))))
 
 (defn render-current-state

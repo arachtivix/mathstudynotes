@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\usepackage{tikz}
+
+\def\prob{\prod_{1 \leq j \leq k \leq n} a_j a_k}
+
+\title{Reduce}
+\author{Daniel Werner}
+
+\begin{document}
+
+\maketitle
+
+\section*{Expansion for Reduce}
+
+\begin{gather*}
+    (reduce \hspace{.2cm} f \hspace{.2cm} val \hspace{.2cm} coll)
+\end{gather*}
+
+where $f$ is a function taking two arguments, val is the innermost argument to $f$ and coll contains some sequence for successive arguments supplied to f.  Reduce   A more intuitive understanding of reduce can be had by expanding it out fully:
+
+\begin{gather*}
+    (reduce \hspace*{.2cm} f, \hspace*{.2cm} val, \hspace*{.2cm} [\alpha, \beta,\gamma,\delta,...\omega]) \\
+    = (reduce \hspace*{.2cm} f, \hspace*{.2cm} (f \hspace*{.2cm} val \hspace*{.2cm} \alpha), \hspace*{.2cm} [\beta,\gamma,\delta,...,\omega]) \\
+    = (reduce \hspace*{.2cm} f, \hspace*{.2cm} (f \hspace*{.2cm} (f \hspace*{.2cm}val \hspace*{.2cm} \alpha) \hspace*{.2cm} \beta), \hspace*{.2cm} \hspace*{.2cm} [\gamma,\delta,...,\omega]) \\
+    = (reduce \hspace*{.2cm} f, \hspace*{.2cm} (f \hspace*{.2cm} (f \hspace*{.2cm} (f \hspace*{.2cm} val \hspace*{.2cm} \alpha) \hspace*{.2cm} \beta) \hspace*{.2cm} \gamma), \hspace*{.2cm} [\delta,...,\omega]) \\
+    ... \\\
+    = (f...(f(f(f \hspace*{.2cm} val  \hspace*{.2cm} \alpha), \beta), \gamma)..., \omega)
+\end{gather*}
+
+\begin{gather*}
+    (reduce + [1 \hspace*{.2cm} 2 \hspace*{.2cm} 3 \hspace*{.2cm} 4 \hspace*{.2cm} 5]) \\
+    = (+ (+ (+ (+ \hspace*{.2cm} 1 \hspace*{.2cm} 2) \hspace*{.2cm} 3) \hspace*{.2cm} 4) \hspace*{.2cm} 5)
+\end{gather*}
+
+
+\end{document}

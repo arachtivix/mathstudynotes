@@ -11,3 +11,4 @@
   (testing "cut-opts splits for :RITA"
     (is (= (list (list [2 1] [2 1]))
            (cut-opts 2 2 :RITA)))))
+
