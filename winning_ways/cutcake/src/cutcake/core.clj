@@ -38,8 +38,7 @@
    (apply concat (single-move-results '() (first board) (rest board) player)))
   ([left-pile curr right-pile player]
    (if (nil? curr) '()
-       (let [w (get curr 0)
-             h (get curr 1)
+       (let [[w h] curr
              opts (cut-opts w h player)]
          (cons
           (map
