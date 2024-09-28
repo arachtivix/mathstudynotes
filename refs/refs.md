@@ -16,3 +16,6 @@ https://www.gnu.org/software/guile/manual/guile.html
 
 # Other People Doing Exercises
 https://github.com/justinmeiners/exercises/tree/master
+
+# An interesting page with stuff
+https://www.alpertron.com.ar/ECM.HTM
