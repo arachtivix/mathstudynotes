@@ -20,15 +20,10 @@
     bl {k "♚" q "♛" r "♜" b "♝" n "♞" p "♟"}
 })
 
-(def canvas (.getElementById js/document "spooshl"))
-(def ctx (.getContext canvas "2d"))
-
 ; (piece color rank)
 (defn pc [c r] ((pieces c) r))
 
 (defn draw-pc [piece x y px]
-    (set! (.-fillStyle ctx) "rgb(0,0,255)")
-    (.fillRect ctx x, y, px, px)
     (set! (.-fillStyle ctx) "rgb(255,0,0)")
     (set! (.-font ctx) (str px "px Roboto"))
     (.strokeText ctx piece x (+ px y))
@@ -38,20 +33,35 @@
     (fn [i j] [(+ origin-x (* grid-square-width i)) (+ origin-y (* grid-square-height j))])
 )
 
-(defn gen-fill-rect-grid [grid-fn w h context]
+(defn gen-fill-rect-grid [grid-fn w h]
     (fn [i j color]
         (let [[x y] (grid-fn i j)]
-            (set! (.-fillStyle ctx) color)
-            (.fillRect context x y w h)
+            (list x y w h)
+            ;; (set! (.-fillStyle context) color)
+            ;; (.fillRect context x y w h)
         )
     )
 )
 
-(def gcf (gen-grid-coord-fn 100 100 20 20))
-(def basic-fill-rect (gen-fill-rect-grid gcf 20 20 ctx))
-
-(defn draw-board []
-    (for [i (range 8)
-          j (range 8)]
-          (basic-fill-rect i j (if (= (mod i 2) (mod j 2)) "rgb(255,255,255)" "rgb(0,0,0)")))
+(defn gen-draw-pc-fn [grid-fn px]
+    (fn [i j piece]
+        (let [[x y] (grid-fn i j)]
+            (draw-pc piece x y px)))
 )
+
+(def gcf (gen-grid-coord-fn 100 100 20 20))
+(def fill-tile-ij (gen-fill-rect-grid gcf 20 20 ctx))
+(def draw-pc-ij (gen-draw-pc-fn gcf 20))
+
+(def black-tiles-params []
+    (filter identity 
+        (map 
+         (fn [[i j]] (if (= (mod i 2) (mod j 2)) (fill-tile-ij i j)))
+         (for [i (range 8) j (range 8)] [i j]))
+    )
+)
+
+
+
+(def canvas (.getElementById js/document "spooshl"))
+(def ctx (.getContext canvas "2d"))
