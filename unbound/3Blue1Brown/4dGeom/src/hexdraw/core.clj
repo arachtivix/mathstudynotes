@@ -11,9 +11,6 @@
 (def red (. Color red))
 (def blue (. Color blue))
 (def white (. Color white))
-;; use g
-;; (.drawLine g 0 0 10 10)
-;; (.drawLine g 0 150 150 0)
 
 (defn unit-ngon [n]
     (map
@@ -53,8 +50,17 @@
           (.drawLine gfx fx fy tx ty))
 )
 
-(defn draw-shape [shape gfx]
-    (dorun (map draw-line-2d
+(defn draw-dots [from to gfx]
+    (let [fx (get from 0)
+          fy (get from 1)
+          tx (get to 0)
+          ty (get to 1)]
+          (.drawLine gfx fx fy fx fy)
+          (.drawLine gfx tx ty tx ty))
+)
+
+(defn draw-shape [shape gfx draw-fn]
+    (dorun (map draw-fn
         shape
         (concat (rest shape) [(first shape)])
         (repeat gfx)
@@ -65,7 +71,7 @@
     (let [shape (unit-ngon n)
           screenified (screenify-fn shape)]
         (.setColor gfx color)
-        (draw-shape screenified gfx)
+        (draw-shape screenified gfx draw-line-2d)
         screenified
     )
 )
@@ -114,10 +120,48 @@
     )
 )
 
+(defn subdivide-line [[x1 y1] [x2 y2] n]
+    (cond (= n 0) [[x1 y1]]
+          :else (let [dx (- x2 x1)
+                    dy (- y2 y1)
+                    ddx (/ dx n)
+                    ddy (/ dy n)]
+                    (for [i (range (+ n 1))]
+                        [
+                            (+ x1 (* i ddx))
+                            (+ y1 (* i ddy))
+                        ]
+                    )
+                )
+    )
+)
+
+(defn subdivide-triangle [[p1 p2 p3] n]
+    (let [left-leg (subdivide-line p1 p2 n)
+          right-leg (subdivide-line p1 p3 n)]
+        (apply concat
+            (map subdivide-line left-leg right-leg (range))
+        )
+    )
+)
+
+(defn subdivide-hexagon [[p1 p2 p3 p4 p5 p6] n]
+    (let [center (avg-pts [p1 p2 p3 p4 p5 p6])]
+        (apply concat
+            (subdivide-triangle [center p1 p2] n)
+            (subdivide-triangle [center p2 p3] n)
+            (subdivide-triangle [center p3 p4] n)
+            (subdivide-triangle [center p4 p5] n)
+            (subdivide-triangle [center p5 p6] n)
+            [(subdivide-triangle [center p6 p1] n)]
+        )
+    )
+)
+
 (def drawn-pgon (draw-ngon 6 g (unit-to-screen 400 400 0.9) red))
 (def arrangements (get-parallelagram-arrangements drawn-pgon))
 (def pgram1 (get (get arrangements 0) 0))
 (fill-shape-poly pgram1 blue "pgram1" g)
-
-;; save:
+(def grid (subdivide-hexagon drawn-pgon 5))
+(draw-shape grid g draw-dots)
 (ImageIO/write bi "png"  (File. "test.png"))
