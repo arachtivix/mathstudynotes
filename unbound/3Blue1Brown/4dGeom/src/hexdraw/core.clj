@@ -161,7 +161,7 @@
 )
 
 ;; most useful when the grid is perfectly aligned with the y axis of course
-(defn sort-grid [grid]
+(defn group-grid-by-y-values [grid]
     (reduce 
         (fn [ret [x y]]
             (let [inty (int y)
@@ -180,6 +180,6 @@
 (def pgram1 (get (get arrangements 0) 0))
 (fill-shape-poly pgram1 blue "pgram1" g)
 (def grid (subdivide-hexagon drawn-pgon 3))
-(print (sort-grid grid))
+(print (group-grid-by-y-values grid))
 (draw-shape grid g draw-dots)
 (ImageIO/write bi "png"  (File. "test.png"))
