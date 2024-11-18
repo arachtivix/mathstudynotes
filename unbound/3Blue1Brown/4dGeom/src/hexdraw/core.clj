@@ -139,8 +139,10 @@
 (defn subdivide-triangle [[p1 p2 p3] n]
     (let [left-leg (subdivide-line p1 p2 n)
           right-leg (subdivide-line p1 p3 n)]
-        (apply concat
-            (map subdivide-line left-leg right-leg (range))
+        (set 
+            (apply concat
+                (map subdivide-line left-leg right-leg (range))
+            )
         )
     )
 )
@@ -158,10 +160,26 @@
     )
 )
 
+;; most useful when the grid is perfectly aligned with the y axis of course
+(defn sort-grid [grid]
+    (reduce 
+        (fn [ret [x y]]
+            (let [inty (int y)
+                  existing (get ret inty)]
+                (if (nil? existing) (assoc ret inty '([x y]))
+                    (assoc ret inty (cons [x y] existing)))
+            )
+        )
+        {}
+        grid
+    )
+)
+
 (def drawn-pgon (draw-ngon 6 g (unit-to-screen 400 400 0.9) red))
 (def arrangements (get-parallelagram-arrangements drawn-pgon))
 (def pgram1 (get (get arrangements 0) 0))
 (fill-shape-poly pgram1 blue "pgram1" g)
-(def grid (subdivide-hexagon drawn-pgon 5))
+(def grid (subdivide-hexagon drawn-pgon 3))
+(print (sort-grid grid))
 (draw-shape grid g draw-dots)
 (ImageIO/write bi "png"  (File. "test.png"))
