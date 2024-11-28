@@ -5,3 +5,6 @@
 *.mix
 *\#
 *\~
+.calva/
+.clj-kondo/
+.lsp/
