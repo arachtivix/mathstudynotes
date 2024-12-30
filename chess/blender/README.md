@@ -4,10 +4,6 @@ This is a playground I'm using to try Amazon Q and mess around with blender 3 (b
 
 Blender version 3.4.1
 
-# Description of chess_blank_with_assets.blend
-
-There are some untracked files that contain most of the chess pieces as objects.  There are 5 pieces with blend files and object names corresponding to each piece: "pawn", "bishop", "rook", "king", and "queen".  These objects will copied and be manipulated by the scripts in this project as needed and are attached here because it is easier to start this way.
-
 # Chess Board Position Format
 
 The `create_chessboard()` function now returns a list of tuples containing position information for each square on the chess board. Each tuple contains:
