@@ -51,9 +51,10 @@ rook_object = import_piece("rook", red_material)
 
 pieces = [queen_object, king_object, pawn_object, bishop_object, rook_object]
 for piece in pieces:
-    center_mesh_vertical(piece)
     reset_transformations(piece)
     piece.scale = (.08, .08, .08)
+    reset_transformations(piece)
+    center_mesh_vertical(piece)
     reset_transformations(piece)
     apply_smooth_shading(piece)
 
@@ -192,13 +193,13 @@ for piece in pieces:
                     mass=1.0,
                     friction=0.5,
                     bounce=0.1,
-                    shape='CONVEX_HULL')
+                    shape='MESH')
 add_rigid_body(wernerware_text,
                     body_type='ACTIVE',
                     mass=1.0,
                     friction=0.5,
                     bounce=0.1,
-                    shape='CONVEX_HULL')
+                    shape='MESH')
 add_rigid_body(cb.board_obj,
                     body_type='PASSIVE',
                     mass=0,
@@ -269,16 +270,16 @@ bpy.context.scene.frame_start = 1
 bpy.context.scene.frame_end = 2
 bake_rigid_body_simulation()
 
-print("saving animation")
-
 bpy.data.orphans_purge(do_recursive=True)
-bpy.ops.wm.save_mainfile(filepath="/tmp/saved.blend")
 
-# TODO : some of these are not right -- further investigation required
 scene = bpy.context.scene
-scene.render.image_settings.file_format = "FFMPEG"
-filepath = os.path.join(os.environ.get('PYTHONPATH', ''), 'renders')
+scene.render.image_settings.file_format = "PNG"
+filepath = os.path.join(os.environ.get('PYTHONPATH', ''), 'renders', '')
+print(f"saving the render to {filepath}")
 scene.render.filepath = filepath
+
+print("saving animation")
+bpy.ops.wm.save_mainfile(filepath="/tmp/saved.blend")
 
 print("Create blender file script done")
 os._exit(os.EX_OK)
