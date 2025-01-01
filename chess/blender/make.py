@@ -20,7 +20,7 @@ bpy.data.objects.remove(bpy.data.objects["Cube"])
 # bpy.data.lights.remove(bpy.data.lights["Light"])
 
 wernerware_text = add_text("Wernerware", white_material, 0.25, "WernerwareText", (0, .25, 1.5), (0.5, 0.5, 0.5))
-chess_text = add_text("CHESS", mirror_material, 0.25, "ChessText", (0, -.25, 3), (1.0, 1.0, 1.0))
+chess_text = add_text("CHESS", mirror_material, 0.25, "ChessText", (0, -.25, 5), (1.0, 1.0, 1.0))
     
 def import_piece(piece_name, mat):
     # Get the path to the assets folder using PYTHONPATH
@@ -61,10 +61,10 @@ min_y = -space_grid_width / 2
 min_z = -space_grid_width / 2
 grid_center_x = 0
 grid_center_y = 0
-grid_center_z = 6
-for i in range(5):
-    for j in range(5):
-        for k in range(5):
+grid_center_z = 9
+for i in range(obj_grid_width):
+    for j in range(obj_grid_width):
+        for k in range(obj_grid_width):
             if (i + 4 * j + 16 * k) % 2 == 1:
                 mat = white_material
             else:
@@ -85,6 +85,9 @@ for piece in pieces:
     reset_transformations(piece)
     center_mesh_vertical(piece)
     reset_transformations(piece)
+    apply_smooth_shading(piece)
+
+for piece in falling_pawns:
     apply_smooth_shading(piece)
 
 
@@ -231,6 +234,12 @@ for falling_piece in falling_pawns:
                     bounce=0.1,
                     shape='MESH')
 add_rigid_body(wernerware_text,
+                    body_type='ACTIVE',
+                    mass=1.0,
+                    friction=0.5,
+                    bounce=0.1,
+                    shape='MESH')
+add_rigid_body(chess_text,
                     body_type='ACTIVE',
                     mass=1.0,
                     friction=0.5,
