@@ -1,7 +1,7 @@
 
 set -e
 
-rm -r renders
+rm -rf renders
 
 export PYTHONPATH=$(pwd)
 blender --debug --python-exit-code 1 --python-use-system-env --python make.py

@@ -2,7 +2,7 @@ import bpy
 from blender_helper import apply_material_to_mesh
 
 
-def add_text(text, material, extrude_amt, objName):
+def add_text(text, material, extrude_amt, objName, loc, scale):
     # Create a new text object
     text_data = bpy.data.curves.new(name="MyText", type='FONT')
     text_obj = bpy.data.objects.new(name="MyText", object_data=text_data)
@@ -37,8 +37,8 @@ def add_text(text, material, extrude_amt, objName):
 
     text_obj.name = objName
 
-    text_obj.scale = (0.5, 0.5, 0.5)
-    text_obj.location = (0, 0, 0.5)
+    text_obj.scale = scale
+    text_obj.location = loc
     apply_material_to_mesh(text_obj, material)
 
     return text_obj

@@ -19,7 +19,8 @@ bpy.data.objects.remove(bpy.data.objects["Cube"])
 # bpy.data.cameras.remove(bpy.data.cameras["Camera"])
 # bpy.data.lights.remove(bpy.data.lights["Light"])
 
-wernerware_text = add_text("Wernerware", white_material, 0.25, "Wernerware")
+wernerware_text = add_text("Wernerware", white_material, 0.25, "WernerwareText", (0, .25, 1.5), (0.5, 0.5, 0.5))
+chess_text = add_text("CHESS", mirror_material, 0.25, "ChessText", (0, -.25, 3), (1.0, 1.0, 1.0))
     
 def import_piece(piece_name, mat):
     # Get the path to the assets folder using PYTHONPATH
@@ -48,6 +49,34 @@ king_object = import_piece("king", black_material)
 pawn_object = import_piece("pawn", mirror_material)
 bishop_object = import_piece("bishop", white_material)
 rook_object = import_piece("rook", red_material)
+
+# there is almost certainly a more blender-y way to do this as with many things here
+# but for now I'll python brute force it
+falling_pawns = []
+delta = 0.3
+obj_grid_width = 5;
+space_grid_width = delta * obj_grid_width
+min_x = -space_grid_width / 2
+min_y = -space_grid_width / 2
+min_z = -space_grid_width / 2
+grid_center_x = 0
+grid_center_y = 0
+grid_center_z = 6
+for i in range(5):
+    for j in range(5):
+        for k in range(5):
+            if (i + 4 * j + 16 * k) % 2 == 1:
+                mat = white_material
+            else:
+                mat = black_material
+            obj = import_piece("pawn", mat)
+            x = delta * i + min_x + grid_center_x
+            y = delta * j + min_y + grid_center_y
+            z = delta * k + min_z + grid_center_z
+            obj.location = (x, y, z)
+            obj.scale = (.08, .08, .08)
+            falling_pawns.append(obj)
+
 
 pieces = [queen_object, king_object, pawn_object, bishop_object, rook_object]
 for piece in pieces:
@@ -194,6 +223,13 @@ for piece in pieces:
                     friction=0.5,
                     bounce=0.1,
                     shape='MESH')
+for falling_piece in falling_pawns:
+    add_rigid_body(falling_piece,
+                    body_type='ACTIVE',
+                    mass=1.0,
+                    friction=0.5,
+                    bounce=0.1,
+                    shape='MESH')
 add_rigid_body(wernerware_text,
                     body_type='ACTIVE',
                     mass=1.0,
@@ -267,7 +303,7 @@ print("baking the physics")
 
 # Call the function to bake
 bpy.context.scene.frame_start = 1
-bpy.context.scene.frame_end = 2
+bpy.context.scene.frame_end = 150
 bake_rigid_body_simulation()
 
 bpy.data.orphans_purge(do_recursive=True)
