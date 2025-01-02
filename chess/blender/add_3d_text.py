@@ -38,5 +38,6 @@ def add_text(text, material, extrude_amt, objName, loc, scale):
     text_obj.scale = scale
     text_obj.location = loc
     apply_material_to_mesh(text_obj, material)
+    bpy.ops.object.select_all(action='DESELECT')
 
     return text_obj

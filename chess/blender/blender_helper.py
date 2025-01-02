@@ -210,7 +210,7 @@ def apply_smooth_shading(obj):
     
     # Enable auto smooth
     mesh.use_auto_smooth = True
-    mesh.auto_smooth_angle = 3.14159  # 180 degrees in radians
+    # mesh.auto_smooth_angle = 3.14159  # 180 degrees in radians
     
     # Set all polygons to smooth
     for face in mesh.polygons:

@@ -19,9 +19,6 @@ mirror_material = create_mirror_material()
 bpy.data.objects.remove(bpy.data.objects["Cube"])
 # bpy.data.cameras.remove(bpy.data.cameras["Camera"])
 # bpy.data.lights.remove(bpy.data.lights["Light"])
-
-wernerware_text = add_text("Wernerware", white_material, 0.25, "WernerwareText", (0, .25, 1.5), (0.5, 0.5, 0.5))
-chess_text = add_text("CHESS", mirror_material, 0.25, "ChessText", (0, -.25, 5), (1.0, 1.0, 1.0))
     
 def import_piece(piece_name, mat):
     # Get the path to the assets folder using PYTHONPATH
@@ -220,6 +217,13 @@ print("setting up rigid body world")
 # Setup physics world if needed
 setup_rigid_body_world()
 
+wernerware_text = add_text("Wernerware", white_material, 0.25, "WernerwareText", (0, .25, 1.5), (0.5, 0.5, 0.5))
+wernerware_text.rotation_euler = (0.1, 0.1, 0.0)
+apply_smooth_shading(wernerware_text)
+chess_text = add_text("CHESS", mirror_material, 0.25, "ChessText", (0, -.25, 5), (1.0, 1.0, 1.0))
+chess_text.rotation_euler = (0.1, 0.1, 0.0)
+apply_smooth_shading(chess_text)
+
 print("adding rigid bodies to objects")
 # Add physics to each piece
 for piece in pieces:
@@ -308,7 +312,7 @@ def bake_rigid_body_simulation():
 print("baking the physics")
 
 # Call the function to bake
-bpy.context.scene.frame_start = 1
+bpy.context.scene.frame_start = 26
 bpy.context.scene.frame_end = 150
 bake_rigid_body_simulation()
 
@@ -324,4 +328,4 @@ print("saving animation")
 bpy.ops.wm.save_mainfile(filepath="/tmp/saved.blend")
 
 print("Create blender file script done")
-os._exit(os.EX_OK)
+# os._exit(os.EX_OK)

@@ -114,7 +114,7 @@ class ChessBoard():
             raise ValueError(f"No coordinates found for rank {rank} and file {file}")
 
         # calculate piece placement with a tiny space buffer so the physics doesn't cause the pieces to hop off the board
-        piece_z = 0.01 + target_coords[2] + piece_obj.dimensions.z / 2
+        piece_z = target_coords[2] + piece_obj.dimensions.z / 2
 
         # Move the piece to the target location
         # The first two values in target_coords are the X,Y coordinates
