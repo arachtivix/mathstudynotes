@@ -312,7 +312,7 @@ def bake_rigid_body_simulation():
 print("baking the physics")
 
 # Call the function to bake
-bpy.context.scene.frame_start = 26
+bpy.context.scene.frame_start = 1
 bpy.context.scene.frame_end = 150
 bake_rigid_body_simulation()
 
@@ -328,4 +328,4 @@ print("saving animation")
 bpy.ops.wm.save_mainfile(filepath="/tmp/saved.blend")
 
 print("Create blender file script done")
-# os._exit(os.EX_OK)
+os._exit(os.EX_OK)
