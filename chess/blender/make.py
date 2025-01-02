@@ -1,5 +1,6 @@
 import os
 import bpy
+import random
 from add_3d_text import add_text
 from chessboard import ChessBoard
 from blender_helper import reset_transformations, setup_cycles_render, center_mesh_vertical
@@ -75,6 +76,7 @@ for i in range(obj_grid_width):
             z = delta * k + min_z + grid_center_z
             obj.location = (x, y, z)
             obj.scale = (.08, .08, .08)
+            obj.rotation_euler = (random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360))
             falling_pawns.append(obj)
 
 
@@ -157,7 +159,7 @@ print("adding floor plane")
 
 floor_plane = add_floor_plane(z_position=-0.5)
 
-def setup_rigid_body_world(substeps=10, solver_iterations=10):
+def setup_rigid_body_world(substeps=20, solver_iterations=20):
     """
     Sets up the rigid body world simulation parameters
     
@@ -209,6 +211,7 @@ def add_rigid_body(obj, body_type='ACTIVE', mass=1.0, friction=0.5, bounce=0.0,
     rb.restitution = bounce
     rb.collision_shape = shape
     rb.mesh_source = mesh_source
+    rb.use_margin = False
     
     return rb
 
@@ -223,40 +226,34 @@ for piece in pieces:
     add_rigid_body(piece,
                     body_type='ACTIVE',
                     mass=1.0,
-                    friction=0.5,
-                    bounce=0.1,
-                    shape='MESH')
+                    friction=0.9,
+                    bounce=0.9)
 for falling_piece in falling_pawns:
     add_rigid_body(falling_piece,
                     body_type='ACTIVE',
                     mass=1.0,
-                    friction=0.5,
-                    bounce=0.1,
-                    shape='MESH')
+                    friction=0.9,
+                    bounce=0.9)
 add_rigid_body(wernerware_text,
                     body_type='ACTIVE',
                     mass=1.0,
-                    friction=0.5,
-                    bounce=0.1,
-                    shape='MESH')
+                    friction=0.9,
+                    bounce=0.9)
 add_rigid_body(chess_text,
                     body_type='ACTIVE',
                     mass=1.0,
-                    friction=0.5,
-                    bounce=0.1,
-                    shape='MESH')
+                    friction=0.9,
+                    bounce=0.9)
 add_rigid_body(cb.board_obj,
                     body_type='PASSIVE',
                     mass=0,
-                    friction=0.5,
-                    bounce=0.1,
-                    shape='MESH')
+                    friction=0.9,
+                    bounce=0.9)
 add_rigid_body(floor_plane,
                     body_type='PASSIVE',
                     mass=0,
-                    friction=0.5,
-                    bounce=0.1,
-                    shape='MESH')
+                    friction=0.9,
+                    bounce=0.1)
 
 print("doing some render settings")
 
