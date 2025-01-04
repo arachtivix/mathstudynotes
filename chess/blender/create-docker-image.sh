@@ -19,7 +19,7 @@ aws ecr get-login-password --region ${AWS_REGION} | \
 
 echo "=== Creating Dockerfile ==="
 cat << 'EOF' > Dockerfile
-FROM debian:stable-slim
+FROM public.ecr.aws/docker/library/debian:stable-slim
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
