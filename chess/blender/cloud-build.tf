@@ -67,10 +67,11 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
 resource "aws_ecs_task_definition" "blender_task" {
   family                   = "blender-task"
   requires_compatibilities = ["FARGATE"]
-  network_mode            = "awsvpc"
-  cpu                     = "2048"  # 2 vCPU
-  memory                  = "4096"  # 4GB
-  execution_role_arn      = aws_iam_role.ecs_task_execution_role.arn
+  network_mode             = "awsvpc"
+  cpu                      = "2048"  # 2 vCPU
+  memory                   = "4096"  # 4GB
+  task_role_arn            = aws_iam_role.blender_task_role.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = jsonencode([
     {
@@ -163,9 +164,3 @@ resource "aws_iam_role" "blender_task_role" {
   })
 }
 
-# Add task role to the task definition
-resource "aws_ecs_task_definition" "blender_task" {
-  # ... (previous configuration) ...
-  task_role_arn = aws_iam_role.blender_task_role.arn
-  # ... (rest of configuration) ...
-}
