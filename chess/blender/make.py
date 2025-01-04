@@ -48,36 +48,8 @@ pawn_object = import_piece("pawn", mirror_material)
 bishop_object = import_piece("bishop", white_material)
 rook_object = import_piece("rook", red_material)
 
-# there is almost certainly a more blender-y way to do this as with many things here
-# but for now I'll python brute force it
-falling_pawns = []
-delta = 0.3
-obj_grid_width = 5;
-space_grid_width = delta * obj_grid_width
-min_x = -space_grid_width / 2
-min_y = -space_grid_width / 2
-min_z = -space_grid_width / 2
-grid_center_x = 0
-grid_center_y = 0
-grid_center_z = 9
-for i in range(obj_grid_width):
-    for j in range(obj_grid_width):
-        for k in range(obj_grid_width):
-            if (i + 4 * j + 16 * k) % 2 == 1:
-                mat = white_material
-            else:
-                mat = black_material
-            obj = import_piece("pawn", mat)
-            x = delta * i + min_x + grid_center_x
-            y = delta * j + min_y + grid_center_y
-            z = delta * k + min_z + grid_center_z
-            obj.location = (x, y, z)
-            obj.scale = (.08, .08, .08)
-            obj.rotation_euler = (random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360))
-            falling_pawns.append(obj)
-
-
 pieces = [queen_object, king_object, pawn_object, bishop_object, rook_object]
+
 for piece in pieces:
     reset_transformations(piece)
     piece.scale = (.08, .08, .08)
@@ -86,8 +58,41 @@ for piece in pieces:
     reset_transformations(piece)
     apply_smooth_shading(piece)
 
-for piece in falling_pawns:
-    apply_smooth_shading(piece)
+# there is almost certainly a more blender-y way to do this as with many things here
+# but for now I'll python brute force it
+delta = 0.45
+obj_grid_width = 7;
+space_grid_width = delta * obj_grid_width
+min_x = -space_grid_width / 2
+min_y = -space_grid_width / 2
+min_z = -space_grid_width / 2
+grid_center_x = 0
+grid_center_y = 0
+grid_center_z = 13
+for i in range(obj_grid_width):
+    for j in range(obj_grid_width):
+        for k in range(obj_grid_width):
+            if (random.uniform(0, 4) < 2):
+                continue # space out the pieces a bit towards the bottom
+            if (i + 4 * j + 16 * k) % 2 == 1:
+                mat = white_material
+            else:
+                mat = black_material
+            obj = import_piece("pawn", mat)
+            reset_transformations(piece)
+            obj.rotation_euler = (random.uniform(0, 360), random.uniform(0, 360), random.uniform(0, 360))
+            obj.scale = (.08, .08, .08)
+            reset_transformations(piece)
+            center_mesh_vertical(piece)
+            reset_transformations(piece)
+            apply_smooth_shading(piece)
+            x = delta * i + min_x + grid_center_x
+            y = delta * j + min_y + grid_center_y
+            z = delta * k + min_z + grid_center_z
+            obj.location.x += x
+            obj.location.y += y
+            obj.location.z += z
+            pieces.append(obj)
 
 
 cb.place_piece(rook_object, 'c', '2')  # Move rook to a1
@@ -156,15 +161,7 @@ print("adding floor plane")
 
 floor_plane = add_floor_plane(z_position=-0.5)
 
-def setup_rigid_body_world(substeps=20, solver_iterations=20):
-    """
-    Sets up the rigid body world simulation parameters
-    
-    Args:
-        gravity: Tuple of (x, y, z) gravity vector (default: standard Earth gravity)
-        substeps: Number of simulation substeps (default: 10)
-        solver_iterations: Number of constraint solver iterations (default: 10)
-    """
+def setup_rigid_body_world(substeps=40, solver_iterations=40):
     scene = bpy.context.scene
     
     # Create rigid body world if it doesn't exist
@@ -175,6 +172,7 @@ def setup_rigid_body_world(substeps=20, solver_iterations=20):
     scene.rigidbody_world.enabled = True
     scene.rigidbody_world.substeps_per_frame = substeps
     scene.rigidbody_world.solver_iterations = solver_iterations
+    scene.rigidbody_world.time_scale = .333
 
 def add_rigid_body(obj, body_type='ACTIVE', mass=1.0, friction=0.5, bounce=0.0, 
                   shape='CONVEX_HULL', mesh_source='FINAL'):
@@ -231,28 +229,22 @@ for piece in pieces:
                     body_type='ACTIVE',
                     mass=1.0,
                     friction=0.9,
-                    bounce=0.9)
-for falling_piece in falling_pawns:
-    add_rigid_body(falling_piece,
-                    body_type='ACTIVE',
-                    mass=1.0,
-                    friction=0.9,
-                    bounce=0.9)
+                    bounce=0.6)
 add_rigid_body(wernerware_text,
                     body_type='ACTIVE',
                     mass=1.0,
                     friction=0.9,
-                    bounce=0.9)
+                    bounce=0.4)
 add_rigid_body(chess_text,
                     body_type='ACTIVE',
                     mass=1.0,
                     friction=0.9,
-                    bounce=0.9)
+                    bounce=0.4)
 add_rigid_body(cb.board_obj,
                     body_type='PASSIVE',
                     mass=0,
                     friction=0.9,
-                    bounce=0.9)
+                    bounce=0.4)
 add_rigid_body(floor_plane,
                     body_type='PASSIVE',
                     mass=0,
@@ -313,13 +305,13 @@ print("baking the physics")
 
 # Call the function to bake
 bpy.context.scene.frame_start = 1
-bpy.context.scene.frame_end = 150
+bpy.context.scene.frame_end = 250
 bake_rigid_body_simulation()
 
 bpy.data.orphans_purge(do_recursive=True)
 
 scene = bpy.context.scene
-scene.render.image_settings.file_format = "PNG"
+scene.render.image_settings.file_format = "FFMPEG"
 filepath = os.path.join(os.environ.get('PYTHONPATH', ''), 'renders', '')
 print(f"saving the render to {filepath}")
 scene.render.filepath = filepath
