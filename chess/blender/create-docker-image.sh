@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-set -ex
 
 # Configuration
 AWS_REGION=us-east-1
