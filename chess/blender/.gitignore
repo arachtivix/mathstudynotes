@@ -5,3 +5,5 @@ assets/
 assets/**/*
 **/*.blend
 renders/
+.terraform.lock.hcl
+.terraform/
