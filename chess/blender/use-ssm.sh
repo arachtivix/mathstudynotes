@@ -1,0 +1,1 @@
+aws ssm start-session --target $(terraform output --raw blender_instance_id)

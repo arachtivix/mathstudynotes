@@ -132,3 +132,8 @@ resource "aws_instance" "blender_instance" {
               systemctl start amazon-ssm-agent
               EOF
 }
+
+output "blender_instance_id" {
+  description = "The ID of the Blender EC2 instance"
+  value       = aws_instance.blender_instance.id
+}
