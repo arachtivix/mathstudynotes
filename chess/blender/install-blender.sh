@@ -33,6 +33,9 @@ blender --version
 sudo yum install -y python3-pip
 pip3 install numpy
 
+# Q forgot this one
+yum install libxkbcommon-x11
+
 # Create a test to ensure Blender can run in headless mode
 echo "import bpy; print('Blender Python API works!')" > /tmp/test.py
 blender --background --python /tmp/test.py
