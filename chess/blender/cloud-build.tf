@@ -51,17 +51,17 @@ resource "aws_security_group" "blender_instance" {
 }
 
 # Create security group for EFS
-resource "aws_security_group" "efs" {
-  name        = "blender-efs-sg"
-  description = "Security group for Blender EFS mount"
+#resource "aws_security_group" "efs" {
+#  name        = "blender-efs-sg"
+#  description = "Security group for Blender EFS mount"
 
-  ingress {
-    from_port       = 2049
-    to_port         = 2049
-    protocol        = "tcp"
-    security_groups = [aws_security_group.blender_instance.id]
-  }
-}
+#  ingress {
+#    from_port       = 2049
+#    to_port         = 2049
+#    protocol        = "tcp"
+#    security_groups = [aws_security_group.blender_instance.id]
+#  }
+#}
 
 # Create EFS mount target
 resource "aws_efs_mount_target" "blender_workspace" {
