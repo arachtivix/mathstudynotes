@@ -9,7 +9,7 @@ def list_available_gpus():
     
     if cycles_preferences.get_devices() is None:
         print("No devices found.")
-        return
+        return False
 
     # Print available devices
     print("\nAvailable Devices:")
@@ -19,6 +19,8 @@ def list_available_gpus():
             print(f"   {device.name} {'(CUDA)' if device.use_cuda else '(OpenCL)'}")
             print(f"      - Type: {device.type}")
             print(f"      - Active: {'Yes' if device.use else 'No'}")
+
+    return True
 
 def enable_gpu_rendering():
     """Configure Blender to use GPU rendering with available devices."""
@@ -48,12 +50,15 @@ def enable_gpu_rendering():
 def main():
     # List available GPUs
     print("\n=== Listing Available GPUs ===")
-    list_available_gpus()
+    found = list_available_gpus()
+    
+    if not found:
+        print("No GPUs found. Exiting.")
+        return
     
     # Enable GPU rendering
     print("\n=== Enabling GPU Rendering ===")
     enable_gpu_rendering()
 
 if __name__ == "__main__":
-    list_available_gpus()
-    enable_gpu_rendering()
+    main()

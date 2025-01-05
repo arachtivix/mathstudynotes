@@ -89,35 +89,18 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-# Get the latest Amazon Linux 2 AMI
-data "aws_ami" "amazon_linux_2" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["amazon"]
-}
-
 # EC2 Instance
 resource "aws_instance" "blender_instance" {
-  ami           = data.aws_ami.amazon_linux_2.id
-  instance_type = "t2.micro"  # Adjust instance type as needed
+  ami           = "ami-031290e21cc458792"
+  instance_type = "g6.xlarge"
 
-  subnet_id                   = "subnet-081c99d6c3e608653"
+  subnet_id                   = "subnet-0cd3d3cf47168c732"
   vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.ec2_ssm_profile.name
 
   root_block_device {
-    volume_size = 10  # Size in GB
+    volume_size = 45  # Size in GB
     volume_type = "gp3"
   }
 
