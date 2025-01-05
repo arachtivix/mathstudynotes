@@ -7,6 +7,10 @@ def list_available_gpus():
     preferences = bpy.context.preferences
     cycles_preferences = preferences.addons['cycles'].preferences
     
+    if cycles_preferences.get_devices() is None:
+        print("No devices found.")
+        return
+
     # Print available devices
     print("\nAvailable Devices:")
     for device_type in cycles_preferences.get_devices():
