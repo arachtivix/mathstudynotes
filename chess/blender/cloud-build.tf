@@ -78,7 +78,7 @@ resource "aws_ecs_task_definition" "blender_task" {
       name  = "blender-container"
       image = "${data.aws_ecr_repository.blender.repository_url}:latest"
       
-      essential = true
+      essential = false
       
       logConfiguration = {
         logDriver = "awslogs"
