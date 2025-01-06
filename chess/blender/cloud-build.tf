@@ -96,7 +96,7 @@ resource "aws_instance" "blender_instance" {
 
   subnet_id                   = "subnet-0cd3d3cf47168c732"
   vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
-  associate_public_ip_address = false
+  associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.ec2_ssm_profile.name
 
   root_block_device {
