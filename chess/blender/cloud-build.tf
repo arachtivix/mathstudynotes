@@ -120,3 +120,42 @@ output "blender_instance_id" {
   description = "The ID of the Blender EC2 instance"
   value       = aws_instance.blender_instance.id
 }
+
+# Create the S3 bucket
+resource "aws_s3_bucket" "blender_assets" {
+  bucket = "wernerware-blender-assets"
+}
+
+# Block public access to the bucket
+resource "aws_s3_bucket_public_access_block" "blender_assets" {
+  bucket = aws_s3_bucket.blender_assets.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# Add S3 permissions to the existing EC2 role
+resource "aws_iam_role_policy" "s3_access" {
+  name = "s3-blender-assets-access"
+  role = aws_iam_role.ec2_ssm_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:GetBucketLocation"
+        ]
+        Resource = [
+          aws_s3_bucket.blender_assets.arn,
+          "${aws_s3_bucket.blender_assets.arn}/*"
+        ]
+      }
+    ]
+  })
+}
