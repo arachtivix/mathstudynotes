@@ -6,7 +6,7 @@ from chessboard import ChessBoard
 from blender_helper import *
 from list_devices import print_cuda_devices
 
-print_cuda_devices()
+print_cuda_devices() # also seems to force it to use CUDA so yay
 
 # Define materials for the chessboard
 black_material = create_basic_color_material("Black", (0.02, 0.02, 0.02, 1))
@@ -256,8 +256,8 @@ print("doing some render settings")
 
 # render/camera config
 bpy.data.cameras["Camera"].lens = 110.0
-# setup_cycles_render(False)
-setup_evee_render()
+setup_cycles_render(False)
+# setup_evee_render()
 
 
 
