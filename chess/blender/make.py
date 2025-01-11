@@ -4,7 +4,7 @@ import random
 from add_3d_text import add_text
 from chessboard import ChessBoard
 from blender_helper import *
-from list_devices import print_cuda_devices
+from list_devices import *
 
 print_cuda_devices() # also seems to force it to use CUDA so yay
 
@@ -256,7 +256,7 @@ print("doing some render settings")
 
 # render/camera config
 bpy.data.cameras["Camera"].lens = 110.0
-setup_cycles_render(False)
+enable_cuda_gpu(bpy.context.scene)
 # setup_evee_render()
 
 
