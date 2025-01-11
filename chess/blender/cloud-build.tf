@@ -92,7 +92,7 @@ resource "aws_security_group" "ec2_sg" {
 # EC2 Instance
 resource "aws_instance" "blender_instance" {
   ami           = "ami-031290e21cc458792"
-  instance_type = "g6.xlarge"
+  instance_type = "g6.48xlarge"
 
   subnet_id                   = "subnet-0cd3d3cf47168c732"
   vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
