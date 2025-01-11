@@ -4,6 +4,9 @@ import random
 from add_3d_text import add_text
 from chessboard import ChessBoard
 from blender_helper import *
+from list_devices import print_cuda_devices
+
+print_cuda_devices()
 
 # Define materials for the chessboard
 black_material = create_basic_color_material("Black", (0.02, 0.02, 0.02, 1))
