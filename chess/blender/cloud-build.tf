@@ -126,6 +126,11 @@ resource "aws_s3_bucket" "blender_assets" {
   bucket = "wernerware-blender-assets"
 }
 
+# Create the S3 bucket
+resource "aws_s3_bucket" "blender_renders" {
+  bucket = "wernerware-blender-renders"
+}
+
 # Block public access to the bucket
 resource "aws_s3_bucket_public_access_block" "blender_assets" {
   bucket = aws_s3_bucket.blender_assets.id
@@ -136,8 +141,18 @@ resource "aws_s3_bucket_public_access_block" "blender_assets" {
   restrict_public_buckets = true
 }
 
+# Block public access to the bucket
+resource "aws_s3_bucket_public_access_block" "blender_renders" {
+  bucket = aws_s3_bucket.blender_renders.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 # Add S3 permissions to the existing EC2 role
-resource "aws_iam_role_policy" "s3_access" {
+resource "aws_iam_role_policy" "s3_access_assets" {
   name = "s3-blender-assets-access"
   role = aws_iam_role.ec2_ssm_role.id
 
@@ -154,6 +169,30 @@ resource "aws_iam_role_policy" "s3_access" {
         Resource = [
           aws_s3_bucket.blender_assets.arn,
           "${aws_s3_bucket.blender_assets.arn}/*"
+        ]
+      }
+    ]
+  })
+}
+
+# Add S3 permissions to the existing EC2 role
+resource "aws_iam_role_policy" "s3_access_renders" {
+  name = "s3-blender-assets-access"
+  role = aws_iam_role.ec2_ssm_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject",
+          "s3:ListBucket",
+          "s3:GetBucketLocation"
+        ]
+        Resource = [
+          aws_s3_bucket.blender_renders.arn,
+          "${aws_s3_bucket.blender_renders.arn}/*"
         ]
       }
     ]
