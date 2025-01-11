@@ -3,9 +3,7 @@ import bpy
 import random
 from add_3d_text import add_text
 from chessboard import ChessBoard
-from blender_helper import reset_transformations, setup_cycles_render, center_mesh_vertical
-from blender_helper import apply_material_to_mesh, create_wood_material, create_mirror_material
-from blender_helper import create_basic_color_material, create_sky_cube, apply_smooth_shading
+from blender_helper import *
 
 # Define materials for the chessboard
 black_material = create_basic_color_material("Black", (0.02, 0.02, 0.02, 1))
@@ -255,7 +253,8 @@ print("doing some render settings")
 
 # render/camera config
 bpy.data.cameras["Camera"].lens = 110.0
-setup_cycles_render(False)
+# setup_cycles_render(False)
+setup_evee_render()
 
 
 
@@ -314,13 +313,13 @@ scene = bpy.context.scene
 scene.render.image_settings.file_format = "FFMPEG"
 filepath = os.path.join(os.environ.get('PYTHONPATH', ''), 'renders', '')
 
-# Set the device_type
-bpy.context.preferences.addons[
-    "cycles"
-].preferences.compute_device_type = "CUDA"
+# # Set the device_type
+# bpy.context.preferences.addons[
+#     "cycles"
+# ].preferences.compute_device_type = "CUDA"
 
-# Set the device and feature set
-bpy.context.scene.cycles.device = "GPU"
+# # Set the device and feature set
+# bpy.context.scene.cycles.device = "GPU"
 
 print(f"saving the render to {filepath}")
 scene.render.filepath = filepath

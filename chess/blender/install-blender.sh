@@ -4,7 +4,7 @@
 sudo yum update -y
 sudo yum install -y libXi libXrender libXfixes libXcomposite mesa-libGL mesa-libGLU \
     libXrandr libXinerama libXcursor zlib libstdc++ freetype fontconfig \
-    libXext libX11 libXxf86vm
+    libXext libX11 libXxf86vm libxkbcommon-x11
 
 # Create directory for Blender
 sudo mkdir -p /opt/blender
@@ -28,13 +28,6 @@ sudo chmod 755 /opt/blender/blender
 
 # Verify installation
 blender --version
-
-# Optional: Install Python dependencies if needed for rendering
-sudo yum install -y python3-pip
-pip3 install numpy
-
-# Q forgot this one
-yum install libxkbcommon-x11
 
 # Create a test to ensure Blender can run in headless mode
 echo "import bpy; print('Blender Python API works!')" > /tmp/test.py

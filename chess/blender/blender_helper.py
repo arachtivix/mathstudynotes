@@ -34,6 +34,17 @@ def setup_cycles_render(use_denoise=False, samples=100):
                 layer.cycles.denoising_store_passes = False
                 layer.cycles.use_denoising = False
 
+def setup_evee_render():
+    """
+    Set up Eevee render engine
+    """
+    # Get the scene context
+    scene = bpy.context.scene
+
+    # Set render engine to Eevee
+    scene.render.engine = 'BLENDER_EEVEE'
+
+
 def center_mesh_vertical(obj):
     """
     Transforms the vertices of a mesh so that the highest and lowest z-coordinates 
