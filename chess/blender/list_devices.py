@@ -47,6 +47,7 @@ def enable_cuda_gpu(scene):
             
     # Set scene to use GPU rendering
     scene.cycles.device = 'GPU'
+    scene.render.engine = 'CYCLES'
     
     # Force scene to update
     scene.update_render_engine()

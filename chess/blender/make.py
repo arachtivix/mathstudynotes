@@ -316,14 +316,6 @@ scene = bpy.context.scene
 scene.render.image_settings.file_format = "FFMPEG"
 filepath = os.path.join(os.environ.get('PYTHONPATH', ''), 'renders', '')
 
-# # Set the device_type
-# bpy.context.preferences.addons[
-#     "cycles"
-# ].preferences.compute_device_type = "CUDA"
-
-# # Set the device and feature set
-# bpy.context.scene.cycles.device = "GPU"
-
 print(f"saving the render to {filepath}")
 scene.render.filepath = filepath
 
