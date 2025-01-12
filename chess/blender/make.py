@@ -25,7 +25,7 @@ bpy.data.objects.remove(bpy.data.objects["Cube"])
 def import_piece(piece_name, mat):
     # Get the path to the assets folder using PYTHONPATH
     # Assuming 'assets' is in your PYTHONPATH
-    filepath = os.path.join(os.environ.get('PYTHONPATH', ''), 'assets', piece_name + '.blend')
+    filepath = os.path.join(os.environ.get('PYTHONPATH', ''), 'assets', 'pieces', piece_name + '.blend')
     
     # Import the object from the blend file
     with bpy.data.libraries.load(filepath) as (data_from, data_to):
@@ -208,14 +208,13 @@ print("doing some render settings")
 
 # render/camera config
 bpy.data.cameras["Camera"].lens = 110.0
-# enable_cuda_gpu(bpy.context.scene)
-setup_evee_render()
-
+enable_cuda_gpu(bpy.context.scene)
 
 print("baking the physics")
 start_frame = 1;
-end_frame = 2;
+end_frame = 10;
 scene = bpy.context.scene
+setup_cycles_render(False)
 
 scene.frame_start = start_frame
 scene.frame_end = end_frame

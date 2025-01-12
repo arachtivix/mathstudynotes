@@ -89,6 +89,10 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
+data "template_file" "setup_script" {
+  template = file("${path.module}/setup-instance.sh")
+}
+
 # EC2 Instance
 resource "aws_instance" "blender_instance" {
   ami           = "ami-031290e21cc458792"
@@ -107,13 +111,10 @@ resource "aws_instance" "blender_instance" {
   tags = {
     Name = "wernerware-blender-instance"
   }
+  
+  # Add the user_data configuration
+  user_data = base64encode(data.template_file.setup_script.rendered)
 
-  # Make sure SSM agent is installed
-  user_data = <<-EOF
-              #!/bin/bash
-              systemctl enable amazon-ssm-agent
-              systemctl start amazon-ssm-agent
-              EOF
 }
 
 output "blender_instance_id" {
