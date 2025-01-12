@@ -5,6 +5,7 @@ from add_3d_text import add_text
 from chessboard import ChessBoard
 from blender_helper import *
 from list_devices import *
+from material_helpers import *
 
 print_cuda_devices() # also seems to force it to use CUDA so yay
 
@@ -59,6 +60,12 @@ for piece in pieces:
     reset_transformations(piece)
     apply_smooth_shading(piece)
 
+cb.place_piece(rook_object, 'c', '2')  # Move rook to a1
+cb.place_piece(king_object, 'g', '5')  # Move king to g5
+cb.place_piece(pawn_object, 'c', '3')  # Move pawn to c3
+cb.place_piece(bishop_object, 'g', '1')  # Move bishop to g1
+cb.place_piece(queen_object, 'c', '8')  # Move queen to c8
+
 # there is almost certainly a more blender-y way to do this as with many things here
 # but for now I'll python brute force it
 delta = 0.45
@@ -95,50 +102,7 @@ for i in range(obj_grid_width):
             obj.location.z += z
             pieces.append(obj)
 
-
-cb.place_piece(rook_object, 'c', '2')  # Move rook to a1
-cb.place_piece(king_object, 'g', '5')  # Move king to g5
-cb.place_piece(pawn_object, 'c', '3')  # Move pawn to c3
-cb.place_piece(bishop_object, 'g', '1')  # Move bishop to g1
-cb.place_piece(queen_object, 'c', '8')  # Move queen to c8
-
 create_sky_cube(cyan_material, size=100)
-
-
-def create_stucco_material():
-    """Creates a material that looks like stucco"""
-    material = bpy.data.materials.new(name="Stucco")
-    material.use_nodes = True
-    nodes = material.node_tree.nodes
-    links = material.node_tree.links
-    
-    # Clear default nodes
-    nodes.clear()
-    
-    # Create nodes
-    output = nodes.new('ShaderNodeOutputMaterial')
-    principled = nodes.new('ShaderNodeBsdfPrincipled')
-    noise = nodes.new('ShaderNodeTexNoise')
-    bump = nodes.new('ShaderNodeBump')
-    
-    # Configure noise texture
-    noise.inputs['Scale'].default_value = 50  # Adjust for texture density
-    noise.inputs['Detail'].default_value = 8
-    noise.inputs['Roughness'].default_value = 0.7
-    
-    # Configure bump
-    bump.inputs['Strength'].default_value = 0.2  # Adjust for bump intensity
-    
-    # Configure principled BSDF
-    principled.inputs['Base Color'].default_value = (1.0, 0.85, 0.4, 1)
-    principled.inputs['Roughness'].default_value = 0.9
-    
-    # Link nodes
-    links.new(noise.outputs['Fac'], bump.inputs['Height'])
-    links.new(bump.outputs['Normal'], principled.inputs['Normal'])
-    links.new(principled.outputs['BSDF'], output.inputs['Surface'])
-    
-    return material
 
 def add_floor_plane(size=10, z_position=-0.1):
     """
@@ -175,21 +139,9 @@ def setup_rigid_body_world(substeps=40, solver_iterations=40):
     scene.rigidbody_world.solver_iterations = solver_iterations
     scene.rigidbody_world.time_scale = .333
 
+
 def add_rigid_body(obj, body_type='ACTIVE', mass=1.0, friction=0.5, bounce=0.0, 
                   shape='CONVEX_HULL', mesh_source='FINAL'):
-    """
-    Adds rigid body physics to an object
-    
-    Args:
-        obj: The object to add physics to
-        body_type: 'ACTIVE' or 'PASSIVE' (default: 'ACTIVE')
-        mass: Mass in kg (default: 1.0)
-        friction: Friction coefficient (default: 0.5)
-        bounce: Bounciness/Restitution (default: 0.0)
-        shape: Collision shape ('BOX', 'SPHERE', 'CAPSULE', 'CYLINDER', 
-               'CONE', 'CONVEX_HULL', 'MESH') (default: 'CONVEX_HULL')
-        mesh_source: Source of mesh data ('FINAL', 'DEFORM', 'BASE') (default: 'FINAL')
-    """
     # Select and make active
     bpy.ops.object.mode_set(mode='OBJECT')
     bpy.context.view_layer.objects.active = obj
@@ -256,64 +208,24 @@ print("doing some render settings")
 
 # render/camera config
 bpy.data.cameras["Camera"].lens = 110.0
-enable_cuda_gpu(bpy.context.scene)
-# setup_evee_render()
+# enable_cuda_gpu(bpy.context.scene)
+setup_evee_render()
 
-
-
-def bake_rigid_body_simulation():
-    """
-    Bakes the rigid body simulation for the entire frame range of the scene
-    """
-    scene = bpy.context.scene
-    
-    # Deselect all objects first
-    bpy.ops.object.select_all(action='DESELECT')
-    
-    # Select all objects that have rigid body physics
-    for obj in scene.objects:
-        if obj.rigid_body is not None:
-            obj.select_set(True)
-    
-    # Ensure we have an active object
-    for obj in scene.objects:
-        if obj.select_get():
-            bpy.context.view_layer.objects.active = obj
-            break
-            
-    # Get the frame range from the scene
-    start_frame = scene.frame_start
-    end_frame = scene.frame_end
-    
-    # Ensure rigid body world exists
-    if scene.rigidbody_world is None:
-        bpy.ops.rigidbody.world_add()
-    
-    # Bake the simulation
-    bpy.ops.object.mode_set(mode='OBJECT')
-    print("baking physics - just about to throw it at blender")
-    try:
-        area = [a for a in bpy.context.screen.areas if a.type=="VIEW_3D"][0]
-        with bpy.context.temp_override(area=area):
-            bpy.ops.rigidbody.bake_to_keyframes(
-                frame_start=start_frame,
-                frame_end=end_frame
-            )
-        print("Baking completed successfully")
-    except Exception as e:
-        print(f"Error during baking: {e}")
 
 print("baking the physics")
+start_frame = 1;
+end_frame = 2;
+scene = bpy.context.scene
+
+scene.frame_start = start_frame
+scene.frame_end = end_frame
 
 # Call the function to bake
-bpy.context.scene.frame_start = 1
-bpy.context.scene.frame_end = 250
-bake_rigid_body_simulation()
+bake_rigid_body_simulation(start_frame=start_frame, end_frame=end_frame, scene=scene)
 
 bpy.data.orphans_purge(do_recursive=True)
 
-scene = bpy.context.scene
-scene.render.image_settings.file_format = "FFMPEG"
+scene.render.image_settings.file_format = "PNG"
 filepath = os.path.join(os.environ.get('PYTHONPATH', ''), 'renders', '')
 
 print(f"saving the render to {filepath}")

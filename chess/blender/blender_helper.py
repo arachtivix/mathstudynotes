@@ -162,13 +162,6 @@ def create_mirror_material():
     return mirror_material
 
 
-def create_basic_color_material(name: str, color: tuple):
-    mat = bpy.data.materials.new(name=name)
-    mat.use_nodes = True
-    mat.node_tree.nodes["Principled BSDF"].inputs[0].default_value = color
-    return mat
-
-
 def create_sky_cube(material, size=10.0):
     """
     Creates a cube with faces visible from the inside
@@ -234,3 +227,41 @@ def apply_smooth_shading(obj):
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     bm.to_mesh(mesh)
     bm.free()
+
+
+def bake_rigid_body_simulation(start_frame, end_frame, scene):
+    """
+    Bakes the rigid body simulation for the entire frame range of the scene
+    """
+    
+    # Deselect all objects first
+    bpy.ops.object.select_all(action='DESELECT')
+    
+    # Select all objects that have rigid body physics
+    for obj in scene.objects:
+        if obj.rigid_body is not None:
+            obj.select_set(True)
+    
+    # Ensure we have an active object
+    for obj in scene.objects:
+        if obj.select_get():
+            bpy.context.view_layer.objects.active = obj
+            break
+    
+    # Ensure rigid body world exists
+    if scene.rigidbody_world is None:
+        bpy.ops.rigidbody.world_add()
+    
+    # Bake the simulation
+    bpy.ops.object.mode_set(mode='OBJECT')
+    print("baking physics - just about to throw it at blender")
+    try:
+        area = [a for a in bpy.context.screen.areas if a.type=="VIEW_3D"][0]
+        with bpy.context.temp_override(area=area):
+            bpy.ops.rigidbody.bake_to_keyframes(
+                frame_start=start_frame,
+                frame_end=end_frame
+            )
+        print("Baking completed successfully")
+    except Exception as e:
+        print(f"Error during baking: {e}")
