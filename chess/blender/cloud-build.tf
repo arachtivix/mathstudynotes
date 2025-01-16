@@ -18,6 +18,18 @@ provider "aws" {
   region = "us-east-1"
 }
 
+# Initialize the random provider
+provider "random" {}
+
+# Generate a random string
+resource "random_string" "instance_profile_addon" {
+  length  = 8
+  special = false
+  upper   = false
+  lower   = true
+  number  = true
+}
+
 # Create IAM role for EC2
 resource "aws_iam_role" "ec2_ssm_role" {
   name = "wernerware-blender-ec2-role"
@@ -67,8 +79,11 @@ resource "aws_iam_role_policy" "ssm_custom" {
 
 # Create the instance profile
 resource "aws_iam_instance_profile" "ec2_ssm_profile" {
-  name = "wernerware-blender-ec2-profile"
+  name = "wernerware-blender-ec2-profile-${random_string.instance_profile_addon.result}"
   role = aws_iam_role.ec2_ssm_role.name
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # Security Group for the EC2 instance
@@ -142,18 +157,8 @@ resource "aws_s3_bucket_public_access_block" "blender_assets" {
   restrict_public_buckets = true
 }
 
-# Block public access to the bucket
-resource "aws_s3_bucket_public_access_block" "blender_renders" {
-  bucket = aws_s3_bucket.blender_renders.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
-
 # Add S3 permissions to the existing EC2 role
-resource "aws_iam_role_policy" "s3_access_assets" {
+resource "aws_iam_role_policy" "s3_access" {
   name = "s3-blender-assets-access"
   role = aws_iam_role.ec2_ssm_role.id
 
@@ -170,30 +175,6 @@ resource "aws_iam_role_policy" "s3_access_assets" {
         Resource = [
           aws_s3_bucket.blender_assets.arn,
           "${aws_s3_bucket.blender_assets.arn}/*"
-        ]
-      }
-    ]
-  })
-}
-
-# Add S3 permissions to the existing EC2 role
-resource "aws_iam_role_policy" "s3_access_renders" {
-  name = "s3-blender-assets-access"
-  role = aws_iam_role.ec2_ssm_role.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "s3:PutObject",
-          "s3:ListBucket",
-          "s3:GetBucketLocation"
-        ]
-        Resource = [
-          aws_s3_bucket.blender_renders.arn,
-          "${aws_s3_bucket.blender_renders.arn}/*"
         ]
       }
     ]
