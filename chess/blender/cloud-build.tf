@@ -180,3 +180,29 @@ resource "aws_iam_role_policy" "s3_access" {
     ]
   })
 }
+
+resource "aws_ssm_document" "setup_blender" {
+  name            = "setup-blender-environment"
+  document_type   = "Command"
+  document_format = "YAML"
+
+  content = <<DOC
+schemaVersion: '2.2'
+description: 'Setup Blender environment by cloning repository and running setup script'
+parameters: {}
+mainSteps:
+  - action: aws:runShellScript
+    name: setupBlenderEnvironment
+    inputs:
+      runCommand:
+        - cd ~
+        - git clone https://github.com/arachtivix/mathstudynotes
+        - cd mathstudynotes/chess/blender
+        - sudo bash setup-instance.sh
+DOC
+
+  tags = {
+    Name = "setup-blender-environment"
+    Purpose = "Blender Environment Setup"
+  }
+}
