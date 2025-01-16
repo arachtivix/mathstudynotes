@@ -10,7 +10,7 @@ cd mathstudynotes/chess/blender
 sudo sh install-bender.sh
 
 echo "Installing Blender..."
-sudo sh install-bender.sh
+sudo sh install-blender.sh
 
 echo "Syncing assets from S3 bucket"
 mkdir -p assets
