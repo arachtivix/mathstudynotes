@@ -22,6 +22,7 @@ aws s3 sync s3://wernerware-blender-assets ./assets/
 echo cd /var/wernerware/mathstudynotes/chess/blender >> ~/.bashrc
 
 sudo python3 -m pip install boto3
+sudo chmod +x blend-file-queue-listener.py
 
 sudo cp ./blend-file-queue-listener.service /lib/systemd/system
 sudo systemctl daemon-reload

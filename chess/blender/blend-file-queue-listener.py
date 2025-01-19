@@ -14,6 +14,6 @@ while True:
         MaxNumberOfMessages=1,
         WaitTimeSeconds=120)
     filename = f"/var/wernerware/sqs_reporter/report_{str(time.now())}.txt"
-    with open(filename, 'w') as f:
-        f.write(json.loads(message))
+    with open(filename, "w") as f:
+        f.write(json.dumps(message))
     time.sleep(10) # let's just make sure I don't spam sqs
