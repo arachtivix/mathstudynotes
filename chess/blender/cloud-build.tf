@@ -210,10 +210,14 @@ mainSteps:
     name: setupBlenderEnvironment
     inputs:
       runCommand:
-        - cd ~
+        - sudo yum update
+        - sudo yum install git -y
+        - mkdr -p /var/wernerware/
+        - cd /var/wernerware
         - git clone https://github.com/arachtivix/mathstudynotes
         - cd mathstudynotes/chess/blender
         - sudo bash setup-instance.sh
+        - echo cd /var/wernerware/mathstudynotes/chess/blender >> ~/.bashrc
 DOC
 
   tags = {
