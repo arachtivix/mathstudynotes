@@ -25,7 +25,7 @@ bpy.data.objects.remove(bpy.data.objects["Cube"])
 def import_piece(piece_name, mat):
     # Get the path to the assets folder using PYTHONPATH
     # Assuming 'assets' is in your PYTHONPATH
-    filepath = os.path.join(os.environ.get('PYTHONPATH', ''), 'assets', 'pieces', piece_name + '.blend')
+    filepath = os.path.join(os.environ.get('PYTHONPATH', ''), 'assets', 'chess_pieces', piece_name + '.blend')
     
     # Import the object from the blend file
     with bpy.data.libraries.load(filepath) as (data_from, data_to):
