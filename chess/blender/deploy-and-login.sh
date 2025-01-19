@@ -1,10 +1,6 @@
 #!/bin/bash
 
-set -e  # Exit on any error
-
-# Run terraform apply and capture the output
-echo "Applying Terraform configuration..."
-terraform apply
+set -e
 
 # Get the instance ID from terraform output
 INSTANCE_ID=$(terraform output -raw blender_instance_id)

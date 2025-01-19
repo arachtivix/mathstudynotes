@@ -1,15 +1,15 @@
+#!/bin/bash
+
 set -ex
 
-systemctl enable amazon-ssm-agent
-systemctl start amazon-ssm-agent
-
-
 echo "Setting up Blender instance..."
-cd ~
+sudo yum update
+sudo yum install git -y
+sudo mkdr -p /var/wernerware/
+
+cd /var/wernerware/
 git clone https://github.com/arachtivix/mathstudynotes
 cd mathstudynotes/chess/blender
-
-sudo sh install-bender.sh
 
 echo "Installing Blender..."
 sudo sh install-blender.sh
