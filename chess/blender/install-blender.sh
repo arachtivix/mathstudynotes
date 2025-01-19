@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ex
+
 # Update system and install dependencies
 sudo yum update -y
 sudo yum install -y libXi libXrender libXfixes libXcomposite mesa-libGL mesa-libGLU \
@@ -25,6 +27,8 @@ sudo ln -s /opt/blender/blender /usr/local/bin/blender
 # Set permissions
 sudo chown -R root:root /opt/blender
 sudo chmod 755 /opt/blender/blender
+
+sleep 10
 
 # Verify installation
 blender --version
