@@ -5,6 +5,8 @@ set -ex
 echo "Setting up Blender instance..."
 sudo yum update
 sudo yum install git -y
+sudo pip3 install boto3
+
 sudo mkdir -p /var/wernerware/
 
 cd /var/wernerware/

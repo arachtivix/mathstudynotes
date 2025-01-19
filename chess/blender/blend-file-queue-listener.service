@@ -1,0 +1,8 @@
+[Unit]
+Description=Blend File Queue Listener
+
+[Service]
+ExecStart=/var/wernerware/mathstudynotes/chess/blender/blend-file-queue-listener.py
+
+[Install]
+WantedBy=multi-user.target

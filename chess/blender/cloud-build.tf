@@ -195,3 +195,16 @@ resource "aws_iam_role_policy" "s3_access" {
     ]
   })
 }
+
+
+resource "aws_sqs_queue" "gen_blend_files_queue" {
+  name = "wernerware-gen-blends"
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.gen_blend_files_dlq.arn
+    maxReceiveCount     = 1
+  })
+}
+
+resource "aws_sqs_queue" "gen_blend_files_dlq" {
+  name = "wernerware-gen-blends-dlq"
+}
