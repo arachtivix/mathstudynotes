@@ -1,3 +1,5 @@
+set -ex
+
 systemctl enable amazon-ssm-agent
 systemctl start amazon-ssm-agent
 
@@ -13,5 +15,6 @@ echo "Installing Blender..."
 sudo sh install-blender.sh
 
 echo "Syncing assets from S3 bucket"
-mkdir -p assets
+sudo mkdir -p assets
 aws s3 sync s3://wernerware-blender-assets ./assets/
+echo cd /var/wernerware/mathstudynotes/chess/blender >> ~/.bashrc
