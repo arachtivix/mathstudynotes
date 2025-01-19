@@ -108,10 +108,25 @@ data "template_file" "setup_script" {
   template = file("${path.module}/setup-instance.sh")
 }
 
+variable "ec2_ami" {
+  type = string
+  default = "ami-043a5a82b6cf98947"
+}
+
+variable "volume_size" {
+  type = number
+  default = 15
+}
+
+variable "instance_type" {
+  type = string
+  default = "t2.micro"
+}
+
 # EC2 Instance
 resource "aws_instance" "blender_instance" {
-  ami           = "ami-031290e21cc458792"
-  instance_type = "g6.xlarge"
+  ami           = var.ec2_ami
+  instance_type = var.instance_type
 
   subnet_id                   = "subnet-0cd3d3cf47168c732"
   vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
@@ -119,7 +134,7 @@ resource "aws_instance" "blender_instance" {
   iam_instance_profile        = aws_iam_instance_profile.ec2_ssm_profile.name
 
   root_block_device {
-    volume_size = 45  # Size in GB
+    volume_size = var.volume_size
     volume_type = "gp3"
   }
 
