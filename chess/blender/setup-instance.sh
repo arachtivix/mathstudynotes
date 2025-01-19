@@ -21,6 +21,13 @@ sudo mkdir -p assets
 aws s3 sync s3://wernerware-blender-assets ./assets/
 echo cd /var/wernerware/mathstudynotes/chess/blender >> ~/.bashrc
 
+sudo python3 -m pip install boto3
+
+sudo cp ./blend-file-queue-listener.service /lib/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable blend-file-queue-listener
+sudo systemctl start blend-file-queue-listener
+
 # Verify blender installation
 blender --version
 
