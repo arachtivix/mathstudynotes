@@ -5,7 +5,7 @@ set -ex
 echo "Setting up Blender instance..."
 sudo yum update
 sudo yum install git -y
-sudo mkdr -p /var/wernerware/
+sudo mkdir -p /var/wernerware/
 
 cd /var/wernerware/
 git clone https://github.com/arachtivix/mathstudynotes
