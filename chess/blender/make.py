@@ -214,7 +214,7 @@ print("baking the physics")
 start_frame = 1;
 end_frame = 10;
 scene = bpy.context.scene
-setup_cycles_render(False)
+setup_eevee_render()
 
 scene.frame_start = start_frame
 scene.frame_end = end_frame

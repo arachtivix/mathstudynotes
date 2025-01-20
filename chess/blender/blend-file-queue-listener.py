@@ -2,6 +2,7 @@
 
 import boto3
 import time
+import datetime
 import json
 
 
@@ -13,7 +14,7 @@ while True:
         QueueUrl="https://sqs.us-east-1.amazonaws.com/650354402179/wernerware-gen-blends",
         MaxNumberOfMessages=1,
         WaitTimeSeconds=10)
-    filename = f"/var/wernerware/sqs_reporter/report_{str(time.now())}.txt"
+    filename = f"/var/wernerware/sqs_reporter/report_{str(datetime.datetime.now())}.txt"
     with open(filename, "w") as f:
         f.write(json.dumps(message))
     time.sleep(10) # let's just make sure I don't spam sqs
