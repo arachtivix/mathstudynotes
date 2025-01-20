@@ -12,7 +12,7 @@ while True:
     message = client.receive_message(
         QueueUrl="https://sqs.us-east-1.amazonaws.com/650354402179/wernerware-gen-blends",
         MaxNumberOfMessages=1,
-        WaitTimeSeconds=120)
+        WaitTimeSeconds=10)
     filename = f"/var/wernerware/sqs_reporter/report_{str(time.now())}.txt"
     with open(filename, "w") as f:
         f.write(json.dumps(message))
