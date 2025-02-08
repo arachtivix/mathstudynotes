@@ -198,7 +198,7 @@ resource "aws_iam_role_policy" "s3_access" {
 
 # Add S3 permissions to the existing EC2 role
 resource "aws_iam_role_policy" "blend_file_queue_access" {
-  name = "s3-blender-assets-access"
+  name = "blend-file-queue-access"
   role = aws_iam_role.ec2_ssm_role.id
 
   policy = jsonencode({
@@ -210,7 +210,7 @@ resource "aws_iam_role_policy" "blend_file_queue_access" {
           "sqs:GetMessage",
           "sqs:DeleteMessage",
           "sqs:GetQueueUrl",
-          "sqs:ReceiveMessage"
+          "sqs:ReceiveMessage"  
         ]
         Resource = [
           aws_sqs_queue.gen_blend_files_queue.arn
