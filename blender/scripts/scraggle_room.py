@@ -4,6 +4,8 @@ import math
 import random
 import mathutils
 
+# makes a scraggly room-shaped mesh
+
 print("======")
 
 # Select all objects
@@ -46,11 +48,14 @@ sides = 40
 max_rad = 5
 min_rad = 2
 verts = []
+locs = []
 for s in range(sides):
     theta = math.pi * 2 * s / sides
     radius = random.random() * (max_rad - min_rad) + min_rad
-    vert = bm.verts.new((math.cos(theta) * radius, math.sin(theta) * radius, 0))
+    loc = (math.cos(theta) * radius, math.sin(theta) * radius, 0)
+    vert = bm.verts.new(loc)
     verts.append(vert)
+    locs.append(loc)
 
 # Update the bmesh and create the face
 bm.faces.new(verts)
@@ -96,5 +101,31 @@ for f in bm.faces:
         
 bpy.ops.mesh.extrude_context_move(TRANSFORM_OT_translate={"value":(0, 0, 0.75)})
 
+def get_random_point_along_line(t1, t2):
+    d1 = t1[0] - t2[0]
+    d2 = t1[1] - t2[1]
+    d3 = t1[2] - t2[2]
+    rnd = random.random()
+    return (t2[0] + rnd * d1, t2[1] + rnd * d2, t2[2] + rnd * d3)
+
+def avg_points(pts):
+    xsum = sum([p[0] for p in pts])
+    ysum = sum([p[1] for p in pts])
+    zsum = sum([p[2] for p in pts])
+    pts_ct = len(pts)
+    return (xsum / pts_ct, ysum / pts_ct, zsum / pts_ct)
+
 def get_random_place_in_triangle(p1, p2, p3):
-    pass
+    m1 = get_random_point_along_line(p1, p2)
+    m2 = get_random_point_along_line(p2, p3)
+    m3 = get_random_point_along_line(p3, p1)
+    return avg_points([m1, m2, m3])
+
+def get_all_triangles(vs):
+    locs = [v for v in vs]
+    centers = [(0.0,0.0,0.0)] * len(locs)
+    offByOnes = locs[1:]
+    offByOnes.append(locs[0])
+    return zip(locs, centers, offByOnes)
+
+print([t for t in get_all_triangles(locs)])
