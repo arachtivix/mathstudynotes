@@ -15,20 +15,6 @@ bpy.ops.object.select_all(action='SELECT')
 # Delete all selected objects
 bpy.ops.object.delete()
 
-# Add a new camera
-bpy.ops.object.camera_add(location=(3, -8, 4), rotation=(1.1, 0, 0))
-camera = bpy.context.object
-camera.name = "Default_Camera"
-
-# Set the new camera as the active camera
-bpy.context.scene.camera = camera
-
-# Add a new light
-light1 = bpy.ops.object.light_add(type='POINT', location=(0, 0, 3))
-light = bpy.context.object
-light.name = "Default_Light"
-light.data.energy = 1000
-
 # Create a new mesh and object
 mesh = bpy.data.meshes.new('PolygonMesh')
 polygon_obj = bpy.data.objects.new('PolygonObject', mesh)
@@ -115,7 +101,10 @@ def avg_points(pts):
     pts_ct = len(pts)
     return (xsum / pts_ct, ysum / pts_ct, zsum / pts_ct)
 
-def get_random_place_in_triangle(p1, p2, p3):
+def get_random_place_in_triangle(t1):
+    p1 = t1[0]
+    p2 = t1[1]
+    p3 = t1[2]
     m1 = get_random_point_along_line(p1, p2)
     m2 = get_random_point_along_line(p2, p3)
     m3 = get_random_point_along_line(p3, p1)
@@ -126,6 +115,57 @@ def get_all_triangles(vs):
     centers = [(0.0,0.0,0.0)] * len(locs)
     offByOnes = locs[1:]
     offByOnes.append(locs[0])
-    return zip(locs, centers, offByOnes)
+    return [t for t in zip(locs, centers, offByOnes)]
 
-print([t for t in get_all_triangles(locs)])
+def get_random_inbounds(ts):
+    r_ind = random.randint(0, len(ts) - 1)
+    at_floor = get_random_place_in_triangle(ts[r_ind])
+    return (at_floor[0], at_floor[1], 0.5)
+
+ts = get_all_triangles(locs)
+cam_loc = get_random_inbounds(ts)
+
+# Return to object mode
+bpy.ops.object.mode_set(mode='OBJECT')
+
+# Add a new camera
+bpy.ops.object.camera_add(location=cam_loc, rotation=(1.1, 0, 0))
+camera = bpy.context.object
+camera.name = "Default_Camera"
+
+# Set the new camera as the active camera
+bpy.context.scene.camera = camera
+
+
+def look_at(obj_camera, ptup):
+    pvec = mathutils.Vector(ptup)
+    loc_camera = obj_camera.matrix_world.to_translation()
+
+    direction = pvec - loc_camera
+    # point the cameras '-Z' and use its 'Y' as up
+    rot_quat = direction.to_track_quat('-Z', 'Y')
+
+    # assume we're using euler rotation
+    obj_camera.rotation_euler = rot_quat.to_euler()
+    
+look_loc = get_random_inbounds(ts)
+look_at(camera, look_loc)
+
+# Add a new light
+light_loc = get_random_inbounds(ts)
+light1 = bpy.ops.object.light_add(type='POINT', location=light_loc)
+light = bpy.context.object
+light.name = "Default_Light"
+light.data.energy = 1000
+
+# Set the file path where you want to save the rendered image
+file_path = "C:\\Users\\danie\\blender_pics\\" + str(random.randint(0,1000000))
+
+# Set the render settings
+bpy.context.scene.render.image_settings.file_format = 'PNG'
+bpy.context.scene.render.filepath = file_path
+
+# Render the current frame and save it
+bpy.ops.render.render(write_still=True)
+
+print(f"Rendered image saved to {file_path}")
