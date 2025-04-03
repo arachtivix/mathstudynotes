@@ -5,6 +5,7 @@ Following Blender development guidelines for reusable code.
 import bpy
 import random
 from mathutils import Vector
+from utilities import setup_render_defaults
 
 def create_glass_material(name, color=(1, 1, 1, 1)):
     """Create a glass material with the specified color."""
@@ -104,10 +105,9 @@ def main():
     camera, lamp = setup_scene()
     
     # Set up render settings
+    setup_render_defaults()
     bpy.context.scene.render.engine = 'CYCLES'
     bpy.context.scene.cycles.samples = 128
-    bpy.context.scene.render.resolution_x = 1920
-    bpy.context.scene.render.resolution_y = 1080
 
     # Render the current frame and save it
     bpy.ops.render.render(write_still=True)

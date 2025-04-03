@@ -35,15 +35,6 @@ def setup_render_defaults():
     render.resolution_y = 1080
     render.resolution_percentage = 100
     
-    # Enable GPU compute if available
-    cycles_prefs = bpy.context.preferences.addons['cycles'].preferences
-    cuda_devices = cycles_prefs.get_devices_for_type('CUDA')
-    if cuda_devices:
-        cycles_prefs.compute_device_type = 'CUDA'
-        for device in cuda_devices:
-            device.use = True
-        scene.cycles.device = 'GPU'
-    
     return render_dir
 
 
