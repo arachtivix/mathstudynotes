@@ -4,7 +4,14 @@
 
 Based on analysis of existing Blender Python code and best practices, here are key guidelines for writing reusable Blender Python code:
 
-## 1. Modular Design
+## 1. Render Output Management
+- Configure render output to use timestamped directories in /tmp
+- Use the `utilities.setup_render_defaults()` function to:
+  - Create output directory named "YYYY-MM-DD-HH-MM_render"
+  - Set default render settings (1920x1080, PNG with alpha)
+  - Enable GPU rendering when available
+
+## 2. Modular Design
 - Break functionality into small, focused modules that do one thing well
 - Use classes and functions that can work independently
 - Avoid tight coupling between components
