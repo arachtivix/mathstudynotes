@@ -1,6 +1,7 @@
 import bpy
 import os
 from datetime import datetime
+from contextlib import contextmanager
 
 def setup_render_defaults():
     """Sets up default render settings and output directory for Blender renders.
@@ -44,3 +45,45 @@ def setup_render_defaults():
         scene.cycles.device = 'GPU'
     
     return render_dir
+
+
+@contextmanager
+def editor_context(context):
+    '''A context manager for safely managing Blender editor state.
+    
+    This wrapper ensures that editor state is properly saved and restored
+    when performing operations that might modify the global editor state.
+    
+    Args:
+        context: The current Blender context
+        
+    Yields:
+        context: The context object for use within the managed block
+        
+    Example:
+        with editor_context(bpy.context) as ctx:
+            # Perform operations that might modify editor state
+            # State will be automatically restored after the block
+    '''
+    # Store initial state
+    initial_mode = context.mode
+    initial_active = context.active_object
+    initial_selected = context.selected_objects.copy()
+    
+    try:
+        yield context
+    finally:
+        # Restore selection state
+        for obj in context.selected_objects:
+            obj.select_set(False)
+        for obj in initial_selected:
+            if obj:
+                obj.select_set(True)
+        
+        # Restore active object
+        if initial_active:
+            context.view_layer.objects.active = initial_active
+            
+        # Restore mode
+        if initial_mode != context.mode:
+            bpy.ops.object.mode_set(mode=initial_mode)

@@ -11,12 +11,12 @@ Based on analysis of existing Blender Python code and best practices, here are k
   - Set default render settings (1920x1080, PNG with alpha)
   - Enable GPU rendering when available
 
-## 2. Modular Design
-- Break functionality into small, focused modules that do one thing well
+## 3. Clear Dependencies
+- Explicitly import required Blender modules (bpy, bmesh, etc.)
 - Use classes and functions that can work independently
 - Avoid tight coupling between components
 
-## 2. Clear Dependencies
+## 4. Error Handling
 - Explicitly import required Blender modules (bpy, bmesh, etc.)
 - Document any required Blender version dependencies
 - Keep external dependencies minimal and document them
@@ -52,38 +52,51 @@ Based on analysis of existing Blender Python code and best practices, here are k
 - Use Blender's built-in property system
 - Consider add-on compatibility if relevant
 
-## Example Structure:
+## 2. Example Structure and Modular Design
+- Break functionality into small, focused modules that do one thing well
+- Use wrapper functions to handle common patterns like state management
+- Keep functions simple and focused on a single task
+
 ```python
 import bpy
-import bmesh
+from blender.scripts.transformations import transform_object
 
-class MyBlenderTool:
-    """A reusable tool for Blender operations.
+def transform_object(context, object_name, location=None, rotation=None, scale=None):
+    """Transforms a Blender object with proper context management.
     
     Args:
-        param1: Description of parameter
-        param2: Description of parameter
+        context: The current Blender context
+        object_name: Name of the object to transform
+        location: Optional new location (x, y, z)
+        rotation: Optional new rotation in radians (x, y, z)
+        scale: Optional new scale (x, y, z)
+        
+    Returns:
+        True if transformation was successful
+        
+    Raises:
+        ValueError: If object is not found or transformation fails
     """
-    
-    def __init__(self, param1, param2=default_value):
-        self.param1 = param1
-        self.param2 = param2
-        
-    def my_operation(self):
-        """Performs specific Blender operation.
-        
-        Returns:
-            Description of return value
-        
-        Raises:
-            ValueError: Description of when this might occur
-        """
+    with editor_context(context) as ctx:
         try:
-            # Blender operations here
-            pass
+            # Access the object safely within the context
+            obj = ctx.scene.objects.get(object_name)
+            if not obj:
+                raise ValueError(f"Object {object_name} not found")
+            
+            if location:
+                obj.location = location
+            if rotation:
+                obj.rotation_euler = rotation
+            if scale:
+                obj.scale = scale
+                
+            return True
         except Exception as e:
-            # Handle errors appropriately
-            raise
+            raise ValueError(f"Transform operation failed: {str(e)}")
+
+# Example usage:
+# transform_object(bpy.context, "Cube", location=(1, 0, 0), rotation=(0, 0, 1.5708))
 ```
 
 ## 9. Editor State Management
