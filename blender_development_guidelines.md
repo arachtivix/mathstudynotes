@@ -52,7 +52,7 @@ Based on analysis of existing Blender Python code and best practices, here are k
 - Use Blender's built-in property system
 - Consider add-on compatibility if relevant
 
-## 2. Example Structure and Modular Design
+## 9. Example Structure and Modular Design
 - Break functionality into small, focused modules that do one thing well
 - Use wrapper functions to handle common patterns like state management
 - Keep functions simple and focused on a single task
@@ -99,7 +99,7 @@ def transform_object(context, object_name, location=None, rotation=None, scale=N
 # transform_object(bpy.context, "Cube", location=(1, 0, 0), rotation=(0, 0, 1.5708))
 ```
 
-## 9. Editor State Management
+## 10. Editor State Management
 - Always save and restore editor context when modifying it
 - Use context override instead of modifying global state when possible
 - Clean up any temporary editor state changes
