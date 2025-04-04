@@ -101,9 +101,312 @@ def transform_object(context, object_name, location=None, rotation=None, scale=N
 
 ## 10. Editor State Management
 - Always save and restore editor context when modifying it
+- Organize imports and definitions carefully:
+  - Import context managers separately from regular functions
+  - Define context managers before functions that use them
+  - Use explicit imports rather than importing *
+  - Example:
+    ```python
+    # CORRECT - Clear separation of imports
+    from utilities import editor_context  # Context manager first
+    from utilities import operation1, operation2  # Regular functions
+    
+    # INCORRECT - May cause decorator confusion
+    from utilities import *  # Don't use wildcard imports
+    from utilities import operation1, editor_context  # Mixed import types
+    ```
+- Use context managers to handle editor state changes:
+  - Implement proper context managers using @contextmanager decorator:
+    - Define context managers before any functions that use them
+    - Apply @contextmanager directly to the function definition
+    - Do not reassign decorated functions as it breaks the context manager protocol
+    - Ensure error handling in finally blocks
+    - Catch and handle specific exceptions that may occur during cleanup
+    - Avoid mixing context managers with functions that manage their own state:
+      - Functions should either use a context manager OR manage state themselves, not both
+      - When using context managers, keep functions focused on their core logic
+      - Let the context manager handle all state management
+      - Functions that use context managers should be wrapped by the caller, not internally:
+      - Keep functions focused on core operations
+      - Let the caller decide when to use context management
+      - Group multiple operations under a single context manager when possible
+      - Example:
+        ```python
+        # GOOD: Multiple operations under one context
+        with editor_context(context):
+            result1 = operation1()  # Clean operation
+            result2 = operation2()  # Clean operation
+            
+        # BAD: Unnecessary context switching
+        with editor_context(context):
+            result1 = operation1()
+        with editor_context(context):  # Avoid multiple contexts
+            result2 = operation2()
+        ```
+      - Example of correct usage:
+        ```python
+        # CORRECT - Context manager applied by caller
+        def modify_object(context, obj):
+            # Just do the core operation
+            obj.location.x += 1
+            
+        # Caller manages the context
+        with editor_context(context):
+            modify_object(context, my_obj)
+            
+        # INCORRECT - Function trying to manage its own context
+        def modify_object(context, obj):
+            # Don't mix core logic with context management
+            with editor_context(context):
+                obj.location.x += 1  # This should be a separate function
+        ```
+  - Example:
+    ```python
+    # CORRECT - direct decoration
+    @contextmanager
+    def editor_context(context):
+        initial_state = save_state()
+        try:
+            yield context
+        finally:
+            try:
+                restore_state(initial_state)
+            except Exception:
+                # Log or handle cleanup errors
+                pass
+                
+    # INCORRECT - breaks context manager protocol
+    @contextmanager
+    def _editor_context(context):
+        # ...
+        
+    editor_context = _editor_context  # Don't do this!
+    ```
 - Use context override instead of modifying global state when possible
 - Clean up any temporary editor state changes
 - Use context managers (`with` statements) for temporary state changes
+- Handle Python module caching and reloading:
+  - Be aware of Python's module caching behavior in Blender
+  - Use importlib.reload() when testing module changes
+  - Clear sys.modules entries for fully fresh imports
+  - Restart Blender for clean state when debugging imports
+  - Example module reloading:
+    ```python
+    import importlib
+    import sys
+    
+    # When changing module code:
+    if "my_module" in sys.modules:
+        importlib.reload(sys.modules["my_module"])
+    import my_module
+    
+    # For complete reset:
+    if "my_module" in sys.modules:
+        del sys.modules["my_module"]
+    import my_module  # Fresh import
+    ```
+  - Test code changes immediately:
+  - Create dedicated test scripts for each module
+  - Run tests after every file modification
+  - Verify file contents match expected code
+  - Example test workflow:
+    ```python
+    # reload_test.py
+    import bpy
+    import dev_reload
+    import my_module
+    
+    # Force reload
+    my_module = dev_reload.clean_reload("my_module")
+    
+    # Clear scene
+    for obj in bpy.data.objects:
+        bpy.data.objects.remove(obj, do_unlink=True)
+        
+    # Run test
+    my_module.test_function()
+    ```
+  - Check file contents during development:
+    ```python
+    # Quick file content check
+    with open("my_module.py", "r") as f:
+        print(f.read())  # Verify content matches expected
+    ```
+  - Always test context managers after changes:
+    ```python
+    # Test context manager directly
+    with my_context_manager():
+        pass  # Should work without errors
+    ```
+
+- Verify filesystem state:
+  - Check actual file contents on disk match expected code
+  - Look for duplicate files in different locations
+  - Verify Python path and import locations
+  - Use absolute paths during development
+  - Example filesystem checks:
+    ```python
+    # Check file location and content
+    import os
+    import sys
+    
+    # Print actual file location
+    print(f"Module location: {my_module.__file__}")
+    
+    # Check Python path
+    print("\nPython path:")
+    for path in sys.path:
+        print(f"  {path}")
+        
+    # Verify file contents
+    def check_file(path):
+        try:
+            with open(path, 'r') as f:
+                print(f"\nFile contents of {path}:")
+                print(f.read())
+        except Exception as e:
+            print(f"Error reading {path}: {e}")
+            
+    # Check both possible locations
+    check_file("./my_module.py")
+    check_file(my_module.__file__)
+    ```
+  - Common filesystem issues:
+    - Files saved to wrong location
+    - Multiple copies of same file
+    - Incorrect Python path
+    - File permissions issues
+    - Hidden backup files
+    - Case sensitivity mismatches
+
+- Know when to restart Blender:
+  - Some changes require a complete Blender restart
+  - Particularly when working with decorators
+  - Common scenarios requiring restart:
+    - Context manager definition changes
+    - Decorator application changes
+    - Import order issues with decorated functions
+    - Stubborn module caching issues
+  - Signs you need a restart:
+    - Reloading modules doesn't fix the issue
+    - File content looks correct but error persists
+    - Decorators not working as expected
+    - Context managers showing wrong behavior
+  - Example restart workflow:
+    ```python
+    # If you see unexpected decorator behavior:
+    # 1. Save all files
+    # 2. Exit Blender completely
+    # 3. Delete __pycache__ directories
+    # 4. Restart Blender
+    # 5. Import modules fresh
+    ```
+
+- Troubleshoot context manager errors:
+  - Common context manager error patterns:
+    ```python
+    # TypeError: 'generator' object does not support the context manager protocol
+    # This usually means:
+    # 1. A regular function is being used as a context manager
+    # 2. A context manager is defined incorrectly
+    # 3. Module reload hasn't picked up decorator changes
+    ```
+  - Quick context manager checks:
+    ```python
+    # Check if function is a context manager
+    from inspect import isgenerator
+    
+    def is_context_manager(obj):
+        """Check if object is properly decorated as context manager."""
+        return hasattr(obj, '__enter__') and hasattr(obj, '__exit__')
+        
+    def check_context_manager(name, obj):
+        print(f"\nChecking {name}:")
+        print(f"Is generator? {isgenerator(obj)}")
+        print(f"Is context manager? {is_context_manager(obj)}")
+        print(f"Has __enter__? {hasattr(obj, '__enter__')}")
+        print(f"Has __exit__? {hasattr(obj, '__exit__')}")
+        
+    # Usage:
+    check_context_manager("editor_context", editor_context)
+    ```
+  - Debug context manager usage:
+    ```python
+    # Test context manager separately
+    try:
+        with suspect_function() as ctx:
+            pass
+    except Exception as e:
+        print(f"Context manager error: {e}")
+        print(f"Type: {type(suspect_function)}")
+    ```
+  - Common fixes:
+    - Ensure @contextmanager decorator is applied
+    - Check import path is correct
+    - Verify function isn't reassigned
+    - Force module reload
+    - Clear __pycache__
+    - Restart Blender
+
+- Handle Blender-specific module reloading:
+    - Be aware of both Python caching and Blender registration
+    - Use dev_reload.py for Blender-safe module reloading
+    - Place dev_reload.py in your scripts directory
+    - Reload both Python modules and Blender registrations
+    - Example Blender development workflow:
+      ```python
+      # In Blender text editor, create reload.py:
+      import dev_reload
+      import utilities
+      
+      # When editing code:
+      utilities = dev_reload.clean_reload("utilities")
+      
+      # To force complete reload including Blender registration:
+      bpy.ops.script.reload()
+      
+      # To prevent .pyc creation during development:
+      import os
+      os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+      ```
+    - Example dev_reload.py for Blender:
+      ```python
+      # dev_reload.py
+      import os
+      import sys
+      import importlib
+      
+      def clean_reload(module_name):
+          """Force reload a module and its submodules."""
+          # Remove .pyc files
+          module = sys.modules.get(module_name)
+          if module:
+              module_dir = os.path.dirname(module.__file__)
+              cache_dir = os.path.join(module_dir, "__pycache__")
+              if os.path.exists(cache_dir):
+                  for cache_file in os.listdir(cache_dir):
+                      if cache_file.startswith(module_name):
+                          os.remove(os.path.join(cache_dir, cache_file))
+          
+          # Clear from sys.modules
+          to_reload = [
+              m for m in sys.modules
+              if m == module_name or m.startswith(module_name + ".")
+          ]
+          for m in to_reload:
+              del sys.modules[m]
+              
+          # Fresh import
+          return importlib.import_module(module_name)
+      
+      # Usage:
+      # import dev_reload
+      # my_module = dev_reload.clean_reload("my_module")
+      ```
+    - For quick testing, delete __pycache__:
+      ```bash
+      find . -type d -name "__pycache__" -exec rm -r {} +
+      ```
 - Document any editor state dependencies or modifications
 - Be aware of active object, mode, and selection state impacts
 - Consider thread safety when dealing with editor state
