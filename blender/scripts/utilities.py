@@ -9,6 +9,8 @@ Notes:
 """
 
 import bpy
+import bmesh
+import json
 import os
 import sys
 from datetime import datetime
@@ -125,3 +127,71 @@ def setup_render_defaults():
     render.resolution_y = 1080
     render.resolution_percentage = 100
     return render_dir
+
+
+def export_mesh_data(obj):
+    """Export mesh data to a JSON string representation.
+    
+    Args:
+        obj: Blender mesh object to export
+        
+    Returns:
+        str: JSON string containing vertex coordinates and face indices
+    """
+    if not obj or obj.type != 'MESH':
+        raise ValueError("Object must be a mesh")
+        
+    # Create a bmesh from the object
+    bm = bmesh.new()
+    bm.from_mesh(obj.data)
+    
+    # Ensure triangulation
+    bmesh.ops.triangulate(bm, faces=bm.faces[:])
+    
+    # Extract vertex coordinates
+    vertices = [[v.co.x, v.co.y, v.co.z] for v in bm.verts]
+    
+    # Extract face indices
+    faces = [[v.index for v in f.verts] for f in bm.faces]
+    
+    # Create dictionary with mesh data
+    mesh_data = {
+        'vertices': vertices,
+        'faces': faces
+    }
+    
+    # Free the bmesh
+    bm.free()
+    
+    # Convert to JSON string
+    return json.dumps(mesh_data)
+
+def import_mesh_data(json_str, object_name="ImportedMesh"):
+    """Import mesh data from a JSON string representation.
+    
+    Args:
+        json_str: JSON string containing vertex coordinates and face indices
+        object_name: Name for the created mesh object (default: "ImportedMesh")
+        
+    Returns:
+        bpy.types.Object: The created Blender mesh object
+    """
+    # Parse JSON string
+    mesh_data = json.loads(json_str)
+    
+    # Create new mesh
+    mesh = bpy.data.meshes.new(name=object_name)
+    
+    # Create vertices and faces from the data
+    vertices = mesh_data['vertices']
+    faces = mesh_data['faces']
+    
+    # Create the mesh from vertices and faces
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    
+    # Create object and link it to the scene
+    obj = bpy.data.objects.new(object_name, mesh)
+    bpy.context.scene.collection.objects.link(obj)
+    
+    return obj
