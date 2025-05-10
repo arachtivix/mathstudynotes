@@ -76,6 +76,10 @@ def start_repl_with_problem(problem_number):
     """
     Start a Clojure REPL with the specified problem loaded.
     
+    This function starts a Clojure REPL and pipes an initialization script to it
+    that loads the specified problem namespace and runs the solution. The REPL
+    remains interactive after executing the initialization script.
+    
     Args:
         problem_number: The problem number to load
     """
@@ -83,10 +87,8 @@ def start_repl_with_problem(problem_number):
     proj_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "proj")
     os.chdir(proj_dir)
     
-    # Create a temporary file with REPL initialization commands
-    init_file = os.path.join(proj_dir, "temp_repl_init.clj")
-    with open(init_file, 'w') as f:
-        f.write(f"""
+    # Create the initialization script content
+    init_script = f"""
 ;; Load the problem namespace
 (require '[p{problem_number}.core :as p{problem_number}])
 
@@ -98,20 +100,43 @@ def start_repl_with_problem(problem_number):
 (println "REPL is now ready. The problem namespace is loaded as p{problem_number}")
 (println "You can access functions from the solution with p{problem_number}/function-name")
 (println "Example: (p{problem_number}/solve)")
-""")
+"""
     
     try:
-        # Start the REPL with the initialization file
+        # Start the REPL and pipe the initialization script to it
         print(f"\nStarting Clojure REPL with Problem {problem_number} loaded...")
-        subprocess.run(["lein", "repl", ":init", init_file], check=True)
+        
+        # Create a temporary file for the initialization script
+        # Note: We're still using a pipe to feed the script to the REPL,
+        # but we temporarily store the script in a file to avoid shell escaping issues
+        # This approach combines the benefits of both methods:
+        # 1. We avoid shell escaping issues with complex Clojure code
+        # 2. We use a pipe to feed the script to the REPL as requested
+        # 3. The REPL remains interactive after executing the script
+        import tempfile
+        
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as f:
+            script_path = f.name
+            f.write(init_script)
+        
+        try:
+            # Use cat to pipe the script to lein repl
+            # The '- |' part ensures that stdin is passed to the REPL after the script
+            # This allows the REPL to remain interactive
+            subprocess.run(f"cat {script_path} - | lein repl", shell=True)
+        finally:
+            # Clean up the temporary file
+            if os.path.exists(script_path):
+                os.remove(script_path)
+        
     except subprocess.CalledProcessError as e:
         print(f"Error starting REPL: {e}")
     except KeyboardInterrupt:
         print("\nREPL terminated by user.")
-    finally:
-        # Clean up the temporary file
-        if os.path.exists(init_file):
-            os.remove(init_file)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        import traceback
+        traceback.print_exc()
 
 def main():
     """Main function to start the REPL with a selected problem."""
