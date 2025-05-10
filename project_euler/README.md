@@ -62,6 +62,35 @@ clj -M -m p{number}.core
 lein run -m p{number}.core
 ```
 
+## Starting a REPL with a Solution
+
+A script is provided to start a Clojure REPL with a specific problem solution loaded:
+
+```bash
+python3 start_repl.py
+```
+
+The script will:
+1. Show the five most recently updated problem solutions
+2. Prompt you to select one of these problems or enter a different problem number
+3. Start a Clojure REPL with the selected problem's solution loaded and executed
+4. Allow you to interact with the solution code in the REPL
+
+If you select a problem that doesn't exist yet, the script will offer to create it for you using the `create_problem.py` script.
+
+### Usage
+
+1. Run the script:
+   ```bash
+   python3 start_repl.py
+   ```
+
+2. Select a problem from the list or enter a problem number.
+
+3. The REPL will start with the problem solution loaded and executed.
+
+4. You can now interact with the solution code in the REPL.
+
 ## Compiling LaTeX Documentation
 
 To compile the LaTeX documentation for a problem:

@@ -26,3 +26,9 @@
            (conj (get-factors nn try-factors) first-factor))
         :else (recur n remain))))
 
+(defn solve []
+  (print (get-factors 600851475143)))
+
+(defn -main []
+  (println "Solution to Problem 3:")
+  (println (solve)))
