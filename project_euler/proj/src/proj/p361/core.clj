@@ -1,4 +1,5 @@
-(ns p361.core)
+(ns proj.p361.core
+  (:gen-class))
 
 (defn f
   ([n]
@@ -35,7 +36,11 @@
              (recur new-n (+ consec-so-far (bigint 1)) tot remainder)
              (recur new-n 1 tot remainder))))))
 
+(defn solve []
+  ;; TODO: Implement solution
+  nil)
 
-
-
+(defn -main []
+  (println "Solution to Problem 361:")
+  (println (solve)))
 

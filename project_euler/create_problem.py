@@ -72,7 +72,7 @@ def create_clojure_file(problem_number, problem_title, folder_path):
     file_path = os.path.join(folder_path, "core.clj")
     
     template = f"""
-(ns p{problem_number}.core
+(ns proj.p{problem_number}.core
   (:require [clojure.math :as math]
             [proj.shared :as shared])
   (:gen-class))

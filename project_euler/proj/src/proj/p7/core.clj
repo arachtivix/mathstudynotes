@@ -1,5 +1,5 @@
-(ns p7.core)
-
+(ns proj.p7.core
+  (:gen-class))
 
 (defn calc-next-range
   [p]
@@ -24,4 +24,9 @@
         p4 (concat p3 (primes p3))]
     p4))
 
-(println "ans = " (last (take 10001 long-seq-o-primes)))
+(defn solve []
+  (last (take 10001 long-seq-o-primes)))
+
+(defn -main []
+  (println "Solution to Problem 7:")
+  (println (solve)))

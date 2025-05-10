@@ -1,4 +1,5 @@
-(ns p9.core)
+(ns proj.p9.core
+  (:gen-class))
 
 (def max-c 997)
 (def max-c-sq (* max-c max-c))
@@ -42,14 +43,17 @@
    '()
    (sqs-up-to n)))
 
-(def answ-abc
-  (take 1
-        (filter
-         #(= 1000 (apply + %))
-         (all-abcs max-c-sq))))
+(defn solve []
+  (let [answ-abc (take 1
+                      (filter
+                       #(= 1000 (apply + %))
+                       (all-abcs max-c-sq)))
+        ans-vec (first answ-abc)
+        a (get ans-vec 0)
+        b (get ans-vec 1)
+        c (get ans-vec 2)]
+    (* a b c)))
 
-(let [ans-vec (first answ-abc)
-      a (get ans-vec 0)
-      b (get ans-vec 1)
-      c (get ans-vec 2)]
-  (println "answ " [a b c] " -> " (* a b c)))
+(defn -main []
+  (println "Solution to Problem 9:")
+  (println (solve)))

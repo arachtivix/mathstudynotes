@@ -1,4 +1,5 @@
-(ns p12.core)
+(ns proj.p12.core
+  (:gen-class))
 
 ; it seems these may have little to do with the solution, but I
 ; made a slightly handier way of getting a specific number of primes
@@ -62,11 +63,16 @@
                         '()
                         rfs)))))
 
-(defn solve
+(defn solve-with-params
   [n nn]
   (let [cnt (divisor-count n)]
     (println "checking " n ": count = " cnt)
     (cond (< 500 cnt) n
           :else (recur (+ n nn) (+ 1 nn)))))
 
-(def answ (solve 1 2))
+(defn solve []
+  (solve-with-params 1 2))
+
+(defn -main []
+  (println "Solution to Problem 12:")
+  (println (solve)))

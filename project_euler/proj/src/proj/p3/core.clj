@@ -1,5 +1,5 @@
 
-(ns p3.core
+(ns proj.p3.core
   (:require [clojure.math :as math])
   (:gen-class))
 

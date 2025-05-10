@@ -1,5 +1,5 @@
 
-(ns p26.core
+(ns proj.p26.core
   (:require [clojure.math :as math]
             [proj.shared :as shared])
   (:gen-class))

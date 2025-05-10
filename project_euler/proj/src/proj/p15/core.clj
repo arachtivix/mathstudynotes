@@ -1,4 +1,5 @@
-(ns p15.core)
+(ns proj.p15.core
+  (:gen-class))
 
 (defn factorial
   ([n]
@@ -12,7 +13,11 @@
 ; the problem can be re-imagined as a sequence of chars D and R
 ; (D=down R=right) where you need to end up with 20 Ds and 20 Rs
 ; in any order, i.e. choosing 20 places of 40
-(def answ
+(defn solve []
   (/
    (factorial (bigint 40))
    (* (bigint (factorial 20)) (bigint (factorial 20)))))
+
+(defn -main []
+  (println "Solution to Problem 15:")
+  (println (solve)))

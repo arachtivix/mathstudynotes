@@ -1,5 +1,5 @@
-(ns p10.core)
-
+(ns proj.p10.core
+  (:gen-class))
 
 (defn calc-next-range
   [p]
@@ -27,9 +27,9 @@
         p5 (concat p4 (primes p4))]
     p5))
 
-; takes a min or two -- probably way overshooting the number of primes
-; needed in the sequence
-(def answ (apply + (take-while #(<= % 2000000) long-seq-o-primes)))
+(defn solve []
+  (apply + (take-while #(<= % 2000000) long-seq-o-primes)))
 
-(println "answ = " answ)
-
+(defn -main []
+  (println "Solution to Problem 10:")
+  (println (solve)))

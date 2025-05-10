@@ -1,4 +1,4 @@
-(ns p879.core
+(ns proj.p879.core
   (:gen-class))
 
 
@@ -104,3 +104,11 @@
     (filter
      #(and (is-valid-pos % dim) (get board (to-int % dim)))
      (rest (from-to from to)))))
+
+(defn solve []
+  ;; TODO: Implement solution
+  nil)
+
+(defn -main []
+  (println "Solution to Problem 879:")
+  (println (solve)))

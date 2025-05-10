@@ -1,4 +1,4 @@
-(ns p4.core
+(ns proj.p4.core
   (:gen-class))
 
 (defn is-pdrome
@@ -36,5 +36,10 @@
    check-divisor
    (iter-two-combos all-pdrome-cands all-three-digit-divisors)))
 
+(defn solve []
+  (first (result-coll)))
 
+(defn -main []
+  (println "Solution to Problem 4:")
+  (println (solve)))
 

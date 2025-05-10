@@ -90,7 +90,7 @@ def start_repl_with_problem(problem_number):
     # Create the initialization script content
     init_script = f"""
 ;; Load the problem namespace
-(require '[p{problem_number}.core :as p{problem_number}])
+(require '[proj.p{problem_number}.core :as p{problem_number}])
 
 ;; Run the solution
 (println "\\nRunning solution for Problem {problem_number}:")

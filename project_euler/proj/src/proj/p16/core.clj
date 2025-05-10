@@ -1,5 +1,5 @@
-(ns p16.core)
-
+(ns proj.p16.core
+  (:gen-class))
 
 (defn n-to-pow
   [n p]
@@ -19,6 +19,9 @@
    (cond (= n 0) s
          :else (recur (bigint (/ n 10)) (+ (mod n 10) s)))))
 
-(def answ (sum-base-10-digits two-pow-thous))
+(defn solve []
+  (sum-base-10-digits two-pow-thous))
 
-(println answ)
+(defn -main []
+  (println "Solution to Problem 16:")
+  (println (solve)))
