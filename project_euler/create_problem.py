@@ -20,7 +20,7 @@ def get_problem_info(problem_number):
         problem_number: The problem number to fetch
         
     Returns:
-        tuple: (problem_title, problem_content)
+        tuple: (problem_title, problem_content, html_content)
     """
     url = f"https://projecteuler.net/problem={problem_number}"
     
@@ -34,7 +34,7 @@ def get_problem_info(problem_number):
         title_element = soup.find('h2')
         if not title_element:
             print(f"Error: Could not find problem title for problem {problem_number}")
-            return None, None
+            return None, None, None
             
         # The title format is typically "Problem X: Actual Title"
         full_title = title_element.text.strip()
@@ -48,15 +48,17 @@ def get_problem_info(problem_number):
         content_element = soup.find('div', class_='problem_content')
         if not content_element:
             print(f"Error: Could not find problem content for problem {problem_number}")
-            return problem_title, None
+            return problem_title, None, None
             
+        # Get both text and HTML content
         problem_content = content_element.text.strip()
+        html_content = str(content_element)
         
-        return problem_title, problem_content
+        return problem_title, problem_content, html_content
         
     except requests.exceptions.RequestException as e:
         print(f"Error fetching problem {problem_number}: {e}")
-        return None, None
+        return None, None, None
 
 def create_clojure_file(problem_number, problem_title, folder_path):
     """
@@ -92,29 +94,33 @@ def create_clojure_file(problem_number, problem_title, folder_path):
     
     print(f"Created Clojure file: {file_path}")
 
-def create_tex_file(problem_number, problem_title, problem_content, folder_path):
+def create_tex_file(problem_number, problem_title, problem_content, html_content, folder_path):
     """
     Create a TeX template file for the problem.
     
     Args:
         problem_number: The problem number
         problem_title: The title of the problem
-        problem_content: The content/description of the problem
+        problem_content: The text content/description of the problem
+        html_content: The HTML content of the problem for conversion
         folder_path: Path to the problem folder
     """
     file_path = os.path.join(folder_path, f"p{problem_number}.tex")
     
-    # Escape special LaTeX characters in the problem content
-    if problem_content:
+    # Process the HTML content if available, otherwise use text content
+    if html_content:
+        latex_content = html_to_latex(html_content)
+    elif problem_content:
         # Basic LaTeX escaping
+        latex_content = problem_content
         for char in ['&', '%', '$', '#', '_', '{', '}', '~', '^', '\\']:
-            if char in problem_content:
-                problem_content = problem_content.replace(char, f'\\{char}')
+            if char in latex_content:
+                latex_content = latex_content.replace(char, f'\\{char}')
         
-        # Replace newlines with LaTeX newlines
-        problem_content = problem_content.replace('\n', '\\\\\n')
+        # Replace consecutive newlines with a single LaTeX newline
+        latex_content = re.sub(r'\n+', r'\\\\\n', latex_content)
     else:
-        problem_content = "Problem content not available. Please visit https://projecteuler.net/problem=" + str(problem_number)
+        latex_content = "Problem content not available. Please visit https://projecteuler.net/problem=" + str(problem_number)
     
     template = f"""\\documentclass{{article}}
 \\usepackage{{amsmath}}
@@ -131,7 +137,7 @@ def create_tex_file(problem_number, problem_title, problem_content, folder_path)
 
 \\section*{{Problem {problem_number}: {problem_title}}}
 
-{problem_content}
+{latex_content}
 
 \\section*{{Solution}}
 
@@ -149,6 +155,148 @@ def create_tex_file(problem_number, problem_title, problem_content, folder_path)
     
     print(f"Created TeX file: {file_path}")
 
+def html_to_latex(html_content):
+    """
+    Convert HTML content to LaTeX format.
+    
+    Args:
+        html_content: HTML content to convert
+        
+    Returns:
+        str: Converted LaTeX content
+    """
+    soup = BeautifulSoup(html_content, 'html.parser')
+    
+    # Helper function to escape LaTeX special characters in text
+    def escape_latex(text):
+        # First convert common HTML entities
+        html_entities = {
+            '&lt;': '<',
+            '&gt;': '>',
+            '&amp;': '&',
+            '&quot;': '"',
+            '&apos;': "'",
+            '&nbsp;': ' '
+        }
+        for entity, replacement in html_entities.items():
+            text = text.replace(entity, replacement)
+            
+        # Then escape LaTeX special characters
+        for char in ['&', '%', '$', '#', '_', '{', '}', '~', '^', '\\']:
+            if char in text:
+                text = text.replace(char, f'\\{char}')
+        return text
+    
+    # Process the HTML content
+    # Replace <p> tags with paragraph breaks
+    for p in soup.find_all('p'):
+        p_text = escape_latex(p.get_text())
+        p.replace_with(f"{p_text}\n\n")
+    
+    # Convert <strong> or <b> to LaTeX bold
+    for tag in soup.find_all(['strong', 'b']):
+        tag.replace_with(f"\\textbf{{{escape_latex(tag.get_text())}}}")
+    
+    # Convert <em> or <i> to LaTeX italic
+    for tag in soup.find_all(['em', 'i']):
+        tag.replace_with(f"\\textit{{{escape_latex(tag.get_text())}}}")
+    
+    # Convert <sup> to LaTeX superscript
+    for tag in soup.find_all('sup'):
+        tag.replace_with(f"$^{{{escape_latex(tag.get_text())}}}$")
+    
+    # Convert <sub> to LaTeX subscript
+    for tag in soup.find_all('sub'):
+        tag.replace_with(f"$_{{{escape_latex(tag.get_text())}}}$")
+    
+    # Convert <ol> and <ul> lists
+    for ol in soup.find_all('ol'):
+        items = []
+        for li in ol.find_all('li'):
+            items.append(f"\\item {escape_latex(li.get_text())}")
+        ol_text = "\\begin{enumerate}\n" + "\n".join(items) + "\n\\end{enumerate}"
+        ol.replace_with(ol_text)
+    
+    for ul in soup.find_all('ul'):
+        items = []
+        for li in ul.find_all('li'):
+            items.append(f"\\item {escape_latex(li.get_text())}")
+        ul_text = "\\begin{itemize}\n" + "\n".join(items) + "\n\\end{itemize}"
+        ul.replace_with(ul_text)
+    
+    # Handle tables
+    for table in soup.find_all('table'):
+        rows = table.find_all('tr')
+        if not rows:
+            continue
+            
+        # Determine number of columns from the first row
+        first_row = rows[0]
+        cols = len(first_row.find_all(['th', 'td']))
+        
+        if cols == 0:
+            continue
+            
+        # Create LaTeX table
+        table_lines = [
+            "\\begin{center}",
+            "\\begin{tabular}{" + "|c" * cols + "|}",
+            "\\hline"
+        ]
+        
+        for row in rows:
+            cells = row.find_all(['th', 'td'])
+            if cells:
+                cell_texts = [escape_latex(cell.get_text().strip()) for cell in cells]
+                table_lines.append(" & ".join(cell_texts) + " \\\\")
+                table_lines.append("\\hline")
+                
+        table_lines.append("\\end{tabular}")
+        table_lines.append("\\end{center}")
+        
+        table.replace_with("\n".join(table_lines))
+    
+    # Handle images - convert to LaTeX figure
+    for img in soup.find_all('img'):
+        alt_text = escape_latex(img.get('alt', 'Image'))
+        src = img.get('src', '')
+        
+        # For Project Euler, we can't download images, so we'll just add a note
+        img_text = (
+            "\\begin{center}\n"
+            f"[Image: {alt_text}]\n\n"
+            f"Note: Please refer to the original problem for this image at projecteuler.net\n"
+            "\\end{center}"
+        )
+        img.replace_with(img_text)
+    
+    # Handle math expressions (often in <span class="math">)
+    for math in soup.find_all('span', class_='math'):
+        math_text = math.get_text()
+        # Don't escape math content as it may contain LaTeX already
+        math.replace_with(f"${math_text}$")
+    
+    # Handle code blocks
+    for code in soup.find_all('code'):
+        code_text = escape_latex(code.get_text())
+        code.replace_with(f"\\texttt{{{code_text}}}")
+    
+    # Handle blockquotes
+    for blockquote in soup.find_all('blockquote'):
+        quote_text = escape_latex(blockquote.get_text())
+        blockquote.replace_with(f"\\begin{{quote}}\n{quote_text}\n\\end{{quote}}")
+    
+    # Get the text content - at this point, all HTML has been converted to LaTeX
+    content = soup.get_text()
+    
+    # Clean up excessive newlines
+    content = re.sub(r'\n{3,}', '\n\n', content)
+    
+    # Replace remaining double newlines with paragraph breaks
+    content = content.replace('\n\n', '\n\n\\par\n')
+    
+    return content
+
 def main():
     """Main function to create a new Project Euler problem folder."""
     try:
@@ -163,7 +311,7 @@ def main():
         
         # Fetch problem information
         print(f"Fetching problem {problem_number} from Project Euler...")
-        problem_title, problem_content = get_problem_info(problem_number)
+        problem_title, problem_content, html_content = get_problem_info(problem_number)
         
         if not problem_title:
             print(f"Could not retrieve information for problem {problem_number}")
@@ -190,7 +338,7 @@ def main():
         create_clojure_file(problem_number, problem_title, folder_path)
         
         # Create the TeX file
-        create_tex_file(problem_number, problem_title, problem_content, folder_path)
+        create_tex_file(problem_number, problem_title, problem_content, html_content, folder_path)
         
         print(f"\nSetup complete for Problem {problem_number}: {problem_title}")
         print(f"You can now start working on the solution in {folder_path}")
@@ -199,6 +347,8 @@ def main():
         print("\nOperation cancelled by user.")
     except Exception as e:
         print(f"An error occurred: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()
