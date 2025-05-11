@@ -20,14 +20,3 @@
          (let [nn (/ n first-factor)]
            (conj (get-factors nn try-factors) first-factor))
          :else (recur n remain))))
-
-
-(defn add-factors
-  [v pos val]
-  (let [l (count v)]
-    (if (<= l pos) v
-        (let [fs (if (nil? (get v pos)) [] (get v pos))]
-          (recur
-           (assoc f pos val)
-           pos
-           val)))))

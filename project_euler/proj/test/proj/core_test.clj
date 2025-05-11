@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [proj.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest problem-imports-test
+  (testing "Testing that problem namespaces are properly imported"
+    (is (fn? solve-problem))
+    (is (string? (solve-problem 999)))))
