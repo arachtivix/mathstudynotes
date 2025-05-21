@@ -7,27 +7,23 @@
 ;; Problem 26: Reciprocal Cycles
 ;; Created on 2025-05-10
 
-(defn find-cycle-length
-  "Finds the length of the recurring cycle in the decimal expansion of 1/n.
-   Returns [n, cycle-length] where cycle-length is the length of the recurring cycle."
-  [n]
-  (let [remainders (loop [r 1
-                          seen {}
-                          pos 0]
-                     (cond
-                       (zero? r) [n 0]  ; Terminates with no cycle
-                       (contains? seen r) [n (- pos (seen r))]  ; Found cycle
-                       :else (recur (mod (* r 10) n)
-                                   (assoc seen r pos)
-                                   (inc pos))))]
-    remainders))
+;; lazy sequence simulating a grade schooler who never learned when to stop long dividing
+(defn dec-exp [n m] 
+  (lazy-seq (let [q (quot n m) r (rem n m)] (cons q (dec-exp (* 10 r) m)))))
+
+;; same sequence as above but the quotient inputs are preserved
+(defn dec-exp-components [[n m]] 
+  (lazy-seq (let [r (rem n m)] (cons [n m] (dec-exp-components [(* 10 r) m])))))
+
+(defn find-repeat [s m pos] 
+  (let [curr (first s)] 
+    (if (some? (m curr))
+      [pos (m curr)] 
+      (find-repeat (rest s) (assoc m curr pos) (+ 1 pos)))))
 
 (defn solve []
   "Find the value of d < 1000 for which 1/d contains the longest recurring cycle in its decimal fraction part."
-  (->> (range 2 1000)
-       (map find-cycle-length)
-       (apply max-key second)
-       (first)))
+  (print "not solved yet"))
 
 (defn -main []
   (println "Solution to Problem 26:")

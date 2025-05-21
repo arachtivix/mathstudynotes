@@ -1,4 +1,4 @@
-(ns proj.p16.core
+:(ns proj.p16.core
   (:gen-class))
 
 (defn n-to-pow
