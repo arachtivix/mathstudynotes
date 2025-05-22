@@ -21,7 +21,7 @@
       [pos (m curr)] 
       (find-repeat (rest s) (assoc m curr pos) (+ 1 pos)))))
 
-
+(defn find-cyc-len [n] (let [[e s] (find-repeat (dec-exp-components [1 n]) {} 0)] (- e s)))
 
 
 (defn solve []
