@@ -21,6 +21,9 @@
       [pos (m curr)] 
       (find-repeat (rest s) (assoc m curr pos) (+ 1 pos)))))
 
+
+
+
 (defn solve []
   "Find the value of d < 1000 for which 1/d contains the longest recurring cycle in its decimal fraction part."
   (print "not solved yet"))
