@@ -29,7 +29,7 @@
 
 (defn solve []
   "Find the value of d < 1000 for which 1/d contains the longest recurring cycle in its decimal fraction part."
-  (print "not solved yet"))
+  (print (solve-1 1000)))
 
 (defn -main []
   (println "Solution to Problem 26:")
