@@ -21,8 +21,11 @@
       [pos (m curr)] 
       (find-repeat (rest s) (assoc m curr pos) (+ 1 pos)))))
 
-(defn find-cyc-len [n] (let [[e s] (find-repeat (dec-exp-components [1 n]) {} 0)] (- e s)))
+(defn find-cyc-len [n] (let [[e s] (find-repeat (dec-exp-components [1 n]) {} 0)] [(- e s) n]))
 
+(defn gen-pairs-to-n [n] (map #(find-cyc-len %) (range 2 n)))
+
+(defn solve-1 [n] (reduce #(let [[c1 n1] %1 [c2 n2] %2] (if (> c1 c2) %1 %2)) (gen-pairs-to-n n)))
 
 (defn solve []
   "Find the value of d < 1000 for which 1/d contains the longest recurring cycle in its decimal fraction part."
@@ -30,5 +33,5 @@
 
 (defn -main []
   (println "Solution to Problem 26:")
-  (println (solve)))
+  (println (solve-1 1000)))
 
