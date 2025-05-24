@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\title{Project Euler - Problem 206}
+\author{Solution}
+\date{2025-05-23}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 206: Concealed Square}
+
+
+Find the unique positive integer whose square has the form 1\_2\_3\_4\_5\_6\_7\_8\_9\_0, where each “\_” is a single digit.
+
+\par
+
+
+\section*{Solution}
+
+\subsection{Can I brute force it?}
+
+One solution to this problem might be to try numbers $n$ in some range and test for the pattern.  Just from a rough inital
+approximation one could try integers $\lfloor\sqrt{10^{20}}\rfloor = 10^{10} < n < \lfloor\sqrt{2*10^{20}}\rfloor$.  
+The obvious problem with this approach though is this requires something around 10 trillion numbers to test.\\
+
+It seems as per the form that $n^2$ ends in 0, so $n$ must have a 2 and a 5 in its factors, which then means the last
+ underscore has to be a 0.  So really we're looking for an $m^2$ of the form 1\_2\_3\_4\_5\_6\_7\_8\_9 that can have
+ that part tacked on at the end to arrive at $n$.  This would leave the range needing testing at hundreds of billions,
+ but this is not good enough -- enough computing power could be applied but that's not the point. \\
+
+Interestingly, we know that 2 and 5 will not feature as factors in $m$ because neither will produce a 9 at the end. \\
+
+\subsection{The meaning of the form: or, a tedious and probably useless decimal expansion}
+
+\begin{align*}
+    n^2 &= 1 \cdot 10^{18} + \alpha_0 \cdot 10^{17} + 2 \cdot 10^{16} + \alpha_1 \cdot 10^{15} 
+        + 3 \cdot 10^{14} + \alpha_2 \cdot 10^{13} + 4 \cdot 10^{12} + \alpha_3 \cdot 10^{11} \\
+        &+ 5 \cdot 10^{10} + \alpha_4 \cdot 10^{9} + 6 \cdot 10^{8} + \alpha_5 \cdot 10^{7} 
+        + 7 \cdot 10^{6} + \alpha_6 \cdot 10^{5} + 8 \cdot 10^{4} + \alpha_7 \cdot 10^{3} \\
+        &+ 9 \cdot 10^{2} + \alpha_8 \cdot 10^{1} + 0 \cdot 10^{0} 
+\end{align*}
+
+So the even powers of 10 belong to the known coeficients, and the odds belong to the unknowns.  One might group
+them, but it's not obvious how this will help.
+
+\section*{Implementation}
+
+% TODO: Explain key parts of your implementation
+
+\end{document}
