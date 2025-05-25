@@ -1,0 +1,9 @@
+(ns proj.p206.core-test
+  (:require [clojure.test :refer :all]
+            [proj.p206.core :refer :all]))
+
+(deftest dec-exp-int-test
+  (testing "Testing decimal expansion of integers"
+    (is (= '(1 0 0 0) (dec-exp-int 1000)))
+    (is (= '(1 2 3 4) (dec-exp-int 1234)))
+    (is (= '(0) (dec-exp-int 0)))))

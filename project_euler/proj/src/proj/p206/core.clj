@@ -10,7 +10,7 @@
 (defn dec-exp-int "decimal expansion for an integer"
   ([n] (dec-exp-int n '()))
   ([n prv] (let [q (quot n 10) r (rem n 10) cur (cons r prv)]
-             (if (= r 0) prv (recur q cur)))))
+             (if (= q 0) cur (recur q cur)))))
 
 (defn matches-pattern [p s]
   (let [pair-compare #(if (= %1 :_) true (= %1 %2))
@@ -18,6 +18,10 @@
         counts-match (= (count p) (count s))
         pairwise-all-good (reduce #(and %1 %2) pairwise)]
     (if counts-match pairwise-all-good false)))
+
+(defn is-root-of-hidden-sq? [n] (matches-pattern
+                        '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9 :_ 0 :_)
+                        (dec-exp-int (* n n))))
 
 (defn solve []
   ;; TODO: Implement solution
