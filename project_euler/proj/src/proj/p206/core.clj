@@ -23,6 +23,9 @@
                         '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9 :_ 0 :_)
                         (dec-exp-int (* n n))))
 
+;; naive solution will take its sweet time
+(defn sol1 [] (take 1 (filter is-root-of-hidden-sq? (range 1000000000N 2000000000N))))
+
 (defn solve []
   ;; TODO: Implement solution
   nil)
