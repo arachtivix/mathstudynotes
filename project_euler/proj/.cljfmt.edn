@@ -1,0 +1,7 @@
+{:max-line-length 72  ; To fit comfortably in LaTeX code blocks
+ :indentation? true
+ :remove-surrounding-whitespace? true
+ :remove-trailing-whitespace? true
+ :insert-missing-whitespace? true
+ :align-associative? false  ; Prevents overly wide alignments
+ :sort-ns-references? true}

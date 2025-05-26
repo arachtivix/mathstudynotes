@@ -50,6 +50,18 @@
 ;; technically better, but also takes its sweet time
 (defn sol2 [] (take 1 (filter is-m-sq? (range min-m max-m))))
 
+;; let's generalize the brute force approach so we can actually test
+;; that it works at a smaller scale
+(defn max-dec-exp-from-pattern [p] (map #(if (= %1 :_) 9 %1) p))
+(defn min-dec-exp-from-pattern [p] (map #(if (= %1 :_) 0 %1) p))
+(defn dec-exp-to-bigint
+  ([d] (if (= d '()) 0N (dec-exp-to-bigint d 0N)))
+  ([[f & d] c] (let [cc (+ f (* 10 c))] (if (< 0 (count d)) (recur d cc) cc))))
+(defn patt-max [p] (dec-exp-to-bigint (map #(if (= %1 :_) 9 %1) p)))
+(defn patt-min [p] (dec-exp-to-bigint (map #(if (= %1 :_) 0 %1) p)))
+(defn brute-force-generalized [p]
+  (take 1 (filter #(matches-pattern? p (dec-exp-int (* %1 %1))) (range (bigint (math/sqrt (patt-min p))) (+ 1 (bigint (math/sqrt (patt-max p))))))))
+
 (defn solve []
   ;; TODO: Implement solution
   nil)
