@@ -60,7 +60,7 @@
 (defn patt-max [p] (dec-exp-to-bigint (map #(if (= %1 :_) 9 %1) p)))
 (defn patt-min [p] (dec-exp-to-bigint (map #(if (= %1 :_) 0 %1) p)))
 (defn brute-force-generalized [p]
-  (take 1 (filter #(matches-pattern? p (dec-exp-int (* %1 %1))) (range (bigint (math/sqrt (patt-min p))) (+ 1 (bigint (math/sqrt (patt-max p))))))))
+  (filter #(matches-pattern? p (dec-exp-int (* %1 %1))) (range (bigint (math/sqrt (patt-min p))) (+ 1 (bigint (math/sqrt (patt-max p)))))))
 
 (defn solve []
   ;; TODO: Implement solution

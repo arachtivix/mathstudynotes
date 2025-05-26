@@ -34,4 +34,10 @@
 
 (deftest brute-force-generalized-test
   (testing "Testing the brute force approach generalized"
-    (is (= '(4) (brute-force-generalized '(1 :_))))))
+    (is (= '(4) (brute-force-generalized '(1 :_))))
+    (is (= '(12) (brute-force-generalized '(1 4 :_))))
+    (is (= '(12) (brute-force-generalized '(1 4 :_))))
+    (is (= '(123) (brute-force-generalized '(1 5 1 :_ :_))))
+    (is (= '(123 124 125 126) (brute-force-generalized '(1 5 :_ :_ :_))))
+    ;; made a spreadsheet and verified the following manually
+    (is (= '(104 106 114 116 124 126 134 136) (brute-force-generalized '(1 :_ :_ :_ 6))))))
