@@ -19,9 +19,11 @@
         pairwise-all-good (reduce #(and %1 %2) pairwise)]
     (if counts-match pairwise-all-good false)))
 
-(defn is-root-of-hidden-sq? [n] (matches-pattern?
-                        '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9 :_ 0)
-                        (dec-exp-int (* n n))))
+(defn is-root-of-hidden-sq? [n]
+  (matches-pattern?
+   '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_
+     6 :_ 7 :_ 8 :_ 9 :_ 0)
+   (dec-exp-int (* n n))))
 
 (def max-possible-hidden-square 19293949596979899909N)
 (def max-n (bigint (math/sqrt max-possible-hidden-square)))
@@ -40,9 +42,11 @@
 (def num-m-brute-force (+ 1 (- max-m min-m)))
 
 (defn is-m-sq? "Using the intermidiate step from the writeup"
-  [m] (matches-pattern?
-       '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9)
-       (dec-exp-int (* m m))))
+  [m]
+  (matches-pattern?
+   '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_
+     6 :_ 7 :_ 8 :_ 9)
+   (dec-exp-int (* m m))))
 
 ;; technically better, but also takes its sweet time
 (defn sol2 [] (take 1 (filter is-m-sq? (range min-m max-m))))

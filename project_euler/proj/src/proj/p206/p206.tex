@@ -64,7 +64,9 @@ First, we have a function to convert integers to their decimal expansion:
 \begin{lstlisting}
 (defn dec-exp-int
   ([n] (dec-exp-int n '()))
-  ([n prv] (let [q (quot n 10) r (rem n 10) cur (cons r prv)]
+  ([n prv] (let [q (quot n 10) 
+                 r (rem n 10) 
+                 cur (cons r prv)]
              (if (= q 0) cur (recur q cur)))))
 \end{lstlisting}
 
@@ -87,7 +89,8 @@ The pattern matching functionality is implemented through two functions:
     (if counts-match pairwise-all-good false)))
 
 (defn is-root-of-hidden-sq? [n] (matches-pattern?
-                        '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9 :_ 0)
+                        '(1 :_ 2 :_ 3 :_ 4 :_ 5 
+                        :_ 6 :_ 7 :_ 8 :_ 9 :_ 0)
                         (dec-exp-int (* n n))))
 \end{lstlisting}
 
@@ -123,16 +126,19 @@ This is a naive brute-force approach that:
 \subsubsection{Second Approach}
 \begin{lstlisting}
 (def max-m-possible-hidden-square 192939495969798999N)
-(def max-m (bigint (math/sqrt max-m-possible-hidden-square)))
+(def max-m 
+     (bigint (math/sqrt max-m-possible-hidden-square)))
 (def min-m-possible-hidden-square 102030405060708090N)
-(def min-m (bigint (math/sqrt min-m-possible-hidden-square)))
+(def min-m 
+     (bigint (math/sqrt min-m-possible-hidden-square)))
 
 (defn is-m-sq?
   [m] (matches-pattern?
        '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9)
        (dec-exp-int (* m m))))
 
-(defn sol2 [] (take 1 (filter is-m-sq? (range min-m max-m))))
+(defn sol2 [] 
+      (take 1 (filter is-m-sq? (range min-m max-m))))
 \end{lstlisting}
 
 This is an optimized approach that:
