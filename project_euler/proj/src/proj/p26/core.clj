@@ -8,17 +8,17 @@
 ;; Created on 2025-05-10
 
 ;; lazy sequence simulating a grade schooler who never learned when to stop long dividing
-(defn dec-exp [n m] 
+(defn dec-exp [n m]
   (lazy-seq (let [q (quot n m) r (rem n m)] (cons q (dec-exp (* 10 r) m)))))
 
 ;; same sequence as above but the quotient inputs are preserved
-(defn dec-exp-components [[n m]] 
+(defn dec-exp-components [[n m]]
   (lazy-seq (let [r (rem n m)] (cons [n m] (dec-exp-components [(* 10 r) m])))))
 
-(defn find-repeat [s m pos] 
-  (let [curr (first s)] 
+(defn find-repeat [s m pos]
+  (let [curr (first s)]
     (if (some? (m curr))
-      [pos (m curr)] 
+      [pos (m curr)]
       (recur (rest s) (assoc m curr pos) (+ 1 pos)))))
 
 (defn find-cyc-len [n] (let [[e s] (find-repeat (dec-exp-components [1 n]) {} 0)] [(- e s) n]))

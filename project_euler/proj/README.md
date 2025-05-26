@@ -24,7 +24,7 @@ lein run
 
 ## Available Problems
 
-Currently implemented problems:
+Currently attempted and in progress problems:
 - Problem 3
 - Problem 4
 - Problem 7
@@ -36,6 +36,7 @@ Currently implemented problems:
 - Problem 26
 - Problem 28
 - Problem 95
+- Problem 206
 - Problem 361
 - Problem 879
 
@@ -46,6 +47,30 @@ To add a new problem solution:
 2. Implement the `solve` function in that namespace
 3. Add the namespace to the imports in `src/proj/core.clj`
 4. Add the problem number to the `solve-problem` function in `src/proj/core.clj`
+
+### Code Formatting
+
+This project uses `cljfmt` for code formatting with custom rules optimized for
+LaTeX document compatibility. The formatter enforces:
+
+- Maximum line width of 72 characters to fit in LaTeX code blocks
+- Standard Clojure indentation rules
+- Consistent whitespace handling
+- Sorted namespace references
+
+To format your code:
+
+```bash
+lein cljfmt fix
+```
+
+To check for formatting issues without fixing them:
+
+```bash
+lein cljfmt check
+```
+
+The formatting rules are configured in `.cljfmt.edn` in the project root.
 
 ## License
 

@@ -1,7 +1,6 @@
 (ns proj.p879.core
   (:gen-class))
 
-
 (def board-width 4)
 (def board-size (* board-width board-width))
 ; true -> number remains ; false -> number used up
@@ -46,7 +45,7 @@
       :else (vector (/ x d) (/ y d)))))
 
 (def unq-pos-vecs
-   (into #{}
+  (into #{}
         (map
          reduce-vec
          all-coords)))
@@ -55,7 +54,7 @@
   [xy sx sy]
   (let [x (get xy 0)
         y (get xy 1)]
-  (vector (* sx x) (* sy y))))
+    (vector (* sx x) (* sy y))))
 
 (defn gen-all-vecs
   [pos-vecs]
@@ -90,7 +89,7 @@
   (cond (= from-xy to-xy) (list to-xy)
         :else (let [dv (dir-vec from-xy to-xy)
                     next-place (add-vecs from-xy dv)]
-          (cons from-xy (from-to next-place to-xy)))))
+                (cons from-xy (from-to next-place to-xy)))))
 
 (def test-board-1
   [true true false

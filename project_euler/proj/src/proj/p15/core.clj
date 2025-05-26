@@ -3,11 +3,11 @@
 
 (defn factorial
   ([n]
-  (if (= n 0) 1
-      (factorial (- n 1) n)))
+   (if (= n 0) 1
+       (factorial (- n 1) n)))
   ([n c]
-  (if (= n 0) c
-      (recur (- n 1) (* n c)))))
+   (if (= n 0) c
+       (recur (- n 1) (* n c)))))
 
 ; this problem is a classic -- it's just 40 choose 20
 ; the problem can be re-imagined as a sequence of chars D and R

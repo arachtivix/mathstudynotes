@@ -8,12 +8,12 @@
   ([start]
    (next-prime start '()))
   ([start [p & rp :as prev-primes]]
-  (cond (nil? p) 2
-        (= p 2) 3
-        :else (first
-               (filter
-                #(not (some (fn [x] (= 0 (mod % x))) prev-primes))
-                (iterate #(+ 2 %) start))))))
+   (cond (nil? p) 2
+         (= p 2) 3
+         :else (first
+                (filter
+                 #(not (some (fn [x] (= 0 (mod % x))) prev-primes))
+                 (iterate #(+ 2 %) start))))))
 
 (defn n-primes
   [n]
@@ -41,7 +41,6 @@
            (recur n
                   pfs
                   (+ prime-idx 1))))))
-
 
 ; if n is prime, it will show up, but we do not want this for the
 ; purposes of the count

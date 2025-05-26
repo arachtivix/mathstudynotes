@@ -24,7 +24,7 @@
          (= 0 (mod n first-factor))
          (let [nn (/ n first-factor)]
            (conj (get-factors nn try-factors) first-factor))
-        :else (recur n remain))))
+         :else (recur n remain))))
 
 (defn solve []
   (print (get-factors 600851475143)))

@@ -9,7 +9,8 @@
                  [org.clojure/tools.namespace "1.4.4"]]   ; For code reloading
   :main nil  ; No single main namespace as each problem has its own
   :aot :all
-  :profiles {:dev {:dependencies [[org.clojure/test.check "1.1.1"]]}} ; For property-based testing
+  :profiles {:dev {:dependencies [[org.clojure/test.check "1.1.1"]]
+                   :plugins [[lein-cljfmt "0.9.2"]]}} ; For code formatting
   :repl-options {:init-ns proj.core}
   :source-paths ["src"]
   :test-paths ["test"])

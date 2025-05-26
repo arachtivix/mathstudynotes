@@ -22,7 +22,7 @@
 (defn is-root-of-hidden-sq? [n]
   (matches-pattern?
    '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_
-     6 :_ 7 :_ 8 :_ 9 :_ 0)
+       6 :_ 7 :_ 8 :_ 9 :_ 0)
    (dec-exp-int (* n n))))
 
 (def max-possible-hidden-square 19293949596979899909N)
@@ -34,7 +34,6 @@
 ;; naive solution will take its sweet time
 (defn sol1 [] (take 1 (filter is-root-of-hidden-sq? (range min-n max-n))))
 
-
 (def max-m-possible-hidden-square 192939495969798999N)
 (def max-m (bigint (math/sqrt max-m-possible-hidden-square)))
 (def min-m-possible-hidden-square 102030405060708090N)
@@ -45,12 +44,11 @@
   [m]
   (matches-pattern?
    '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_
-     6 :_ 7 :_ 8 :_ 9)
+       6 :_ 7 :_ 8 :_ 9)
    (dec-exp-int (* m m))))
 
 ;; technically better, but also takes its sweet time
 (defn sol2 [] (take 1 (filter is-m-sq? (range min-m max-m))))
-
 
 (defn solve []
   ;; TODO: Implement solution

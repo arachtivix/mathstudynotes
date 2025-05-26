@@ -45,9 +45,9 @@
 
 (defn solve []
   (let [answ-abc (take 1
-                      (filter
-                       #(= 1000 (apply + %))
-                       (all-abcs max-c-sq)))
+                       (filter
+                        #(= 1000 (apply + %))
+                        (all-abcs max-c-sq)))
         ans-vec (first answ-abc)
         a (get ans-vec 0)
         b (get ans-vec 1)
