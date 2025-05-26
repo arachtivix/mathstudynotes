@@ -93,7 +93,39 @@ If you select a problem that doesn't exist yet, the script will offer to create 
 
 ## Compiling LaTeX Documentation
 
-To compile the LaTeX documentation for a problem:
+A script is provided to help compile LaTeX documentation:
+
+```bash
+python3 render_latex.py
+```
+
+The script will:
+1. Show a menu of available problems with LaTeX files
+2. Allow you to select a problem and its corresponding LaTeX file
+3. Compile the selected file using pdflatex
+4. Remember the last rendered file for quick re-rendering
+
+### Using the LaTeX Renderer
+
+1. Run the script:
+   ```bash
+   python3 render_latex.py
+   ```
+
+2. You'll see a menu with:
+   - The last rendered file (if any)
+   - A list of available problems with LaTeX files
+
+3. You can:
+   - Press Enter to re-render the last file
+   - Select a problem number to render its LaTeX file
+   - Type 'q' to quit
+
+4. The script will compile the selected file and generate a PDF in the same directory.
+
+### Manual Compilation
+
+You can also manually compile LaTeX files:
 
 ```bash
 cd proj/src/proj/p{number}/

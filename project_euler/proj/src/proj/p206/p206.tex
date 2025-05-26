@@ -1,25 +1,30 @@
 \documentclass{article}
+\usepackage{listings}
+\usepackage{xcolor}
 \usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{graphicx}
 
-\title{Project Euler - Problem 206}
-\author{Solution}
-\date{2025-05-23}
+% Configure listings package for code display
+\lstset{
+    language=Clojure,
+    basicstyle=\ttfamily\small,
+    numbers=left,
+    numberstyle=\tiny,
+    frame=single,
+    breaklines=true,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    showstringspaces=false
+}
+
+\title{Project Euler - Problem 206: Concealed Square}
+\author{Implementation Documentation}
+\date{\today}
 
 \begin{document}
-
 \maketitle
 
-\section*{Problem 206: Concealed Square}
-
-
-Find the unique positive integer whose square has the form 1\_2\_3\_4\_5\_6\_7\_8\_9\_0, where each “\_” is a single digit.
-
-\par
-
-
-\section*{Solution}
+\section{Solution}
 
 \subsection{Can I brute force it?}
 
@@ -47,8 +52,96 @@ Interestingly, we know that 2 and 5 will not feature as factors in $m$ because n
 So the even powers of 10 belong to the known coeficients, and the odds belong to the unknowns.  One might group
 them, but it's not obvious how this will help.
 
-\section*{Implementation}
+\section{Implementation}
 
-% TODO: Explain key parts of your implementation
+The implementation solves Project Euler Problem 206 which deals with finding a number whose square follows a specific pattern: 1_2_3_4_5_6_7_8_9_0, where underscores represent single digits.
+
+\subsection{Core Functions}
+
+\subsubsection{Decimal Expansion}
+First, we have a function to convert integers to their decimal expansion:
+
+\begin{lstlisting}
+(defn dec-exp-int
+  ([n] (dec-exp-int n '()))
+  ([n prv] (let [q (quot n 10) r (rem n 10) cur (cons r prv)]
+             (if (= q 0) cur (recur q cur)))))
+\end{lstlisting}
+
+This function recursively breaks down a number into its decimal digits, building a list from right to left. It uses:
+\begin{itemize}
+    \item \texttt{quot} to get the quotient when dividing by 10
+    \item \texttt{rem} to get the remainder (last digit)
+    \item \texttt{cons} to build the list of digits
+\end{itemize}
+
+\subsubsection{Pattern Matching}
+The pattern matching functionality is implemented through two functions:
+
+\begin{lstlisting}
+(defn matches-pattern? [p s]
+  (let [pair-compare #(if (= %1 :_) true (= %1 %2))
+        pairwise (into '() (map pair-compare p s))
+        counts-match (= (count p) (count s))
+        pairwise-all-good (reduce #(and %1 %2) pairwise)]
+    (if counts-match pairwise-all-good false)))
+
+(defn is-root-of-hidden-sq? [n] (matches-pattern?
+                        '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9 :_ 0)
+                        (dec-exp-int (* n n))))
+\end{lstlisting}
+
+The \texttt{matches-pattern?} function:
+\begin{itemize}
+    \item Takes a pattern \texttt{p} and a sequence \texttt{s} to match against
+    \item Uses \texttt{:\_} as a wildcard that matches any digit
+    \item Compares corresponding elements, allowing wildcards to match anything
+    \item Ensures the lengths match and all comparisons pass
+\end{itemize}
+
+\subsection{Solution Approaches}
+
+The code presents two solution approaches:
+
+\subsubsection{First Approach}
+\begin{lstlisting}
+(def max-possible-hidden-square 19293949596979899909N)
+(def max-n (bigint (math/sqrt max-possible-hidden-square)))
+(def min-possible-hidden-square 10203040506070809000N)
+(def min-n (bigint (math/sqrt min-possible-hidden-square)))
+
+(defn sol1 [] (take 1 (filter is-root-of-hidden-sq? (range min-n max-n))))
+\end{lstlisting}
+
+This is a naive brute-force approach that:
+\begin{itemize}
+    \item Defines the maximum and minimum possible values based on the pattern
+    \item Takes their square roots to get the search range
+    \item Filters numbers whose squares match the pattern
+\end{itemize}
+
+\subsubsection{Second Approach}
+\begin{lstlisting}
+(def max-m-possible-hidden-square 192939495969798999N)
+(def max-m (bigint (math/sqrt max-m-possible-hidden-square)))
+(def min-m-possible-hidden-square 102030405060708090N)
+(def min-m (bigint (math/sqrt min-m-possible-hidden-square)))
+
+(defn is-m-sq?
+  [m] (matches-pattern?
+       '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9)
+       (dec-exp-int (* m m))))
+
+(defn sol2 [] (take 1 (filter is-m-sq? (range min-m max-m))))
+\end{lstlisting}
+
+This is an optimized approach that:
+\begin{itemize}
+    \item Uses an intermediate step mentioned in the problem writeup
+    \item Reduces the search space by looking at a shorter pattern
+    \item Still uses brute force but over a smaller range
+\end{itemize}
+
+Both approaches are noted to be time-consuming, suggesting that further optimization might be needed for an efficient solution.
 
 \end{document}

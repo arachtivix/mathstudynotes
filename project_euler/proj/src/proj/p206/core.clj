@@ -48,7 +48,6 @@
 (defn sol2 [] (take 1 (filter is-m-sq? (range min-m max-m))))
 
 
-
 (defn solve []
   ;; TODO: Implement solution
   nil)
