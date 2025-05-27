@@ -1,0 +1,30 @@
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Define Clojure language settings
+\lstdefinelanguage{Clojure}{
+  keywords={def, defn, let, if, do, fn, loop, recur, case, cond, for, doseq, when, while, and, or, not, nil, true, false},
+  sensitive=true,
+  comment=[l]{;},
+  morestring=[b]",
+  morestring=[s]{#{'}{'},
+  morestring=[s]{#{"}{"}},
+  morecomment=[s]{/*}{*/},
+  morekeywords={->, ->>, doto, ns, require, use, import, refer, as, alias},
+}
+
+% Customize lstset for Clojure
+\lstset{
+  language=Clojure,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  commentstyle=\color{gray}\itshape,
+  showstringspaces=false,
+  tabsize=2,
+  breaklines=true,
+  frame=single,
+}

@@ -123,9 +123,7 @@ def create_tex_file(problem_number, problem_title, problem_content, html_content
         latex_content = "Problem content not available. Please visit https://projecteuler.net/problem=" + str(problem_number)
     
     template = f"""\\documentclass{{article}}
-\\usepackage{{amsmath}}
-\\usepackage{{amssymb}}
-\\usepackage{{graphicx}}
+\\input{{../shared_preamble}}
 
 \\title{{Project Euler - Problem {problem_number}}}
 \\author{{Solution}}
