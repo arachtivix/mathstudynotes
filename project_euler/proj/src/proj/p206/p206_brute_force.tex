@@ -1,0 +1,14 @@
+\section{Solution}
+
+\subsection{Can I brute force it?}
+
+One solution to this problem might be to try numbers $n$ in some range and test for the pattern.  Just from a rough inital
+approximation one could try integers 
+$\lfloor\sqrt{10203040506070809000}\rfloor = 3194219858N < n < \lfloor\sqrt{19293949596979899990}\rfloor = 4392487859$.  
+This leaves us with 1198268002 numbers to test.\\
+
+It seems as per the form that $n^2$ ends in 0, so $n$ must have a 2 and a 5 in its factors, which then means the last
+ underscore has to be a 0.  So really we're looking for an $m^2$ of the form 1\_2\_3\_4\_5\_6\_7\_8\_9 that can have
+ that part tacked on at the end to arrive at $n$.  This would leave the range needing testing at hundreds of millions. \\
+
+Interestingly, we know that 2 and 5 will not feature as factors in $m$ because neither will produce a 9 at the end. \\

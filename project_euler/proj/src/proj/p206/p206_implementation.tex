@@ -1,0 +1,24 @@
+\section{Implementation}
+
+The implementation solves Project Euler Problem 206 which deals with finding a number whose square follows a specific pattern: 1_2_3_4_5_6_7_8_9_0, where underscores represent single digits.
+
+\subsection{Core Functions}
+
+\subsubsection{Decimal Expansion}
+First, we have a function to convert integers to their decimal expansion:
+
+\begin{lstlisting}
+(defn dec-exp-int "decimal expansion for an integer"
+  ([n] (dec-exp-int n '()))
+  ([n prv] (let [q (quot n 10) 
+                 r (rem n 10)
+                 cur (cons r prv)]
+             (if (= q 0) cur (recur q cur)))))
+\end{lstlisting}
+
+This function recursively breaks down a number into its decimal digits, building a list from right to left. It uses:
+\begin{itemize}
+    \item \texttt{quot} to get the quotient when dividing by 10
+    \item \texttt{rem} to get the remainder (last digit)
+    \item \texttt{cons} to build the list of digits
+\end{itemize}

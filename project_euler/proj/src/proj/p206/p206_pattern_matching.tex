@@ -1,0 +1,24 @@
+\subsubsection{Pattern Matching}
+The pattern matching functionality is implemented through two functions:
+
+\begin{lstlisting}
+(defn matches-pattern? [p s]
+  (let [pair-compare #(if (= %1 :_) true (= %1 %2))
+        pairwise (into '() (map pair-compare p s))
+        counts-match (= (count p) (count s))
+        pairwise-all-good (reduce #(and %1 %2) pairwise)]
+    (if counts-match pairwise-all-good false)))
+
+(defn is-root-of-hidden-sq? [n]
+  (matches-pattern?
+   '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9 :_ 0)
+   (dec-exp-int (* n n))))
+\end{lstlisting}
+
+The \texttt{matches-pattern?} function:
+\begin{itemize}
+    \item Takes a pattern \texttt{p} and a sequence \texttt{s} to match against
+    \item Uses \texttt{:\_} as a wildcard that matches any digit
+    \item Compares corresponding elements, allowing wildcards to match anything
+    \item Ensures the lengths match and all comparisons pass
+\end{itemize}

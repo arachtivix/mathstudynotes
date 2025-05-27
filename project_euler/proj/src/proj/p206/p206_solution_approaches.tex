@@ -1,0 +1,36 @@
+\subsection{Solution Approaches}
+
+The code presents two solution approaches:
+
+\subsubsection{First Approach}
+\begin{lstlisting}
+(defn sol1 [] (take 1 (filter is-root-of-hidden-sq? (range min-n max-n))))
+\end{lstlisting}
+
+This is a naive brute-force approach that:
+\begin{itemize}
+    \item Defines the maximum and minimum possible values based on the pattern
+    \item Takes their square roots to get the search range
+    \item Filters numbers whose squares match the pattern
+\end{itemize}
+
+\subsubsection{Slightly Narrower Approach}
+\begin{lstlisting}
+(defn is-m-sq?
+  [m]
+  (matches-pattern?
+   '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9)
+   (dec-exp-int (* m m))))
+
+(defn sol2 [] 
+  (take 1 (filter is-m-sq? (range min-m max-m))))
+\end{lstlisting}
+
+This is another approach that:
+\begin{itemize}
+    \item Uses an intermediate step mentioned in the problem writeup
+    \item Reduces the search space by looking at a shorter pattern
+    \item Still uses brute force but over a smaller range
+\end{itemize}
+
+Both approaches are noted to be time-consuming, suggesting that further optimization might be needed for an efficient solution.
