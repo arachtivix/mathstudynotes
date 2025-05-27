@@ -34,3 +34,49 @@ This is another approach that:
 \end{itemize}
 
 Both approaches are noted to be time-consuming, suggesting that further optimization might be needed for an efficient solution.
+
+
+\subsubsection{Generalized Brute Force Function}
+
+The generalized brute force function is a key component that allows us to:
+\begin{itemize}
+\item Test the solution approach with smaller patterns
+\item Reuse the code for similar pattern-matching problems
+\item Verify correctness before scaling to the full problem
+\end{itemize}
+
+The implementation consists of several helper functions:
+
+\begin{enumerate}
+\item \texttt{max-dec-exp-from-pattern}: Converts a pattern to its maximum possible value by replacing wildcards with 9
+\item \texttt{min-dec-exp-from-pattern}: Converts a pattern to its minimum possible value by replacing wildcards with 0
+\item \texttt{dec-exp-to-bigint}: Converts a decimal expansion to a bigint
+\item \texttt{patt-max} and \texttt{patt-min}: Convenience functions to get the maximum and minimum values for a pattern
+\item \texttt{brute-force-generalized}: The main function that searches for numbers whose squares match the pattern
+\end{enumerate}
+
+The generalized brute force function works as follows:
+
+\begin{lstlisting}
+(defn brute-force-generalized [p]
+  (filter #(matches-pattern? p (dec-exp-int (* %1 %1))) 
+         (range (bigint (math/sqrt (patt-min p))) 
+                (+ 1 (bigint (math/sqrt (patt-max p)))))))
+\end{lstlisting}
+
+This function:
+\begin{itemize}
+\item Takes a pattern as input (e.g., '(1 :\_ 3))
+\item Calculates the minimum and maximum possible values that could match the pattern
+\item Takes the square root of these values to determine the search range
+\item Filters numbers whose squares match the pattern
+\end{itemize}
+
+The advantage of this generalized approach is that we can test it with simpler patterns first, such as:
+\begin{itemize}
+\item 1\_2 (single wildcard)
+\item 1\_2\_3 (multiple wildcards)
+\item Small subsets of the full pattern
+\end{itemize}
+
+This allows us to verify the correctness of our pattern matching and number generation before attempting the full problem.

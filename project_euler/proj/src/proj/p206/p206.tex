@@ -1,142 +1,74 @@
 \documentclass{article}
-\usepackage{listings}
-\usepackage{xcolor}
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
 
-% Configure listings package for code display
-\lstset{
-    language=Clojure,
-    basicstyle=\ttfamily\small,
-    numbers=left,
-    numberstyle=\tiny,
-    frame=single,
-    breaklines=true,
-    keywordstyle=\color{blue},
-    commentstyle=\color{green!60!black},
-    stringstyle=\color{red},
-    showstringspaces=false
-}
-
-\title{Project Euler - Problem 206: Concealed Square}
-\author{Implementation Documentation}
-\date{\today}
+\title{Project Euler - Problem 206}
+\author{Solution}
+\date{2024-02-21}
 
 \begin{document}
+
 \maketitle
 
-\section{Solution}
+\section*{Problem 206: Concealed Square}
 
-\subsection{Can I brute force it?}
+Find the unique positive integer whose square has the form 1_2_3_4_5_6_7_8_9_0,
+where each "_" is a single digit.
 
-One solution to this problem might be to try numbers $n$ in some range and test for the pattern.  Just from a rough inital
-approximation one could try integers 
-$\lfloor\sqrt{10203040506070809000}\rfloor = 3194219858N < n < \lfloor\sqrt{19293949596979899990}\rfloor = 4392487859$.  
-This leaves us with 1198268002 numbers to test.\\
+\section*{Solution}
 
-It seems as per the form that $n^2$ ends in 0, so $n$ must have a 2 and a 5 in its factors, which then means the last
- underscore has to be a 0.  So really we're looking for an $m^2$ of the form 1\_2\_3\_4\_5\_6\_7\_8\_9 that can have
- that part tacked on at the end to arrive at $n$.  This would leave the range needing testing at hundreds of millions. \\
+The solution involves finding a number whose square matches a specific pattern. We can approach this by:
 
-Interestingly, we know that 2 and 5 will not feature as factors in $m$ because neither will produce a 9 at the end. \\
+1. Defining the pattern we're looking for
+2. Creating a generalized brute force function
+3. Optimizing the search space
 
-\subsection{The meaning of the form: or, a tedious and probably useless decimal expansion}
+\section*{Implementation}
 
-\begin{align*}
-    n^2 &= 1 \cdot 10^{18} + \alpha_0 \cdot 10^{17} + 2 \cdot 10^{16} + \alpha_1 \cdot 10^{15} 
-        + 3 \cdot 10^{14} + \alpha_2 \cdot 10^{13} + 4 \cdot 10^{12} + \alpha_3 \cdot 10^{11} \\
-        &+ 5 \cdot 10^{10} + \alpha_4 \cdot 10^{9} + 6 \cdot 10^{8} + \alpha_5 \cdot 10^{7} 
-        + 7 \cdot 10^{6} + \alpha_6 \cdot 10^{5} + 8 \cdot 10^{4} + \alpha_7 \cdot 10^{3} \\
-        &+ 9 \cdot 10^{2} + \alpha_8 \cdot 10^{1} + 0 \cdot 10^{0} 
-\end{align*}
+\subsection*{Generalized Brute Force Function}
 
-So the even powers of 10 belong to the known coeficients, and the odds belong to the unknowns.  One might group
-them, but it's not obvious how this will help.
-
-\section{Implementation}
-
-The implementation solves Project Euler Problem 206 which deals with finding a number whose square follows a specific pattern: 1_2_3_4_5_6_7_8_9_0, where underscores represent single digits.
-
-\subsection{Core Functions}
-
-\subsubsection{Decimal Expansion}
-First, we have a function to convert integers to their decimal expansion:
-
-\begin{lstlisting}
-(defn dec-exp-int "decimal expansion for an integer"
-  ([n] (dec-exp-int n '()))
-  ([n prv] (let [q (quot n 10) 
-                 r (rem n 10)
-                 cur (cons r prv)]
-             (if (= q 0) cur (recur q cur)))))
-\end{lstlisting}
-
-This function recursively breaks down a number into its decimal digits, building a list from right to left. It uses:
+The generalized brute force function is a key component that allows us to:
 \begin{itemize}
-    \item \texttt{quot} to get the quotient when dividing by 10
-    \item \texttt{rem} to get the remainder (last digit)
-    \item \texttt{cons} to build the list of digits
+\item Test the solution approach with smaller patterns
+\item Reuse the code for similar pattern-matching problems
+\item Verify correctness before scaling to the full problem
 \end{itemize}
 
-\subsubsection{Pattern Matching}
-The pattern matching functionality is implemented through two functions:
+The implementation consists of several helper functions:
 
-\begin{lstlisting}
-(defn matches-pattern? [p s]
-  (let [pair-compare #(if (= %1 :_) true (= %1 %2))
-        pairwise (into '() (map pair-compare p s))
-        counts-match (= (count p) (count s))
-        pairwise-all-good (reduce #(and %1 %2) pairwise)]
-    (if counts-match pairwise-all-good false)))
+\begin{enumerate}
+\item \texttt{max-dec-exp-from-pattern}: Converts a pattern to its maximum possible value by replacing wildcards with 9
+\item \texttt{min-dec-exp-from-pattern}: Converts a pattern to its minimum possible value by replacing wildcards with 0
+\item \texttt{dec-exp-to-bigint}: Converts a decimal expansion to a bigint
+\item \texttt{patt-max} and \texttt{patt-min}: Convenience functions to get the maximum and minimum values for a pattern
+\item \texttt{brute-force-generalized}: The main function that searches for numbers whose squares match the pattern
+\end{enumerate}
 
-(defn is-root-of-hidden-sq? [n]
-  (matches-pattern?
-   '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9 :_ 0)
-   (dec-exp-int (* n n))))
-\end{lstlisting}
+The generalized brute force function works as follows:
 
-The \texttt{matches-pattern?} function:
+\begin{verbatim}
+(defn brute-force-generalized [p]
+  (filter #(matches-pattern? p (dec-exp-int (* %1 %1))) 
+         (range (bigint (math/sqrt (patt-min p))) 
+                (+ 1 (bigint (math/sqrt (patt-max p)))))))
+\end{verbatim}
+
+This function:
 \begin{itemize}
-    \item Takes a pattern \texttt{p} and a sequence \texttt{s} to match against
-    \item Uses \texttt{:\_} as a wildcard that matches any digit
-    \item Compares corresponding elements, allowing wildcards to match anything
-    \item Ensures the lengths match and all comparisons pass
+\item Takes a pattern as input (e.g., '(1 :_ 2))
+\item Calculates the minimum and maximum possible values that could match the pattern
+\item Takes the square root of these values to determine the search range
+\item Filters numbers whose squares match the pattern
 \end{itemize}
 
-\subsection{Solution Approaches}
-
-The code presents two solution approaches:
-
-\subsubsection{First Approach}
-\begin{lstlisting}
-(defn sol1 [] (take 1 (filter is-root-of-hidden-sq? (range min-n max-n))))
-\end{lstlisting}
-
-This is a naive brute-force approach that:
+The advantage of this generalized approach is that we can test it with simpler patterns first, such as:
 \begin{itemize}
-    \item Defines the maximum and minimum possible values based on the pattern
-    \item Takes their square roots to get the search range
-    \item Filters numbers whose squares match the pattern
+\item 1\_2 (single wildcard)
+\item 1\_2\_3 (multiple wildcards)
+\item Small subsets of the full pattern
 \end{itemize}
 
-\subsubsection{Slightly Narrower Approach}
-\begin{lstlisting}
-(defn is-m-sq?
-  [m]
-  (matches-pattern?
-   '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9)
-   (dec-exp-int (* m m))))
-
-(defn sol2 [] 
-  (take 1 (filter is-m-sq? (range min-m max-m))))
-\end{lstlisting}
-
-This is another approach that:
-\begin{itemize}
-    \item Uses an intermediate step mentioned in the problem writeup
-    \item Reduces the search space by looking at a shorter pattern
-    \item Still uses brute force but over a smaller range
-\end{itemize}
-
-Both approaches are noted to be time-consuming, suggesting that further optimization might be needed for an efficient solution.
+This allows us to verify the correctness of our pattern matching and number generation before attempting the full problem.
 
 \end{document}
