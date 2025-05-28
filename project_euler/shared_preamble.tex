@@ -1,0 +1,40 @@
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Define colors for syntax highlighting
+\definecolor{stringcolor}{RGB}{206,145,120}
+\definecolor{keywordcolor}{RGB}{197,134,192}
+\definecolor{commentcolor}{RGB}{96,139,78}
+\definecolor{functioncolor}{RGB}{220,220,170}
+\definecolor{numbercolor}{RGB}{181,206,168}
+
+% Configure Clojure language
+\lstdefinelanguage{Clojure}{
+  morekeywords={def,defn,let,if,do,map,reduce,filter,when,cond,case,loop,recur,fn,ns,require},
+  morestring=[b]",
+  morecomment=[l];,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  keywordstyle=\color{keywordcolor},
+  stringstyle=\color{stringcolor},
+  commentstyle=\color{commentcolor},
+  identifierstyle=\color{functioncolor},
+  numberstyle=\color{numbercolor},
+  sensitive=false
+}
+
+% Set default language to Clojure
+\lstset{language=Clojure}
+
+% Other common packages
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{geometry}
+
+% Page setup
+\geometry{margin=1in}
