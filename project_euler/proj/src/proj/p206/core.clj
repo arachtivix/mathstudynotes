@@ -62,6 +62,10 @@
 (defn brute-force-generalized [p]
   (filter #(matches-pattern? p (dec-exp-int (* %1 %1))) (range (bigint (math/sqrt (patt-min p))) (+ 1 (bigint (math/sqrt (patt-max p)))))))
 
+(defn populate-dd-digit-cycle [dd m cd co]
+  (let [nd (rem (+ cd co) dd) no (rem (+ co 2) dd)]
+    (if (m [nd no]) m (recur dd (assoc m [cd co] nd) nd no))))
+
 (defn solve []
   ;; TODO: Implement solution
   nil)
