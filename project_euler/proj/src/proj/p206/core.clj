@@ -1,7 +1,8 @@
 
 (ns proj.p206.core
   (:require [clojure.math :as math]
-            [proj.shared :as shared])
+            [proj.shared :as shared]
+            [clojure.math.numeric-tower :as nt :refer [expt]])
   (:gen-class))
 
 ;; Problem 206: Concealed Square
@@ -66,10 +67,18 @@
   (let [nd (rem (+ cd co) dd) no (rem (+ co 2) dd)]
     (if (m [nd no]) m (recur dd (assoc m [cd co] nd) nd no))))
 
-(defn solve []
-  ;; TODO: Implement solution
-  nil)
+(defn digits-table-seq [digit-count]
+  (let [mod-val (expt 10 digit-count)]
+    (iterate 
+     #(vector (rem (+ (% 0) (% 1)) mod-val) 
+              (rem (+ (% 1) 2) mod-val))
+     [1 3])))
 
-(defn -main []
-  (println "Solution to Problem 206:")
-  (println (solve)))
+
+  (defn solve []
+    ;; TODO: Implement solution
+    nil)
+
+  (defn -main []
+    (println "Solution to Problem 206:")
+    (println (solve)))
