@@ -11,19 +11,7 @@
 (defn dec-exp [n m]
   (lazy-seq (let [q (quot n m) r (rem n m)] (cons q (dec-exp (* 10 r) m)))))
 
-;; same sequence as above but the quotient inputs are preserved
-(defn dec-exp-components [[n m]]
-  (lazy-seq (let [r (rem n m)] (cons [n m] (dec-exp-components [(* 10 r) m])))))
-
-(defn find-repeat [s m pos]
-  (let [curr (first s)]
-    (if (some? (m curr))
-      [pos (m curr)]
-      (recur (rest s) (assoc m curr pos) (+ 1 pos)))))
-
-(defn find-cyc-len [n] (let [[e s] (find-repeat (dec-exp-components [1 n]) {} 0)] [(- e s) n]))
-
-(defn gen-pairs-to-n [n] (map #(find-cyc-len %) (range 2 n)))
+(defn gen-pairs-to-n [n] (map #(shared/find-cyc-len %) (range 2 n)))
 
 (defn solve-1 [n] (nth (reduce #(let [[c1] %1 [c2] %2] (if (> c1 c2) %1 %2)) (gen-pairs-to-n n)) 1))
 

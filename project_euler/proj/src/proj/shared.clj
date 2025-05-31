@@ -1,5 +1,25 @@
 (ns proj.shared)
 
+;; Functions for finding repeating decimal expansions
+(defn dec-exp-components [[n m]]
+  "Takes a numerator and denominator and returns a lazy sequence of [numerator denominator] pairs
+   representing the long division process"
+  (lazy-seq (let [r (rem n m)] (cons [n m] (dec-exp-components [(* 10 r) m])))))
+
+(defn find-repeat [s m pos]
+  "Finds a repeating pattern in a sequence by tracking seen values in a map.
+   Returns [end start] where end is the position where the repeat was found and start is where it began"
+  (let [curr (first s)]
+    (if (some? (m curr))
+      [pos (m curr)]
+      (recur (rest s) (assoc m curr pos) (+ 1 pos)))))
+
+(defn find-cyc-len [n]
+  "For a number n, finds the length of the repeating decimal in 1/n.
+   Returns [cycle-length n]"
+  (let [[e s] (find-repeat (dec-exp-components [1 n]) {} 0)]
+    [(- e s) n]))
+
 (defn up-by-twos
   [start] (lazy-seq (cons start (up-by-twos (+ start 2)))))
 
