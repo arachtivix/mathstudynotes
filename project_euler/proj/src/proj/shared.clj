@@ -14,6 +14,14 @@
       [pos (m curr)]
       (recur (rest s) (assoc m curr pos) (+ 1 pos)))))
 
+(defn get-seq-before-repeat
+  "Returns the given sequence up to the first single element repeat (not including the repeated)"
+  ([s] (reverse (get-seq-before-repeat s #{} '())))
+  ([s seen r] (let [f (first s)]
+    (if (or (nil? f) (some? (seen f)))
+      r
+      (recur (rest s) (conj seen f) (cons f r))))))
+
 (defn up-by-twos
   [start] (lazy-seq (cons start (up-by-twos (+ start 2)))))
 
