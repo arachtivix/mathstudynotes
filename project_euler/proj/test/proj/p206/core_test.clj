@@ -14,6 +14,12 @@
     (is (= false (matches-pattern? '(1 :_ 2 :_) '(1 2 3 4))))
     (is (= false (matches-pattern? '(1 :_ 3 :_) '(1 2 3 4 5))))))
 
+(deftest matches-pattern-test
+  (testing "Testing matches pattern with leading zeros"
+    (is (= true (matches-pattern? '(:_ :_ 3 :_) '(4))))
+    (is (= true (matches-pattern? '(:_ :_ 3 :_) '(3 4))))
+    (is (= true (matches-pattern? '(:_ :_ 3 :_) '(1 3 4))))))
+
 (deftest dec-exp-to-bigint-test
   (testing "Testing decimal expansion to bigint"
     (is (= 1234 (dec-exp-to-bigint '(1 2 3 4))))
