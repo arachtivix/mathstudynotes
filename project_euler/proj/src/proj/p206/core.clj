@@ -26,7 +26,7 @@
             delta-s (- p-count s-count)]
         (if nbr-exp-greater-than-pattern
           false
-          (matches-pattern? p (concat (repeat delta-s :_) s)))))))
+          (matches-pattern? p (concat (repeat delta-s 0) s)))))))
 
 (defn is-root-of-hidden-sq? [n]
   (matches-pattern?
