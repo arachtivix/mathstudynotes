@@ -14,12 +14,6 @@
       [pos (m curr)]
       (recur (rest s) (assoc m curr pos) (+ 1 pos)))))
 
-(defn find-cyc-len [n]
-  "For a number n, finds the length of the repeating decimal in 1/n.
-   Returns [cycle-length n]"
-  (let [[e s] (find-repeat (dec-exp-components [1 n]) {} 0)]
-    [(- e s) n]))
-
 (defn up-by-twos
   [start] (lazy-seq (cons start (up-by-twos (+ start 2)))))
 

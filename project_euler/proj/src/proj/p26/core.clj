@@ -11,7 +11,13 @@
 (defn dec-exp [n m]
   (lazy-seq (let [q (quot n m) r (rem n m)] (cons q (dec-exp (* 10 r) m)))))
 
-(defn gen-pairs-to-n [n] (map #(shared/find-cyc-len %) (range 2 n)))
+(defn find-cyc-len [n]
+  "For a number n, finds the length of the repeating decimal in 1/n.
+   Returns [cycle-length n]"
+  (let [[e s] (shared/find-repeat (shared/dec-exp-components [1 n]) {} 0)]
+    [(- e s) n]))
+
+(defn gen-pairs-to-n [n] (map #(find-cyc-len %) (range 2 n)))
 
 (defn solve-1 [n] (nth (reduce #(let [[c1] %1 [c2] %2] (if (> c1 c2) %1 %2)) (gen-pairs-to-n n)) 1))
 
