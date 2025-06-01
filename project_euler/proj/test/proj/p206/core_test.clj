@@ -18,7 +18,8 @@
   (testing "Testing matches pattern with leading zeros"
     (is (= false (matches-pattern? '(:_ :_ 3 :_) '(4))))
     (is (= true (matches-pattern? '(:_ :_ 3 :_) '(3 4))))
-    (is (= true (matches-pattern? '(:_ :_ 3 :_) '(1 3 4))))))
+    (is (= true (matches-pattern? '(:_ :_ 3 :_) '(1 3 4))))
+    (is (= false (matches-pattern? '(:_ :_ 3 :_) '(1 5 5 3 2))))))
 
 (deftest dec-exp-to-bigint-test
   (testing "Testing decimal expansion to bigint"
