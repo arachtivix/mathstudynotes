@@ -14,11 +14,19 @@
              (if (= q 0) cur (recur q cur)))))
 
 (defn matches-pattern? [p s]
-  (let [pair-compare #(if (= %1 :_) true (= %1 %2))
-        pairwise (into '() (map pair-compare p s))
-        counts-match (= (count p) (count s))
-        pairwise-all-good (reduce #(and %1 %2) pairwise)]
-    (if counts-match pairwise-all-good false)))
+  (let [p-count (count p)
+        s-count (count s)
+        counts-match (= p-count s-count)]
+    (if counts-match 
+      (let [pair-compare #(if (= %1 :_) true (= %1 %2))
+            pairwise (into '() (map pair-compare p s))
+            pairwise-all-good (reduce #(and %1 %2) pairwise)]
+        pairwise-all-good)
+      (let [nbr-exp-greater-than-pattern (> s-count p-count)
+            delta-s (- p-count s-count)]
+        (if nbr-exp-greater-than-pattern
+          false
+          (matches-pattern? p (concat (repeat delta-s :_) s)))))))
 
 (defn is-root-of-hidden-sq? [n]
   (matches-pattern?

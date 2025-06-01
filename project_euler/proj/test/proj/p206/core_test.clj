@@ -16,7 +16,7 @@
 
 (deftest matches-pattern-test
   (testing "Testing matches pattern with leading zeros"
-    (is (= true (matches-pattern? '(:_ :_ 3 :_) '(4))))
+    (is (= false (matches-pattern? '(:_ :_ 3 :_) '(4))))
     (is (= true (matches-pattern? '(:_ :_ 3 :_) '(3 4))))
     (is (= true (matches-pattern? '(:_ :_ 3 :_) '(1 3 4))))))
 
