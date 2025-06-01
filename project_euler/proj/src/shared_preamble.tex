@@ -1,0 +1,69 @@
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Define colors for syntax highlighting
+\definecolor{commentcolor}{rgb}{0.5,0.5,0.5}
+\definecolor{stringcolor}{rgb}{0.2,0.6,0.2}
+\definecolor{keywordcolor}{rgb}{0.2,0.2,0.8}
+
+% Configure listings for Clojure code
+\lstdefinelanguage{Clojure}{
+  morekeywords={defn,def,ns,let,if,cond,case,when,while,for,doseq,loop,recur,fn,map,reduce,filter,comp,partial,->,->>},
+  morestring=[b]",
+  morecomment=[l];,
+  sensitive=true,
+  basicstyle=\ttfamily,
+  keywordstyle=\color{keywordcolor}\bfseries,
+  commentstyle=\color{commentcolor}\itshape,
+  stringstyle=\color{stringcolor},
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  keepspaces=true
+}
+
+% Default listings settings
+\lstset{
+  language=Clojure,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=true,
+  showspaces=false,
+  showtabs=false,
+  xleftmargin=\parindent
+}
+
+% Additional math packages and settings
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+% Additional formatting packages
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{float}
+
+% Page layout settings
+\usepackage[margin=1in]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+% Hyperlinks and references
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=magenta,
+  urlcolor=cyan
+}

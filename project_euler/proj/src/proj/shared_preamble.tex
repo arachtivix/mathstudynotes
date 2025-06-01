@@ -4,19 +4,26 @@
 \usepackage{listings}
 \usepackage{xcolor}
 
-% Define Clojure language settings
+% Define Clojure language for listings
 \lstdefinelanguage{Clojure}{
-  keywords={def, defn, let, if, do, fn, loop, recur, case, cond, for, doseq, when, while, and, or, not, nil, true, false},
-  sensitive=true,
-  comment=[l]{;},
+  morekeywords={defn, def, ns, if, do, let, loop, recur, when, cons, car, cdr,
+                list, quote, fn, lambda, or, and, not, cond, map, nil, vector,
+                require, use, in-ns, gen-class},
   morestring=[b]",
-  morestring=[s]{#{'}{'},
-  morestring=[s]{#{"}{"}},
-  morecomment=[s]{/*}{*/},
-  morekeywords={->, ->>, doto, ns, require, use, import, refer, as, alias},
+  morecomment=[l];,
+  sensitive=true,
+  alsoletter={\#\-},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  commentstyle=\color{gray}\itshape,
+  showstringspaces=false,
+  tabsize=2,
+  breaklines=true,
+  frame=single,
 }
 
-% Customize lstset for Clojure
+% Default settings for code listings
 \lstset{
   language=Clojure,
   basicstyle=\ttfamily\small,
