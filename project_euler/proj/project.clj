@@ -11,6 +11,7 @@
   :aot :all
   :profiles {:dev {:dependencies [[org.clojure/test.check "1.1.1"]]
                    :plugins [[lein-cljfmt "0.9.2"]]}} ; For code formatting
-  :repl-options {:init-ns proj.core}
+  :repl-options {:init-ns proj.core
+                 :timeout 120000}
   :source-paths ["src"]
   :test-paths ["test"])
