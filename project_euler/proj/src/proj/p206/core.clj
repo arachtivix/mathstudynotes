@@ -17,7 +17,7 @@
   (let [p-count (count p)
         s-count (count s)
         counts-match (= p-count s-count)]
-    (if counts-match 
+    (if counts-match
       (let [pair-compare #(if (= %1 :_) true (= %1 %2))
             pairwise (into '() (map pair-compare p s))
             pairwise-all-good (reduce #(and %1 %2) pairwise)]
@@ -77,16 +77,26 @@
 
 (defn digits-table-seq [digit-count]
   (let [mod-val (expt 10 digit-count)]
-    (iterate 
-     #(vector (rem (+ (% 0) (% 1)) mod-val) 
+    (iterate
+     #(vector (rem (+ (% 0) (% 1)) mod-val)
               (rem (+ (% 1) 2) mod-val))
      [1 3])))
 
+(defn get-cyc-vals [n]
+  (shared/get-seq-before-repeat (digits-table-seq n)))
 
-  (defn solve []
-    ;; TODO: Implement solution
-    nil)
+(defn numbered-cyc-vals [n]
+  (map #(vector %1 %2) (get-cyc-vals n) (range 1 (expt 10 n))))
 
-  (defn -main []
-    (println "Solution to Problem 206:")
-    (println (solve)))
+(defn get-bases-matching-pattern [n p]
+  (map #(% 1)
+       (filter #(matches-pattern? p (dec-exp-int ((% 0) 0)))
+               (numbered-cyc-vals n))))
+
+(defn solve []
+  ;; TODO: Implement solution
+  nil)
+
+(defn -main []
+  (println "Solution to Problem 206:")
+  (println (solve)))

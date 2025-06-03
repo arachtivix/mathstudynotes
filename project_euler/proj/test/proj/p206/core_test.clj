@@ -48,3 +48,9 @@
     (is (= '(123 124 125 126) (brute-force-generalized '(1 5 :_ :_ :_))))
     ;; made a spreadsheet and verified the following manually
     (is (= '(104 106 114 116 124 126 134 136) (brute-force-generalized '(1 :_ :_ :_ 6))))))
+
+(deftest get-bases-matching-pattern-test
+  (testing "Testing get-bases-matching-pattern -- data from table in writeup"
+    (is (= '(2 8) (get-bases-matching-pattern 1 '(4))))
+    (is (= '(5) (get-bases-matching-pattern 1 '(5))))
+    (is (= '() (get-bases-matching-pattern 1 '(8))))))
