@@ -80,21 +80,29 @@
     (iterate
      #(vector (rem (+ (% 0) (% 1)) mod-val)
               (rem (+ (% 1) 2) mod-val))
-     [1 3])))
+     [0 1])))
 
 (defn get-cyc-vals [n]
   (shared/get-seq-before-repeat (digits-table-seq n)))
 
 (defn numbered-cyc-vals [n]
-  (map #(vector %1 %2) (get-cyc-vals n) (range 1 (expt 10 n))))
+  (map #(vector %1 %2) (get-cyc-vals n) (range (expt 10 n))))
 
 (defn get-bases-matching-pattern [nb-cyc-vals p]
   (map #(% 1)
        (filter #(matches-pattern? p (dec-exp-int ((% 0) 0))) nb-cyc-vals)))
 
-;; (defn get-try-deltas
-;;   (let []
-;;     5))
+(defn get-try-deltas
+  [n p]
+  (let [nb-cyc-vals (numbered-cyc-vals n)
+        bases-matching-pattern (get-bases-matching-pattern nb-cyc-vals p)
+        cycle-len (count nb-cyc-vals)
+        deltas-from-seq (map #(- %1 %2) (rest bases-matching-pattern) bases-matching-pattern)
+        last-base (last bases-matching-pattern)]
+    (if (> (count bases-matching-pattern) 0)
+      [(first bases-matching-pattern)
+       (concat  deltas-from-seq (list (+ (first bases-matching-pattern) (- cycle-len last-base))))]
+      [nil []])))
 
 (defn solve []
   ;; TODO: Implement solution

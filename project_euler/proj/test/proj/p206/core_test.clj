@@ -54,3 +54,10 @@
     (is (= '(2 8) (get-bases-matching-pattern (numbered-cyc-vals 1) '(4))))
     (is (= '(5) (get-bases-matching-pattern (numbered-cyc-vals 1) '(5))))
     (is (= '() (get-bases-matching-pattern (numbered-cyc-vals 1) '(8))))))
+
+(deftest get-try-deltas-test
+  (testing "Testing get-try-deltas"
+    (is (= [2 [6 4]] (get-try-deltas 1 '(4))))
+    (is (= [4 [2 8]] (get-try-deltas 1 '(6))))
+    (is (= [0 [10]] (get-try-deltas 1 '(0))))
+    (is (= [nil []] (get-try-deltas 1 '(7))))))
