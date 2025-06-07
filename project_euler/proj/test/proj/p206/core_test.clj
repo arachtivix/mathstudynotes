@@ -51,6 +51,6 @@
 
 (deftest get-bases-matching-pattern-test
   (testing "Testing get-bases-matching-pattern -- data from table in writeup"
-    (is (= '(2 8) (get-bases-matching-pattern 1 '(4))))
-    (is (= '(5) (get-bases-matching-pattern 1 '(5))))
-    (is (= '() (get-bases-matching-pattern 1 '(8))))))
+    (is (= '(2 8) (get-bases-matching-pattern (numbered-cyc-vals 1) '(4))))
+    (is (= '(5) (get-bases-matching-pattern (numbered-cyc-vals 1) '(5))))
+    (is (= '() (get-bases-matching-pattern (numbered-cyc-vals 1) '(8))))))

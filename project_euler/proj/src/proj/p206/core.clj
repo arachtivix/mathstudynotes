@@ -88,10 +88,13 @@
 (defn numbered-cyc-vals [n]
   (map #(vector %1 %2) (get-cyc-vals n) (range 1 (expt 10 n))))
 
-(defn get-bases-matching-pattern [n p]
+(defn get-bases-matching-pattern [nb-cyc-vals p]
   (map #(% 1)
-       (filter #(matches-pattern? p (dec-exp-int ((% 0) 0)))
-               (numbered-cyc-vals n))))
+       (filter #(matches-pattern? p (dec-exp-int ((% 0) 0))) nb-cyc-vals)))
+
+;; (defn get-try-deltas
+;;   (let []
+;;     5))
 
 (defn solve []
   ;; TODO: Implement solution
