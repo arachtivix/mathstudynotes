@@ -60,4 +60,5 @@
     (is (= [2 [6 4]] (get-try-deltas 1 '(4))))
     (is (= [4 [2 8]] (get-try-deltas 1 '(6))))
     (is (= [0 [10]] (get-try-deltas 1 '(0))))
-    (is (= [nil []] (get-try-deltas 1 '(7))))))
+    (is (= [nil []] (get-try-deltas 1 '(7))))
+    (is (= [3 [44 6]] (get-try-deltas 2 '(9))))))
