@@ -104,6 +104,23 @@
        (concat  deltas-from-seq (list (+ (first bases-matching-pattern) (- cycle-len last-base))))]
       [nil []])))
 
+;; take a PersistentQueue and put its first member in the back of the line
+(defn rotate-queue [q]
+  (if (> (count q) 0) (let [f (peek q) r (pop q)] (conj r f)) q))
+
+(defn seq-from-try-deltas [[start deltas]]
+  (cond
+    (= 0 (count deltas))
+    '()
+    (seq? deltas)
+    (seq-from-try-deltas [start (into clojure.lang.PersistentQueue/EMPTY deltas)])
+    :else
+    (iterate
+     #(let [ss (% 0)
+            qq (% 1)]
+        [(+ ss (peek qq)) (rotate-queue qq)])
+     [start deltas])))
+
 (defn solve []
   ;; TODO: Implement solution
   nil)
