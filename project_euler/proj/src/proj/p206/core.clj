@@ -119,8 +119,16 @@
     :else
     (seq-from-try-deltas [start (into [] deltas)]))))
 
+(defn solve-3 []
+  (let [tdelts (get-try-deltas 6 '(:_ 8 :_ 9 :_ 0))
+        cands (seq-from-try-deltas tdelts)]
+    (take 1 (filter #(matches-pattern? 
+                      '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9 :_ 0)
+                      (dec-exp-int (* % %)))
+                    cands))))
+
 (defn solve []
-  ;; TODO: Implement solution
+  (solve-3)
   nil)
 
 (defn -main []
