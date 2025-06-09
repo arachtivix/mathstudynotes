@@ -63,16 +63,6 @@
     (is (= [nil []] (get-try-deltas 1 '(7))))
     (is (= [3 [44 6]] (get-try-deltas 2 '(9))))))
 
-(deftest rotate-queue-test
-  (testing "Testing rotate-queue"
-    (is (= (into clojure.lang.PersistentQueue/EMPTY [2 3 1]) (rotate-queue (into clojure.lang.PersistentQueue/EMPTY [1 2 3]))))
-    (is (= (into clojure.lang.PersistentQueue/EMPTY []) (rotate-queue (into clojure.lang.PersistentQueue/EMPTY []))))
-    (let [q (into clojure.lang.PersistentQueue/EMPTY [1 2])]
-      ;; if you rotate queue the same number of times as the element count, it should compare equal
-      (is (= q (rotate-queue (rotate-queue q))))
-      ;; this particular queue should not be the same when rotated once
-      (is (not= q (rotate-queue q))))))
-
 (deftest seq-from-try-deltas-test
   (testing "Testing seq-from-try-deltas"
     (is (= (take 3 (seq-from-try-deltas [1 [2]])) '(1 3 5)))
