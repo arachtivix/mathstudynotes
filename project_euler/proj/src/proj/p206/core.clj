@@ -104,25 +104,25 @@
        (concat  deltas-from-seq (list (+ (first bases-matching-pattern) (- cycle-len last-base))))]
       [nil []])))
 
-(defn seq-from-try-deltas 
+(defn seq-from-try-deltas
   ([[start deltas]] (seq-from-try-deltas start deltas))
   ([start deltas] (cond
-    (= 0 (count deltas))
-    '()
-    (vector? deltas)
-    (map #(% 0) (iterate
-                  #(let [ss (% 0)
-                         vec (% 1)
-                         pos (% 2)]
-                     [(+ ss (vec pos)) vec (rem (+ pos 1) (count vec))])
-                  [start deltas 0]))
-    :else
-    (seq-from-try-deltas [start (into [] deltas)]))))
+                    (= 0 (count deltas))
+                    '()
+                    (vector? deltas)
+                    (map #(% 0) (iterate
+                                 #(let [ss (% 0)
+                                        vec (% 1)
+                                        pos (% 2)]
+                                    [(+ ss (vec pos)) vec (rem (+ pos 1) (count vec))])
+                                 [start deltas 0]))
+                    :else
+                    (seq-from-try-deltas [start (into [] deltas)]))))
 
 (defn solve-3 []
   (let [tdelts (get-try-deltas 6 '(:_ 8 :_ 9 :_ 0))
         cands (seq-from-try-deltas tdelts)]
-    (take 1 (filter #(matches-pattern? 
+    (take 1 (filter #(matches-pattern?
                       '(1 :_ 2 :_ 3 :_ 4 :_ 5 :_ 6 :_ 7 :_ 8 :_ 9 :_ 0)
                       (dec-exp-int (* % %)))
                     cands))))
