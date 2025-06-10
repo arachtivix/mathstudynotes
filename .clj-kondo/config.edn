@@ -1,0 +1,11 @@
+{:linters {:unused-namespace {:level :warning}
+           :unused-referred-var {:level :warning}
+           :unused-private-var {:level :warning}
+           :redundant-do {:level :warning}
+           :redundant-let {:level :warning}
+           :unresolved-symbol {:level :error}
+           :unresolved-namespace {:level :error}
+           :invalid-arity {:level :error}
+           :duplicate-require {:level :warning}
+           :redefined-var {:level :warning}}
+ :output {:pattern "::{{level}} file={{filename}},line={{row}},col={{col}}::{{message}}"}}
