@@ -1,5 +1,6 @@
 (ns clojure-noob.core-test
-  (:require [clojure.test :refer :all]
+  #_{:clj-kondo/ignore [:refer-all]}
+  (:require [clojure.test :refer [deftest is testing]]
             [clojure-noob.core :refer :all]))
 
 (deftest a-test
