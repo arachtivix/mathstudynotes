@@ -7,7 +7,7 @@
 (defn next-prime
   ([start]
    (next-prime start '()))
-  ([start [p & rp :as prev-primes]]
+  ([start [p :as prev-primes]]
    (cond (nil? p) 2
          (= p 2) 3
          :else (first

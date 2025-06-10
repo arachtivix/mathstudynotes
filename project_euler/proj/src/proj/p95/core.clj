@@ -1,5 +1,5 @@
 (ns proj.p95.core
-  (:require [proj.shared :as shr])
+  ;; (:require [proj.shared :as shr])
   (:gen-class))
 
 ;; (defn proper-factors

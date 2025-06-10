@@ -1,7 +1,6 @@
 
 (ns proj.p26.core
-  (:require [clojure.math :as math]
-            [proj.shared :as shared])
+  (:require [proj.shared :as shared])
   (:gen-class))
 
 ;; Problem 26: Reciprocal Cycles

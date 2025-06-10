@@ -1,5 +1,6 @@
 (ns proj.p206.core-test
-  (:require [clojure.test :refer :all]
+  #_{:clj-kondo/ignore [:refer-all]}
+  (:require [clojure.test :refer [deftest is testing]]
             [proj.p206.core :refer :all]))
 
 (deftest dec-exp-int-test

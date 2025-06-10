@@ -1,6 +1,5 @@
 
 (ns proj.p3.core
-  (:require [clojure.math :as math])
   (:gen-class))
 
 (def q 600851475143)

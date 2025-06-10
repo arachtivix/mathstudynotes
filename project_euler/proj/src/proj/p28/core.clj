@@ -1,7 +1,5 @@
 
 (ns proj.p28.core
-  (:require [clojure.math :as math]
-            [proj.shared :as shared])
   (:gen-class))
 
 ;; Problem 28: Number Spiral Diagonals
