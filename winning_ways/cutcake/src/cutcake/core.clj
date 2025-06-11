@@ -1,5 +1,6 @@
 (ns cutcake.core
   (:require [hiccup2.core :as h]
+            [clojure.string :as str]
             [clojure.java.io :as io]))
 ; Lefty cuts north-south
 ; Rita cuts east-west
@@ -119,8 +120,7 @@
 
 (defn calc-filename
   [board player]
-  (let [simplified-board (remove-ones board)
-        player-name (if (= player :RITA) "rita" "lefty")]
+  (let [player-name (if (= player :RITA) "rita" "lefty")]
     (str (clojure.string/join "_" (flatten board))
          player-name ".html")))
 
