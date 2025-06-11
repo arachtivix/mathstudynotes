@@ -1,6 +1,5 @@
 (ns cutcake.core
-  (:require [clojure.data.json :as json]
-            [hiccup2.core :as h]
+  (:require [hiccup2.core :as h]
             [clojure.java.io :as io]))
 ; Lefty cuts north-south
 ; Rita cuts east-west

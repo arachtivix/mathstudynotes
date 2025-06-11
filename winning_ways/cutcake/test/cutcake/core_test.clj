@@ -1,4 +1,5 @@
 (ns cutcake.core-test
+  #_{:clj-kondo/ignore [:refer-all]}
   (:require [clojure.test :refer :all]
             [cutcake.core :refer :all]))
 
