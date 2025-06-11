@@ -1,4 +1,5 @@
 (ns proj.core
+  #_{:clj-kondo/ignore [:unused-namespace]}
   (:require [proj.p3.core :as p3]
             [proj.p4.core :as p4]
             [proj.p7.core :as p7]

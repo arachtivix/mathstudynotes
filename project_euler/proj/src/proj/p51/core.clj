@@ -1,7 +1,5 @@
 
 (ns proj.p51.core
-  (:require [clojure.math :as math]
-            [proj.shared :as shared])
   (:gen-class))
 
 ;; Problem 51: Prime Digit Replacements

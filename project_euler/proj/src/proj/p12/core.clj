@@ -57,7 +57,7 @@
     (cond (= 0 (count rfs)) 2
           :else (apply *
                        (reduce
-                        (fn [coll [k v]]
+                        (fn [coll [_ v]]
                           (cons (+ 1 v) coll))
                         '()
                         rfs)))))

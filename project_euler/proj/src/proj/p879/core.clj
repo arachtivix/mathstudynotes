@@ -62,8 +62,6 @@
     (= (count pos-vecs) 0) '()
     :else (let [curr (first pos-vecs)
                 tail (gen-all-vecs (rest pos-vecs))
-                x (get curr 0)
-                y (get curr 1)
                 sv1 (scale-vec curr -1 1)
                 sv2 (scale-vec curr 1 -1)
                 sv3 (scale-vec curr -1 -1)]
