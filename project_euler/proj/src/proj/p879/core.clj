@@ -97,10 +97,9 @@
 (defn taken-by
   "get xy vecs for places taken going going 'from' exl 'to' incl"
   [from to board dim]
-  (let [path (from-to from to)]
-    (filter
-     #(and (is-valid-pos % dim) (get board (to-int % dim)))
-     (rest (from-to from to)))))
+  (filter
+   #(and (is-valid-pos % dim) (get board (to-int % dim)))
+   (rest (from-to from to))))
 
 (defn solve []
   ;; TODO: Implement solution
