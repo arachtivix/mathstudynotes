@@ -15,7 +15,7 @@
     (is (= false (matches-pattern? '(1 :_ 2 :_) '(1 2 3 4))))
     (is (= false (matches-pattern? '(1 :_ 3 :_) '(1 2 3 4 5))))))
 
-(deftest matches-pattern-test
+(deftest matches-pattern-test-2
   (testing "Testing matches pattern with leading zeros"
     (is (= false (matches-pattern? '(:_ :_ 3 :_) '(4))))
     (is (= true (matches-pattern? '(:_ :_ 3 :_) '(3 4))))
