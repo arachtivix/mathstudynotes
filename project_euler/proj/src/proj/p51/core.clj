@@ -26,9 +26,9 @@
   ([n mask] (numbers-under-mask-all-same? (str n) mask #{}))
   ([n mask seen]
    (cond (= 0 (count n)) true
-         (= \O (first mask)) (numbers-under-mask-all-same? (rest n) (rest mask) seen)
-         (= 0 (count seen)) (numbers-under-mask-all-same? (rest n) (rest mask) #{(first n)})
-         (contains? seen (first n)) (numbers-under-mask-all-same? (rest n) (rest mask) seen)
+         (= \O (first mask)) (recur (rest n) (rest mask) seen)
+         (= 0 (count seen)) (recur (rest n) (rest mask) #{(first n)})
+         (contains? seen (first n)) (recur (rest n) (rest mask) seen)
          :else false)))
 
 (defn solve []
