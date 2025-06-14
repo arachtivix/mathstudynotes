@@ -22,6 +22,15 @@
 (defn combine-int-with-mask [n mask]
   (apply str (map #(if (= %1 \X) \X %2) mask (str n))))
 
+(defn numbers-under-mask-all-same?
+  ([n mask] (numbers-under-mask-all-same? (str n) mask #{}))
+  ([n mask seen]
+   (cond (= 0 (count n)) true
+         (= \O (first mask)) (numbers-under-mask-all-same? (rest n) (rest mask) seen)
+         (= 0 (count seen)) (numbers-under-mask-all-same? (rest n) (rest mask) #{(first n)})
+         (contains? seen (first n)) (numbers-under-mask-all-same? (rest n) (rest mask) seen)
+         :else false)))
+
 (defn solve []
   ;; TODO: Implement solution
   nil)
