@@ -18,9 +18,9 @@
 (defn get-seq-before-repeat
   ([s] (reverse (get-seq-before-repeat s #{} '())))
   ([s seen r] (let [f (first s)]
-    (if (or (nil? f) (some? (seen f)))
-      r
-      (recur (rest s) (conj seen f) (cons f r))))))
+                (if (or (nil? f) (some? (seen f)))
+                  r
+                  (recur (rest s) (conj seen f) (cons f r))))))
 
 (defn up-by-twos
   [start] (lazy-seq (cons start (up-by-twos (+ start 2)))))
@@ -42,3 +42,18 @@
          (let [nn (/ n first-factor)]
            (conj (get-factors nn try-factors) first-factor))
          :else (recur n remain))))
+
+(defn find-next-prime-vec
+  ([all-lt-primes-vec]
+   (cond
+     (= all-lt-primes-vec []) [2]
+     (= all-lt-primes-vec [2]) [2 3]
+     :else (find-next-prime-vec all-lt-primes-vec (+ 2 (last all-lt-primes-vec)))))
+  ([all-lt-primes-vec check]
+   (let [possible-factors (take-while #(<= (* % %) check) all-lt-primes-vec)
+         has-factor (nil? (some #(= 0 (mod check %)) possible-factors))]
+     (if has-factor (conj all-lt-primes-vec check)
+         (recur all-lt-primes-vec (+ check 2))))))
+
+(def prime-seq
+  (map #(last %) (iterate find-next-prime-vec [2])))
