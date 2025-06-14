@@ -10,6 +10,7 @@
             [proj.p16.core :as p16]
             [proj.p26.core :as p26]
             [proj.p28.core :as p28]
+            [proj.p51.core :as p51]
             [proj.p95.core :as p95]
             [proj.p206.core :as p206]
             [proj.p361.core :as p361]

@@ -12,6 +12,15 @@
         lt (nt/expt 10 (- n 1))]
     (filter #(> % lt) (take-while #(< % gt) prime-seq))))
 
+(defn all-n-digit-masks [n]
+  (if (= n 1) ["X" "O"]
+      (let [subs (all-n-digit-masks (- n 1))]
+        (concat 
+         (map #(str "X" %) subs)
+         (map #(str "O" %) subs)))))
+
+(defn combine-int-with-mask [n mask]
+  (apply str (map #(if (= %1 \X) \X %2) mask (str n))))
 
 (defn solve []
   ;; TODO: Implement solution
