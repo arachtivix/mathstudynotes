@@ -65,9 +65,24 @@
                 masks
                 (multi-assoc valid-masked-values sofar curr))))))
 
+(defn get-earliest-conforming-group [mfa threshold]
+  (let [count-matching (filter #(>= (count %) threshold) (vals mfa))]
+    (if (= (count count-matching) 0)
+      '()
+      (reduce
+       #(if (< (first %2) (first %1)) %2 %1)
+       count-matching))))
+
+(defn get-answer-for-num-digits [num-digits, threshold]
+  (get-earliest-conforming-group
+   (get-map-for-all num-digits)
+   threshold))
+
 (defn solve []
-  ;; TODO: Implement solution
-  nil)
+  ;; not the most performant, but it gets there in a few min
+  ;; procedure to work through the args to this function could be automated but
+  ;; maybe later
+  (last (get-answer-for-num-digits 6, 8)))
 
 (defn -main []
   (println "Solution to Problem 51:")

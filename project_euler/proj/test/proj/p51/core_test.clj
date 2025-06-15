@@ -3,7 +3,7 @@
             [proj.p51.core :refer [all-n-digit-primes all-n-digit-masks
                                    combine-int-with-mask numbers-under-mask-all-same?
                                    num-to-masked get-valid-masked-values
-                                   multi-assoc]]))
+                                   multi-assoc get-answer-for-num-digits]]))
 
 (deftest test-all-n-digit-primes
   (testing "all-n-digit-primes"
@@ -55,3 +55,9 @@
     (is (= {2 [1] 3 [1]} (multi-assoc [2 3] {} 1)))
     (is (= {2 [1] 3 [1] 4 [3]} (multi-assoc [2 3] {4 [3]} 1)))
     (is (= {2 [1 3] 3 [1]} (multi-assoc [2 3] {2 [3]} 1)))))
+
+(deftest test-get-answer-for-num-digits
+  (testing "get-answer-for-num-digits"
+    ;; examples from problem statement
+    (is (= 13 (last (get-answer-for-num-digits 2 6)))
+        (= 56003 (last (get-answer-for-num-digits 5 7))))))
