@@ -40,8 +40,30 @@
          :else (recur (rest n) (rest mask) (conj sofar (first n))))))
 
 (defn get-valid-masked-values [n masks-to-try]
-  (map #(num-to-masked n %) 
+  (map #(num-to-masked n %)
        (filter #(numbers-under-mask-all-same? n %) masks-to-try)))
+
+(defn multi-assoc [values m n]
+  (if (= nil (first values)) m
+      (let [curr (first values)
+            existing (m curr)
+            sub (multi-assoc (rest values) m n)]
+        (if (= nil existing)
+          (assoc sub curr (list n))
+          (assoc sub curr (cons n existing))))))
+
+(defn get-map-for-all
+  ([num-digits] (get-map-for-all
+                 (all-n-digit-primes num-digits)
+                 (all-n-digit-masks num-digits)
+                 {}))
+  ([primes masks sofar]
+   (if (= nil (first primes)) sofar
+       (let [curr (first primes)
+             valid-masked-values (get-valid-masked-values curr masks)]
+         (recur (rest primes)
+                masks
+                (multi-assoc valid-masked-values sofar curr))))))
 
 (defn solve []
   ;; TODO: Implement solution

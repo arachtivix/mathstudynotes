@@ -2,7 +2,8 @@
   (:require [clojure.test :refer [deftest is testing]]
             [proj.p51.core :refer [all-n-digit-primes all-n-digit-masks
                                    combine-int-with-mask numbers-under-mask-all-same?
-                                   num-to-masked get-valid-masked-values]]))
+                                   num-to-masked get-valid-masked-values
+                                   multi-assoc]]))
 
 (deftest test-all-n-digit-primes
   (testing "all-n-digit-primes"
@@ -48,3 +49,9 @@
     (is (= ["1X1X" "X2X2"] (get-valid-masked-values 1212 ["OXOX" "XOXO"])))
     (is (= ["11XX" "1X1X"] (get-valid-masked-values 1111 ["OOXX" "OXOX"])))
     (is (= [] (get-valid-masked-values 1234 ["XXXX"])))))
+
+(deftest test-multi-assoc
+  (testing "multi-assoc"
+    (is (= {2 [1] 3 [1]} (multi-assoc [2 3] {} 1)))
+    (is (= {2 [1] 3 [1] 4 [3]} (multi-assoc [2 3] {4 [3]} 1)))
+    (is (= {2 [1 3] 3 [1]} (multi-assoc [2 3] {2 [3]} 1)))))
