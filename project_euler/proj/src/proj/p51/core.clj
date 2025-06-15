@@ -15,7 +15,7 @@
 (defn all-n-digit-masks [n]
   (if (= n 1) ["X" "O"]
       (let [subs (all-n-digit-masks (- n 1))]
-        (concat 
+        (concat
          (map #(str "X" %) subs)
          (map #(str "O" %) subs)))))
 
@@ -30,6 +30,14 @@
          (= 0 (count seen)) (recur (rest n) (rest mask) #{(first n)})
          (contains? seen (first n)) (recur (rest n) (rest mask) seen)
          :else false)))
+
+(defn num-to-masked
+  ([n mask] (apply str (num-to-masked n mask [])))
+  ([n mask sofar]
+   (cond (not (seq? n)) (num-to-masked (seq (str n)) mask)
+         (= 0 (count n)) sofar
+         (= \X (first mask)) (recur (rest n) (rest mask) (conj sofar \X))
+         :else (recur (rest n) (rest mask) (conj sofar (first n))))))
 
 (defn solve []
   ;; TODO: Implement solution

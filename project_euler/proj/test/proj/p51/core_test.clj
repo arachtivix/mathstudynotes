@@ -1,7 +1,8 @@
 (ns proj.p51.core-test
   (:require [clojure.test :refer [deftest is testing]]
             [proj.p51.core :refer [all-n-digit-primes all-n-digit-masks
-                                   combine-int-with-mask numbers-under-mask-all-same?]]))
+                                   combine-int-with-mask numbers-under-mask-all-same?
+                                   num-to-masked]]))
 
 (deftest test-all-n-digit-primes
   (testing "all-n-digit-primes"
@@ -30,3 +31,11 @@
     (is (= "X2" (combine-int-with-mask 12 "XO")))
     (is (= "2X" (combine-int-with-mask 29 "OX")))
     (is (= "75" (combine-int-with-mask 75 "OO")))))
+
+(deftest test-num-to-masked
+  (testing "num-to-masked"
+    (is (= "X" (num-to-masked 1 "X")))
+    (is (= "1" (num-to-masked 1 "O")))
+    (is (= "1X" (num-to-masked 12 "OX")))
+    (is (= "X2" (num-to-masked 12 "XO")))
+    (is (= "12" (num-to-masked 12 "OO")))))
