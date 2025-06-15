@@ -51,5 +51,5 @@
 (deftest test-get-answer-for-num-digits
   (testing "get-answer-for-num-digits"
     ;; examples from problem statement
-    (is (= 13 (last (get-answer-for-num-digits 2 6)))
-        (= 56003 (last (get-answer-for-num-digits 5 7))))))
+    (is (= 13 (last (get-answer-for-num-digits 2 6))))
+    (is (= 56003 (last (get-answer-for-num-digits 5 7))))))
