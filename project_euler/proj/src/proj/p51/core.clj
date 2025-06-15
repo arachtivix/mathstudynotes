@@ -25,7 +25,7 @@
 (defn numbers-under-mask-all-same?
   ([n mask] (numbers-under-mask-all-same? (str n) mask #{}))
   ([n mask seen]
-   (cond (= 0 (count n)) true
+   (cond (= nil (first n)) true
          (= \O (first mask)) (recur (rest n) (rest mask) seen)
          (= 0 (count seen)) (recur (rest n) (rest mask) #{(first n)})
          (contains? seen (first n)) (recur (rest n) (rest mask) seen)
@@ -38,6 +38,10 @@
          (= 0 (count n)) sofar
          (= \X (first mask)) (recur (rest n) (rest mask) (conj sofar \X))
          :else (recur (rest n) (rest mask) (conj sofar (first n))))))
+
+(defn get-valid-masked-values [n masks-to-try]
+  (map #(num-to-masked n %) 
+       (filter #(numbers-under-mask-all-same? n %) masks-to-try)))
 
 (defn solve []
   ;; TODO: Implement solution

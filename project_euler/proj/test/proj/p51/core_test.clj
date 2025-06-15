@@ -2,7 +2,7 @@
   (:require [clojure.test :refer [deftest is testing]]
             [proj.p51.core :refer [all-n-digit-primes all-n-digit-masks
                                    combine-int-with-mask numbers-under-mask-all-same?
-                                   num-to-masked]]))
+                                   num-to-masked get-valid-masked-values]]))
 
 (deftest test-all-n-digit-primes
   (testing "all-n-digit-primes"
@@ -39,3 +39,12 @@
     (is (= "1X" (num-to-masked 12 "OX")))
     (is (= "X2" (num-to-masked 12 "XO")))
     (is (= "12" (num-to-masked 12 "OO")))))
+
+(deftest test-get-valid-masked-values
+  (testing "get-valid-masked-values"
+    (is (= ["1X3"] (get-valid-masked-values 123 ["OXO"])))
+    (is (= [] (get-valid-masked-values 123 ["OXX"])))
+    (is (= [] (get-valid-masked-values 121 ["XXO"])))
+    (is (= ["1X1X" "X2X2"] (get-valid-masked-values 1212 ["OXOX" "XOXO"])))
+    (is (= ["11XX" "1X1X"] (get-valid-masked-values 1111 ["OOXX" "OXOX"])))
+    (is (= [] (get-valid-masked-values 1234 ["XXXX"])))))
