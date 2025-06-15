@@ -19,9 +19,6 @@
          (map #(str "X" %) subs)
          (map #(str "O" %) subs)))))
 
-(defn combine-int-with-mask [n mask]
-  (apply str (map #(if (= %1 \X) \X %2) mask (str n))))
-
 (defn numbers-under-mask-all-same?
   ([n mask] (numbers-under-mask-all-same? (str n) mask #{}))
   ([n mask seen]
