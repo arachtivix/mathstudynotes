@@ -26,6 +26,8 @@ What is the probability that Pyramidal Peter beats Cubic Colin? Give your answer
 
 \section*{Solution}
 
+\subsection*{Initial observations}
+
 This is a classic dynamic programming (DP) problem.  The solution can be characterized by the recursive application of a function following the relationship between successively complex states within the problem.  In this case we are concerned with counting scenarios in which each party may win, accounting for draws, and dividing out to get a probability at the end.  Here, we can observe that if one person rolls one time and the other rolls zero times, the person that rolled wins for each of the possible situations:
 
 \begin{align*}
@@ -52,7 +54,7 @@ because $x$ rolls of each respective die will have that many possible sequences 
     \end{cases}
 \]
 
-The converse situation applies for Colin, but additionally there is now a draw scenario: when the handicap is equal to the score achieved by the one roller, there is a draw.  This accounts for one scenario for each of the configurations where the handicap is less than or equal to the roller's maximum score, so:
+The converse situation applies for Colin, but additionally there is now a draw scenario: when the handicap is equal to the number of win scenarios achieved by the one roller, there is a draw.  This accounts for one scenario for each of the configurations where the handicap is less than or equal to the roller's win scenario count, so:
 
 \[
     D_{n,0,h} =
@@ -64,7 +66,9 @@ The converse situation applies for Colin, but additionally there is now a draw s
 
 and again the analogous Colin scenarios exist.
 
-With the handicap piece in place, it is possible to account for any previous state of the game, as long as it can be quantified as having a specific point value, but that would still be assuming no draws from previous rounds of play, as that would be a separate quantity.  The draws are important to track because they still form part of the denominator in the division we will do to compute 
+With the handicap piece in place, seems like we might account for previous state of the game, as long as it can be quantified as having a specific point value, but that would still be assuming no draws from previous rounds of play, as that would be a separate quantity.  If both players were to take a non zero number of rolls, the draws are important to track because they still form part of the denominator in the division we will do to compute.  Depending on subsequent rounds, draws may become part of wins or losses.  Losses by a smaller margin than subsequent gains might become wins or draws.   The model so far does not have any inputs to account for the distribution of these deficits or surpluses, so there must be a more comprehensive way.
+
+\subsection{A more robust attempt}
 
 wip wip wip 
 
