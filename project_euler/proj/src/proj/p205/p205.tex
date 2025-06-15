@@ -1,0 +1,75 @@
+\documentclass{article}
+\input{../shared_preamble}
+
+\title{Project Euler - Problem 205}
+\author{Solution}
+\date{2025-06-15}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 205: Dice Game}
+
+
+Peter has nine four-sided (pyramidal) dice, each with faces numbered $1, 2, 3, 4$.
+Colin has six six-sided (cubic) dice, each with faces numbered $1, 2, 3, 4, 5, 6$.
+
+\par
+Peter and Colin roll their dice and compare totals: the highest total wins. The result is a draw if the totals are equal.
+
+\par
+What is the probability that Pyramidal Peter beats Cubic Colin? Give your answer rounded to seven decimal places in the form 0.abcdefg.
+
+\par
+
+
+\section*{Solution}
+
+This is a classic dynamic programming (DP) problem.  The solution can be characterized by the recursive application of a function following the relationship between successively complex states within the problem.  In this case we are concerned with counting scenarios in which each party may win, accounting for draws, and dividing out to get a probability at the end.  Here, we can observe that if one person rolls one time and the other rolls zero times, the person that rolled wins for each of the possible situations:
+
+\begin{align*}
+    P_{1,0} &= 4 \\
+    C_{0,1} &= 6 \\
+    D_{1,0} &= 0 \\
+    D_{0,1} &= 0
+\end{align*}
+
+where $P_{n,k}$ is the number of scenarios Peter wins given $n$ rolls against Peter's $k$ rolls and $C_{n,k}$ is the number of scenarios where Colin wins for such a configuration and finally $D_{n,k}$ is the number of draws.  It's fairly obvious that no draws are possible when one rolls and the other does not.  It's also fairly obvious that:
+
+\begin{align*}
+    P_{n,0} = 4^n \\
+    C_{0,k} = 6^k
+\end{align*}
+
+because $x$ rolls of each respective die will have that many possible sequences of rolls, each corresponding to a valid, equally likely scenario that must be counted.  This still assumes our mostly useless scenario where only one person rolls though.  What if there was a handicap though?  Given a handicap $h$, the values $P_{n,k,h}$, $C_{n,k,h}$, and $D_{n,k,h}$ are slightly more interesting:
+
+\[
+    P_{n,0,h} =
+    \begin{cases}
+        h < 4^n & 4^n - h \\
+        h \geq 4^n & 0
+    \end{cases}
+\]
+
+The converse situation applies for Colin, but additionally there is now a draw scenario: when the handicap is equal to the score achieved by the one roller, there is a draw.  This accounts for one scenario for each of the configurations where the handicap is less than or equal to the roller's maximum score, so:
+
+\[
+    D_{n,0,h} =
+    \begin{cases}
+        h = 0 & 0 \\
+        h \neq 0 & 1
+    \end{cases}
+\]
+
+and again the analogous Colin scenarios exist.
+
+With the handicap piece in place, it is possible to account for any previous state of the game, as long as it can be quantified as having a specific point value, but that would still be assuming no draws from previous rounds of play, as that would be a separate quantity.  The draws are important to track because they still form part of the denominator in the division we will do to compute 
+
+wip wip wip 
+
+\section*{Implementation}
+
+% TODO: Explain key parts of your implementation
+
+\end{document}
