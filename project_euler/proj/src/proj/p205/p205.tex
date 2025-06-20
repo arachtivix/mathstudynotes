@@ -68,7 +68,9 @@ and again the analogous Colin scenarios exist.
 
 With the handicap piece in place, seems like we might account for previous state of the game, as long as it can be quantified as having a specific point value, but that would still be assuming no draws from previous rounds of play, as that would be a separate quantity.  If both players were to take a non zero number of rolls, the draws are important to track because they still form part of the denominator in the division we will do to compute.  Depending on subsequent rounds, draws may become part of wins or losses.  Losses by a smaller margin than subsequent gains might become wins or draws.   The model so far does not have any inputs to account for the distribution of these deficits or surpluses, so there must be a more comprehensive way.
 
-\subsection{A more robust attempt}
+\subsection*{A more robust attempt}
+
+The actual score of a single roller will vary from all 1's to all max die face value.  The score distribution is not even, though, except when there is a single roll.  The first basic problem to solve will be figuring out how many of the possible equally likely paths end up in a particular score for each player.  This function would be a mapping from score to count.  The possible scores would range from the least die face times the number of rolls to the greatest die face times the number of rolls.
 
 wip wip wip 
 
