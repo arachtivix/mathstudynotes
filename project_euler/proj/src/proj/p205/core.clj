@@ -28,7 +28,20 @@
         vals (map #(% 1) two-tups)]
     (seq-assoc-or-compute {} + keys vals)))
 
-(defn solve [] 1234)
+(defn problem-combo []
+  (let [p-2 (combine-rolls single-roll-peter single-roll-peter)
+        p-4 (combine-rolls p-2 p-2)
+        p-8 (combine-rolls p-4 p-4)
+        p-9 (combine-rolls p-8 single-roll-peter)
+        c-2 (combine-rolls single-roll-colin single-roll-colin)
+        c-4 (combine-rolls c-2 c-2)
+        c-6 (combine-rolls c-2 c-4)]
+    (combine-rolls p-9 c-6)))
+
+(defn solve [] (let[pc (problem-combo)
+                    total-possibilities (reduce + (vals pc))
+                    peter-wins (reduce + (map #(% 1) (filter #(< 0 (% 0)) pc)))]
+                (float (/ peter-wins total-possibilities))))
 
 (defn -main []
   (println "Solution to Problem 205:")
