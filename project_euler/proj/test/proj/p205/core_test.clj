@@ -29,3 +29,8 @@
     (is (= {2 2, 3 11, 4 5} (combine-rolls {1 2, 2 1} {1 1, 2 5})))
     (is (= {2 1, 3 1, 4 1, 5 2, 6 1} (combine-rolls {1 1, 2 1} {1 1, 3 1, 4 1})))
     (is (= {42 1, 104 1, 22 1, 84 1} (combine-rolls {37 1, 17 1} {5 1, 67 1})))))
+
+(deftest analysis-1-test
+  (testing "Testing analysis 1"
+    (is (= 0.25 (test-analysis-1)))
+    (is (= (float (/ 259 380)) (test-analysis-2)))))
