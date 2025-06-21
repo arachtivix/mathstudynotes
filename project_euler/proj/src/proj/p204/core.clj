@@ -18,8 +18,8 @@
           :else (recur n (rest factors-asc)))))
 
 ;; a simple implementation of hamming numbers first:
-;; (defn simple-hamming-numbers-impl-seq [factors]
-;;   (let []))
+(defn simple-generalized-hamming-numbers-impl-seq [n]
+  (filter #(= 1 (remove-factors % n)) (iterate inc 1)))
 
 (defn solve []
   ;; TODO: Implement solution
