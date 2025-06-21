@@ -15,3 +15,8 @@
   (testing "Testing simple-generalized-hamming-numbers-impl-seq"
     (is (= '(1 2 3 4 5 6 8 9 10 12 15) 
            (take 11 (simple-generalized-hamming-numbers-impl-seq 5))))))
+
+(deftest brute-force-count-test
+  (testing "Testing brute-force-count"
+    (is (= 11 (brute-force-count 5 15)))
+    (is (= 4 (brute-force-count 5 4)))))

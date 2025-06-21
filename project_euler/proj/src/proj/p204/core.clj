@@ -22,6 +22,11 @@
   (let [factors (take-while #(>= n %) shared/prime-seq)]
    (filter #(= 1 (remove-factors % factors)) (iterate inc 1))))
 
+;; so we can bootstrap some testing scenarios, let's implement a
+;; brute force solution to the problem at low numbers
+(defn brute-force-count[n leq]
+  (count (take-while #(<= % leq) (simple-generalized-hamming-numbers-impl-seq n))))
+
 (defn solve []
   ;; TODO: Implement solution
   nil)
