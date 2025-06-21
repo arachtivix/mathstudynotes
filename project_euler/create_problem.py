@@ -295,6 +295,38 @@ def html_to_latex(html_content):
     
     return content
 
+def create_test_file(problem_number, folder_path):
+    """
+    Create a test template file for the problem.
+    
+    Args:
+        problem_number: The problem number
+        folder_path: Path to the problem folder
+    """
+    # Create test directory if it doesn't exist
+    test_base_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "proj", "test", "proj")
+    test_dir = f"p{problem_number}"
+    test_folder_path = os.path.join(test_base_path, test_dir)
+    os.makedirs(test_folder_path, exist_ok=True)
+    
+    file_path = os.path.join(test_folder_path, "core_test.clj")
+    
+    template = f"""(ns proj.p{problem_number}.core-test
+  #_{{:clj-kondo/ignore [:refer-all]}}
+  (:require [clojure.test :refer [deftest is testing]]
+            [proj.p{problem_number}.core :refer :all]))
+
+(deftest solve-test
+  (testing "Testing solution"
+    ;; TODO: Add test cases
+    (is (= nil (solve)))))
+"""
+    
+    with open(file_path, 'w') as f:
+        f.write(template)
+    
+    print(f"Created test file: {file_path}")
+
 def main():
     """Main function to create a new Project Euler problem folder."""
     try:
@@ -337,6 +369,9 @@ def main():
         
         # Create the TeX file
         create_tex_file(problem_number, problem_title, problem_content, html_content, folder_path)
+        
+        # Create the test file
+        create_test_file(problem_number, folder_path)
         
         print(f"\nSetup complete for Problem {problem_number}: {problem_title}")
         print(f"You can now start working on the solution in {folder_path}")
