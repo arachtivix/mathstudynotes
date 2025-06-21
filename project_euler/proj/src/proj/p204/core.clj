@@ -19,7 +19,8 @@
 
 ;; a simple implementation of hamming numbers first:
 (defn simple-generalized-hamming-numbers-impl-seq [n]
-  (filter #(= 1 (remove-factors % n)) (iterate inc 1)))
+  (let [factors (take-while #(>= n %) shared/prime-seq)]
+   (filter #(= 1 (remove-factors % factors)) (iterate inc 1))))
 
 (defn solve []
   ;; TODO: Implement solution

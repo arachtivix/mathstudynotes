@@ -14,4 +14,4 @@
 (deftest simple-generalized-hamming-numbers-impl-seq-test
   (testing "Testing simple-generalized-hamming-numbers-impl-seq"
     (is (= '(1 2 3 4 5 6 8 9 10 12 15) 
-           (take 11 (simple-generalized-hamming-numbers-impl-seq [2 3 5]))))))
+           (take 11 (simple-generalized-hamming-numbers-impl-seq 5))))))
