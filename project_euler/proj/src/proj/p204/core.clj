@@ -1,7 +1,8 @@
 
 (ns proj.p204.core
   (:require [clojure.math :as math]
-            [proj.shared :as shared])
+            [proj.shared :as shared]
+            [clojure.math.numeric-tower :as nt :refer [expt]])
   (:gen-class))
 
 ;; Problem 204: Generalised Hamming Numbers
@@ -20,12 +21,19 @@
 ;; a simple implementation of hamming numbers first:
 (defn simple-generalized-hamming-numbers-impl-seq [n]
   (let [factors (take-while #(>= n %) shared/prime-seq)]
-   (filter #(= 1 (remove-factors % factors)) (iterate inc 1))))
+    (filter #(= 1 (remove-factors % factors)) (iterate inc 1))))
 
 ;; so we can bootstrap some testing scenarios, let's implement a
 ;; brute force solution to the problem at low numbers
-(defn brute-force-count[n leq]
+(defn brute-force-count [n leq]
   (count (take-while #(<= % leq) (simple-generalized-hamming-numbers-impl-seq n))))
+
+(defn apply-factors [known-hamming-numbers prime-factors max]
+  (let [to-add (for [f prime-factors hn known-hamming-numbers] (* f hn))
+        filtered-to-add (filter #(and (not (contains? known-hamming-numbers %)) (<= % max)) to-add)]
+    (if
+     (nil? (first filtered-to-add)) known-hamming-numbers
+      (apply-factors (apply conj known-hamming-numbers filtered-to-add) prime-factors max))))
 
 (defn solve []
   ;; TODO: Implement solution

@@ -23,3 +23,7 @@
     (is (= 11 (brute-force-count 5 15)))
     (is (= 4 (brute-force-count 5 4)))
     (is (= 17 (brute-force-count 7 23)))))
+
+(deftest apply-factors-test
+  (testing "Testing apply-factors"
+    (is (= #{1 2 3 4 5 6 8 9 10 12 15} (apply-factors (sorted-set 1) [2 3 5] 15)))))
