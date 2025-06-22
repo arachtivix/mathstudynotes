@@ -27,3 +27,8 @@
 (deftest apply-factors-test
   (testing "Testing apply-factors"
     (is (= #{1 2 3 4 5 6 8 9 10 12 15} (apply-factors (sorted-set 1) [2 3 5] 15)))))
+
+(deftest solve-1-test
+  (testing "Testing first solution"
+    ; as per the problem statement
+    (is (= 1105 (count (solve-1 5 100000000))))))

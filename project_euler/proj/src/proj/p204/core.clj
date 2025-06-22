@@ -35,6 +35,10 @@
      (nil? (first filtered-to-add)) known-hamming-numbers
       (apply-factors (apply conj known-hamming-numbers filtered-to-add) prime-factors max))))
 
+(defn solve-1 [n thresh]
+  (let [factors (take-while #(>= n %) shared/prime-seq)]
+    (apply-factors (sorted-set 1) factors thresh)))
+
 (defn solve []
   ;; TODO: Implement solution
   nil)
