@@ -30,10 +30,9 @@
 
 (defn apply-factors [known-hamming-numbers prime-factors max]
   (let [to-add (for [f prime-factors hn known-hamming-numbers] (* f hn))
-        filtered-to-add (filter #(and (not (contains? known-hamming-numbers %)) (<= % max)) to-add)]
-    (if
-     (nil? (first filtered-to-add)) known-hamming-numbers
-      (apply-factors (apply conj known-hamming-numbers filtered-to-add) prime-factors max))))
+        updated-known (apply conj known-hamming-numbers (filter #(<= % max) to-add))
+        stop (= (count updated-known) (count known-hamming-numbers))]
+    (if stop known-hamming-numbers (apply-factors updated-known prime-factors max))))
 
 (defn solve-1 [n thresh]
   (let [factors (take-while #(>= n %) shared/prime-seq)]
