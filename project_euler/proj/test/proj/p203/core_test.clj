@@ -10,6 +10,10 @@
     (is (= [1 3 3 1] (next-pascal-row [1 2 1])))
     (is (= [1 4 6 4 1] (next-pascal-row [1 3 3 1])))))
 
+(deftest pascal-seq-test
+  (testing "Testing pascal-seq"
+    (is (= '(1 1 1 1 2 1 1 3 3 1 1 4 6 4) (take 14 pascal-seq)))))
+
 (deftest solve-test
   (testing "Testing solution"
     ;; TODO: Add test cases

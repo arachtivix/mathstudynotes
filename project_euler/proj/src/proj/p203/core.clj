@@ -10,6 +10,17 @@
 (defn next-pascal-row [p-row-prev]
   (cons 1 (conj (into [] (map #(+ %1 %2) p-row-prev (rest p-row-prev))) 1)))
 
+(def pascal-seq
+  (map #((% 1) (% 0))
+       (iterate
+        #(let [idx (% 0)
+               nbrs (% 1)
+               nxt (mod (+ idx 1) (count nbrs))]
+           (if (= nxt 0)
+             [0 (into [] (next-pascal-row nbrs))]
+             [nxt nbrs]))
+        [0 [1]])))
+
 (defn solve []
   ;; TODO: Implement solution
   nil)
