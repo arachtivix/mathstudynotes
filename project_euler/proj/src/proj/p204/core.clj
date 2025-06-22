@@ -39,8 +39,8 @@
     (apply-factors (sorted-set 1) factors thresh)))
 
 (defn solve []
-  ;; TODO: Implement solution
-  nil)
+  ;; TODO: Faster solution -- this one takes ten minutes
+  (solve-1 100 1000000000))
 
 (defn -main []
   (println "Solution to Problem 204:")
