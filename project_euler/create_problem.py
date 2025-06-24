@@ -327,6 +327,72 @@ def create_test_file(problem_number, folder_path):
     
     print(f"Created test file: {file_path}")
 
+def update_core_namespace(problem_number):
+    """
+    Update the project's core namespace to include the new problem.
+    
+    Args:
+        problem_number: The problem number to add
+    """
+    core_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "proj", "src", "proj", "core.clj")
+    
+    with open(core_path, 'r') as f:
+        content = f.read()
+    
+    # Add the require statement for the new problem
+    require_pattern = r'(:require \[.*?\])'
+    require_match = re.search(require_pattern, content, re.DOTALL)
+    
+    if not require_match:
+        print("Error: Could not find :require section in core.clj")
+        return
+        
+    old_require = require_match.group(0)
+    new_require = old_require.replace(
+        '(:require',
+        f'(:require\n            [proj.p{problem_number}.core :as p{problem_number}]'
+    )
+    
+    # Add the case statement for the new problem
+    case_pattern = r'\(case problem-number\s+([^)]+)\)'
+    case_match = re.search(case_pattern, content, re.DOTALL)
+    
+    if not case_match:
+        print("Error: Could not find case statement in core.clj")
+        return
+        
+    old_case = case_match.group(0)
+    case_body = case_match.group(1)
+    
+    # Add new case entry before the last line (which is the default case)
+    lines = case_body.split('\n')
+    default_case = lines[-1].strip()
+    lines = lines[:-1]  # Remove default case
+    lines.append(f'    {problem_number} (p{problem_number}/solve)')
+    lines.append(f'    {default_case}')  # Add default case back
+    new_case = '(case problem-number\n' + '\n'.join(lines) + ')'
+    
+    # Update the content
+    content = content.replace(old_require, new_require)
+    content = content.replace(old_case, new_case)
+    
+    # Update the available problems list in the -main function
+    main_pattern = r'Available problems: ([^"]+)'
+    main_match = re.search(main_pattern, content)
+    
+    if main_match:
+        old_problems = main_match.group(1).strip()
+        problems = sorted(set([int(p) for p in old_problems.split(', ')] + [problem_number]))
+        new_problems = ', '.join(map(str, problems))
+        content = content.replace(f'Available problems: {old_problems}',
+                                f'Available problems: {new_problems}')
+    
+    # Write the updated content back
+    with open(core_path, 'w') as f:
+        f.write(content)
+    
+    print(f"Updated core namespace in: {core_path}")
+
 def main():
     """Main function to create a new Project Euler problem folder."""
     try:
@@ -372,6 +438,9 @@ def main():
         
         # Create the test file
         create_test_file(problem_number, folder_path)
+        
+        # Update the core namespace
+        update_core_namespace(problem_number)
         
         print(f"\nSetup complete for Problem {problem_number}: {problem_title}")
         print(f"You can now start working on the solution in {folder_path}")
