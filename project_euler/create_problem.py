@@ -179,10 +179,6 @@ def html_to_latex(html_content):
         for entity, replacement in html_entities.items():
             text = text.replace(entity, replacement)
             
-        # Then escape LaTeX special characters
-        for char in ['&', '%', '$', '#', '_', '{', '}', '~', '^', '\\']:
-            if char in text:
-                text = text.replace(char, f'\\{char}')
         return text
     
     # Process the HTML content
