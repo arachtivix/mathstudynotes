@@ -1,58 +1,46 @@
 (ns proj.core
   #_{:clj-kondo/ignore [:unused-namespace]}
-  (:require [proj.p3.core :as p3]
-            [proj.p4.core :as p4]
-            [proj.p7.core :as p7]
-            [proj.p9.core :as p9]
-            [proj.p10.core :as p10]
-            [proj.p12.core :as p12]
-            [proj.p15.core :as p15]
-            [proj.p16.core :as p16]
-            [proj.p26.core :as p26]
-            [proj.p28.core :as p28]
-            [proj.p51.core :as p51]
-            [proj.p95.core :as p95]
-            [proj.p202.core :as p202]
-            [proj.p203.core :as p203]
-            [proj.p204.core :as p204]
-            [proj.p205.core :as p205]
-            [proj.p206.core :as p206]
-            [proj.p361.core :as p361]
-            [proj.p879.core :as p879]
-            [clojure.math :as math]
+  (:require [clojure.math :as math]
+            [clojure.edn :as edn]
+            [clojure.java.io :as io]
             [proj.shared :as shared])
   (:gen-class))
+
+(def problems-data
+  (-> "proj/problems.edn"
+      io/resource
+      slurp
+      edn/read-string))
+
+(defn require-problem [n]
+  (try
+    (require (symbol (format "proj.p%d.core" n)))
+    true
+    (catch Exception _
+      false)))
+
+(defn get-problem-ns [n]
+  (symbol (format "proj.p%d.core" n)))
 
 (defn solve-problem
   "Solves the specified Project Euler problem"
   [problem-number]
-  (case problem-number
-    3 (p3/solve)
-    4 (p4/solve)
-    7 (p7/solve)
-    9 (p9/solve)
-    10 (p10/solve)
-    12 (p12/solve)
-    15 (p15/solve)
-    16 (p16/solve)
-    26 (p26/solve)
-    28 (p28/solve)
-    51 (p51/solve)
-    95 (p95/solve)
-    202 (p202/solve)
-    203 (p203/solve)
-    204 (p204/solve)
-    205 (p205/solve)
-    206 (p206/solve)
-    361 (p361/solve)
-    879 (p879/solve)
+  (if (some #{problem-number} (:problems problems-data))
+    (do
+      (require-problem problem-number)
+      (let [problem-ns (get-problem-ns problem-number)
+            solve-fn (resolve (symbol (str problem-ns "/solve")))]
+        (if solve-fn
+          (solve-fn)
+          (str "Problem " problem-number " exists but solve function not found"))))
     (str "Problem " problem-number " not implemented yet")))
 
 (defn -main
   "Main entry point - solves the specified problem or lists available problems"
   [& args]
   (if (empty? args)
-    (println "Available problems: 3, 4, 7, 9, 10, 12, 15, 16, 26, 28, 51, 95, 202, 203, 204, 205, 206, 361, 879")
+    (let [problems (sort (:problems problems-data))]
+      (println "Available problems:" (clojure.string/join ", " problems)))
     (let [problem-number (Integer/parseInt (first args))]
       (println "Solution to Problem" problem-number ":")
       (println (solve-problem problem-number)))))
