@@ -36,7 +36,12 @@
     16 (p16/solve)
     26 (p26/solve)
     28 (p28/solve)
+    51 (p51/solve)
     95 (p95/solve)
+    203 (p203/solve)
+    204 (p204/solve)
+    205 (p205/solve)
+    206 (p206/solve)
     361 (p361/solve)
     879 (p879/solve)
     (str "Problem " problem-number " not implemented yet")))
@@ -45,7 +50,7 @@
   "Main entry point - solves the specified problem or lists available problems"
   [& args]
   (if (empty? args)
-    (println "Available problems: 3, 4, 7, 9, 10, 12, 15, 16, 26, 28, 95, 361, 879")
+    (println "Available problems: 3, 4, 7, 9, 10, 12, 15, 16, 26, 28, 51, 95, 203, 204, 205, 206, 361, 879")
     (let [problem-number (Integer/parseInt (first args))]
       (println "Solution to Problem" problem-number ":")
       (println (solve-problem problem-number)))))
