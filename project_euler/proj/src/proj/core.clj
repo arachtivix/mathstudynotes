@@ -12,6 +12,7 @@
             [proj.p28.core :as p28]
             [proj.p51.core :as p51]
             [proj.p95.core :as p95]
+            [proj.p202.core :as p202]
             [proj.p203.core :as p203]
             [proj.p204.core :as p204]
             [proj.p205.core :as p205]
@@ -38,6 +39,7 @@
     28 (p28/solve)
     51 (p51/solve)
     95 (p95/solve)
+    202 (p202/solve)
     203 (p203/solve)
     204 (p204/solve)
     205 (p205/solve)
@@ -50,7 +52,7 @@
   "Main entry point - solves the specified problem or lists available problems"
   [& args]
   (if (empty? args)
-    (println "Available problems: 3, 4, 7, 9, 10, 12, 15, 16, 26, 28, 51, 95, 203, 204, 205, 206, 361, 879")
+    (println "Available problems: 3, 4, 7, 9, 10, 12, 15, 16, 26, 28, 51, 95, 202, 203, 204, 205, 206, 361, 879")
     (let [problem-number (Integer/parseInt (first args))]
       (println "Solution to Problem" problem-number ":")
       (println (solve-problem problem-number)))))
