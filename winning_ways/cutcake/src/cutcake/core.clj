@@ -73,18 +73,18 @@
 
 (defn cutcake
   ([w h]
-  (cutcake w h {}))
+   (cutcake w h {}))
   ([w h known]
-  (cond (= w 1) (assoc known [w h] (* -1 (- h 1)))
-        (= h 1) (assoc known [w h] (- w 1))
-        :else (let [subs (reduce
-                          (fn [cache [ww hh]]
-                            (cutcake ww hh cache))
-                          known
-                          (get-unknown-pieces w h known))
-                    l-best (eval-opts (cut-opts w h :LEFTY) subs :LEFTY)
-                    r-best (eval-opts (cut-opts w h :RITA) subs :RITA)]
-                (assoc subs [w h] (simplicity-rule l-best r-best))))))
+   (cond (= w 1) (assoc known [w h] (* -1 (- h 1)))
+         (= h 1) (assoc known [w h] (- w 1))
+         :else (let [subs (reduce
+                           (fn [cache [ww hh]]
+                             (cutcake ww hh cache))
+                           known
+                           (get-unknown-pieces w h known))
+                     l-best (eval-opts (cut-opts w h :LEFTY) subs :LEFTY)
+                     r-best (eval-opts (cut-opts w h :RITA) subs :RITA)]
+                 (assoc subs [w h] (simplicity-rule l-best r-best))))))
 
 (defn remove-ones
   [board]
@@ -156,7 +156,7 @@
 (def bootstrap-css
   [:link {:rel "stylesheet" :href bootstrap-url}])
 
-(def bootstrap-js
+(def bootstrap-js-script
   [:script {:src bootstrap-js}])
 
 
@@ -165,7 +165,7 @@
   (str (h/html [:html
                 [:head
                  bootstrap-css
-                 bootstrap-js
+                 bootstrap-js-script
                  [:title "Cut Cake"]]
                 [:body
                  {:style "text-align: center; background-color: #AACCFF"}
@@ -180,9 +180,10 @@
         other-player (if (= player :RITA) :LEFTY :RITA)
         simplified-board (remove-ones board)]
     (if (not (.exists file))
-        (do
-          (spit filepath (page-it (render-current-state simplified-board player)))
-          (let [children (single-move-results simplified-board player)]
-            (for [c children] (make-page
-                               (concat (:left c) (:middle c) (:right c))
-                               other-player)))))))
+      (do
+        (spit filepath (page-it (render-current-state simplified-board player)))
+        (let [children (single-move-results simplified-board player)]
+          (for [c children] (make-page
+                             (concat (:left c) (:middle c) (:right c))
+                             other-player))))
+      nil)))
