@@ -3,6 +3,7 @@
   (:require [clojure.math :as math]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
+            [clojure.string :as str]
             [proj.shared :as shared])
   (:gen-class))
 
@@ -40,7 +41,7 @@
   [& args]
   (if (empty? args)
     (let [problems (sort (:problems problems-data))]
-      (println "Available problems:" (clojure.string/join ", " problems)))
+      (println "Available problems:" (str/join ", " problems)))
     (let [problem-number (Integer/parseInt (first args))]
       (println "Solution to Problem" problem-number ":")
       (println (solve-problem problem-number)))))
