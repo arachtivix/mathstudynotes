@@ -1,7 +1,5 @@
 
 (ns proj.p202.core
-  (:require [clojure.math :as math]
-            [proj.shared :as shared])
   (:gen-class))
 
 ;; Problem 202: Laserbeam
