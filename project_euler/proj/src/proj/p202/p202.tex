@@ -34,9 +34,19 @@ In how many ways can a laser beam enter at vertex $C$, bounce off $12017639147$ 
 
 \section*{Notes}
 
-These mirror problems often rely on the idea that a 'bounce' is equivalent to continuing along a straight line while flipping the coordinates of the rest of the world.  In this model we can view the problem as involving a linear path between equivalent points on a grid.  The problem will likely turn on creating a systematic way to identify grid points and a function to count line traversals or bounces between two of them. 
+These mirror problems often rely on the idea that a 'bounce' is equivalent to continuing along a straight line while flipping the coordinates of the rest of the world.  In this model we can view the problem as involving a linear path between equivalent points on a grid.  The problem will likely turn on creating a systematic way to identify grid points and a function to count line traversals or bounces between two of them.
+
+\par
+
+Identify points by their displacement from the center and how many rows deep they are.  So $[0, 0]$ is the origin, $[2, 3]$ is 2 hops from the center to the right and 3 layers deep, and $[-5, 0]$ is 5 hops to the left but not any further forward than the origin, which means it cannot actually be reached.  Any vertex $[a, b]$ cannot be reached if $b < 0$ or if $|b| > a$.
+
+\par
+
+There is one more type of point that could be described by this coordinate system and could actually be reached in many cases, but will be excluded for the analysis.  An example of this would be $[0, 1]$, which would be halfway between A and B on the problem description.  Similarly $[1, 2]$ and $[-1, 2]$ are on lines between proper vertices.  More generally, a point $[a, b]$ is a proper vertex if $a$'s remainder when dividing by two is equal to $b$'s remainer when dividing by two.
 
 \section*{Implementation}
+
+
 
 % TODO: Explain key parts of your implementation
 
