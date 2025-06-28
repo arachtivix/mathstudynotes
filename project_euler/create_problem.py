@@ -137,7 +137,7 @@ def create_tex_file(problem_number, problem_title, problem_content, html_content
 
 {latex_content}
 
-\\section*{{Solution}}
+\\section*{{Notes}}
 
 % TODO: Document your solution approach here
 
