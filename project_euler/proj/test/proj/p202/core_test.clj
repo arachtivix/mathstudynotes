@@ -14,6 +14,11 @@
     (is (= false (is-named-vertex? [1 24])))
     (is (= false (is-named-vertex? [-5 0])))))
 
+(deftest get-a-analogs-test
+  (testing "Testing get-a-analogs"
+    ;; worked these out using a drawing
+    (is (= #{[0 0] [0 2] [3 3] [-3 3] [0 4] [0 6] [3 5] [-3 5] [0 8]} (get-a-analogs 8)))))
+
 (deftest solve-test
   (testing "Testing solution"
     ;; TODO: Add test cases
