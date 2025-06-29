@@ -51,7 +51,19 @@ There is one more type of point that could be described by this coordinate syste
 Only ${\frac{1}{3}}$ of the named vertices are valid targets -- the rest correspond with the beam hitting vertex A or vertex B after whatever number of bounces.  Drawing out the structure makes it pretty clear that if $[a, b]$ is an A vertex, then $[a, b + 2]$, $[a - 3, b + 3]$, and $[a + 3, b + 3]$ are all A analogs.  These apply recursively.  The same relation applies to B and C analogs respectively, with the required initial displacements (i.e. B starts at $[1, 1]$ and C starts at $[-1, 1]$ instead of the origin).  I would expect coordinates generated this way to comport with the requirements in the earlier paragraphs.
 
 \section*{Implementation}
+\begin{lstlisting}
+(defn is-named-vertex? [[horiz vert]]
+  (and (>= vert 0)
+       (= (mod (abs horiz) 2) (mod (abs vert) 2))
+       (<= (abs horiz) (abs vert))))
+\end{lstlisting}
 
+This function identifies valid vertices in the laserbeam's path through the grid. The conditions ensure that:
+\begin{itemize}
+    \item We only consider points above or on the x-axis (non-negative vertical coordinates)
+    \item The coordinates maintain a consistent pattern of even/odd values as identified in the notes
+    \item Points are within a triangular region where horizontal spread doesn't exceed vertical height
+\end{itemize}
 
 
 % TODO: Explain key parts of your implementation
