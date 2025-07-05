@@ -1,5 +1,5 @@
 {
   "containerEnv": {
-    "java.awt.headless": "true"
+    "JAVA_OPTS": "-Djava.awt.headless=true"
   }
 }
