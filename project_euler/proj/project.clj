@@ -6,7 +6,9 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/math.numeric-tower "0.0.5"]  ; For mathematical functions
                  [org.clojure/math.combinatorics "0.1.6"] ; For combinatorics operations
-                 [org.clojure/tools.namespace "1.4.4"]]   ; For code reloading
+                 [org.clojure/tools.namespace "1.4.4"]    ; For code reloading
+                 [quil "4.3.1323"]                        ; For creative coding
+                 [clojupyter "0.3.5"]]                    ; For Jupyter notebook support
   :main nil  ; No single main namespace as each problem has its own
   :aot :all
   :profiles {:dev {:dependencies [[org.clojure/test.check "1.1.1"]]
