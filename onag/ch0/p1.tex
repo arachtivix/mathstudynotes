@@ -1,0 +1,40 @@
+\subsection*{Problem Statement}
+Verify that $\{n|\omega - n\} = \{1, 2, ... (n - 1)|\omega, \omega - 1, ..., \omega - (n - 1)\}=\frac{\omega}{2}$
+\subsection*{Notes}
+If $\{n|\omega - n\}=\frac{\omega}{2}$ then $\{n|\omega - n\} + \{n|\omega - n\}=\omega$.  The definition of addition is:
+
+\begin{equation*}
+    x + y = \{x^L + y, y^L + x | x^R + y, y^R + x\}
+\end{equation*}
+
+\begin{equation*}
+    z = \{n|\omega - n\} + \{n|\omega - n\}
+\end{equation*}
+
+\begin{align*}
+    x &= \{n|\omega - n\} \\
+    y &= \{n|\omega - n\} \\
+    X^L &= n \\
+    X^R &= \omega - n \\
+    Y^L &= n \\
+    Y^R &= \omega - n
+\end{align*}
+
+\begin{align*}
+    z &= \{n|\omega - n\} + \{n|\omega - n\} \\
+    &= \{n + \{n|\omega - n\}, n + \{n|\omega - n\} | \omega - n + \{n|\omega - n\}, \omega - n + \{n|\omega - n\}\} \\
+    &= \{n + \{n|\omega - n\} | \omega - n + \{n|\omega - n\}\}
+\end{align*}
+
+\begin{equation*}
+    x \geqslant y \Leftrightarrow \nexists x^R \leq y, \nexists y^L \geq x
+\end{equation*}
+
+\subsubsection*{$z \ge^? \omega$}
+
+\begin{align*}
+    &1, 2, 3, ... \ngeqslant \omega - n + \{n|\omega - n\} \\
+    &
+\end{align*}
+
+\subsubsection*{$\omega \ge^? z$}
