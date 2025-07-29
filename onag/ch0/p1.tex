@@ -42,7 +42,12 @@ If $\{n|\omega - n\}=\frac{\omega}{2}$ then $\{n|\omega - n\} + \{n|\omega - n\}
 
 \noindent Applying the rule to the current question:
 
-\noindent \surrealgeq{n + \surreal{n}{\omega}}{\omega - n + \surreal{n}{\omega - n}}{1, 2, 3, ...}{\emptyset}
+\surrealgeq{n + \surreal{n}{\omega}}{\omega - n + \surreal{n}{\omega - n}}{1, 2, 3, ...}{\emptyset}
 
+The comparison of $\surrealinline{\omega - n + \surreal{n}{\omega - n}}$ with $\omega$ is fairly straightforward.  The left side of the expression has $omega$ in it, so the question really is whether $\surrealinline{n}{\omega - n}\geq 1 + n$.  Here's the analysis:
+
+$\surrealgeqinline{\omega - n - 1}{}{n}{}$
+
+The first condition is vacuously true and the second is fairly obvious, given that $\omega$ is greater than any finite $n$ or the fiddling around $n$ done in this formula.
 
 \subsubsection*{$\omega \ge^? z$}
