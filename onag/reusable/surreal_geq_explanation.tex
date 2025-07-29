@@ -1,7 +1,19 @@
 % Surreal Greater Than or Equals Relation Explanation
-% Usage: \surrealgeqexplain
+% Usage: \surrealgeqexplain - multiline version
+% Usage: \surrealgeqexplaininline - single line version
 
 \newcommand{\surrealgeqexplain}{%
+For surreal numbers $x = \{x^L | x^R\}$ and $y = \{y^L | y^R\}$:
+\begin{align*}
+x \geq y &\iff \begin{cases}
+\text{no } r \in x^R \text{ satisfies } r \leq y \\
+\text{no } l \in y^L \text{ satisfies } x \leq l
+\end{cases} \\
+&\iff \nexists x^R \leq y \text{ and } \nexists y^L \geq x
+\end{align*}
+}
+
+\newcommand{\surrealgeqexplaininline}{%
 For surreal numbers $x = \{x^L | x^R\}$ and $y = \{y^L | y^R\}$:
 
 $$x \geq y \iff \begin{cases}
