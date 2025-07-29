@@ -1,0 +1,17 @@
+% Surreal Number Construction Template
+% Usage: \surreal{left_set}{right_set}
+% Example: \surreal{0}{1} produces {0|1}
+
+\newcommand{\surreal}[2]{%
+  \left\{#1 \,\middle|\, #2\right\}%
+}
+
+% Alternative with more spacing
+\newcommand{\surrealwide}[2]{%
+  \left\{ #1 \;\middle|\; #2 \right\}%
+}
+
+% For empty sets
+\newcommand{\surrealzero}{%
+  \left\{\,\middle|\,\right\}%
+}

@@ -1,0 +1,32 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\input{surreal_construction.tex}
+
+\begin{document}
+
+\title{Surreal Number Construction Demo}
+\maketitle
+
+\section{Basic Surreal Numbers}
+
+Zero: $\surrealzero$
+
+One: $\surreal{0}{\ }$
+
+Negative One: $\surreal{\ }{0}$
+
+Two: $\surreal{0,1}{\ }$
+
+One Half: $\surreal{0}{1}$
+
+\section{More Complex Examples}
+
+Three Quarters: $\surreal{\frac{1}{2}}{1}$
+
+Nested Construction: $\surreal{\surreal{0}{1}}{\surreal{1}{2}}$
+
+With Wide Spacing: $\surrealwide{-1, 0}{\frac{3}{2}, 2}$
+
+\end{document}
