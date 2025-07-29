@@ -1,0 +1,16 @@
+% Surreal Number Comparison Template
+% Usage: \surrealgeq{x_left}{x_right}{y_left}{y_right}
+% Analyzes whether surreal number {x_left|x_right} >= {y_left|y_right}
+
+\newcommand{\surrealgeq}[4]{%
+  \surreal{#1}{#2} \geq \surreal{#3}{#4} \iff 
+  \begin{cases}
+    \text{no } r \in \{#2\} \text{ has } r \leq \surreal{#3}{#4} \\
+    \text{no } l \in \{#3\} \text{ has } \surreal{#1}{#2} \leq l
+  \end{cases}%
+}
+
+% Simplified version for display
+\newcommand{\surrealgeqsimple}[4]{%
+  \surreal{#1}{#2} \geq \surreal{#3}{#4}%
+}

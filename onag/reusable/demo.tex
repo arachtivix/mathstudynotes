@@ -3,6 +3,7 @@
 \usepackage{amssymb}
 
 \input{surreal_construction.tex}
+\input{surreal_comparison.tex}
 
 \begin{document}
 
@@ -28,5 +29,15 @@ Three Quarters: $\surreal{\frac{1}{2}}{1}$
 Nested Construction: $\surreal{\surreal{0}{1}}{\surreal{1}{2}}$
 
 With Wide Spacing: $\surrealwide{-1, 0}{\frac{3}{2}, 2}$
+
+\section{Surreal Number Comparisons}
+
+Basic comparison: $\surrealgeqsimple{1}{\  }{0}{\  }$
+
+Formal analysis:
+$$\surrealgeq{0}{1}{\  }{0}$$
+
+Another example:
+$$\surrealgeq{\frac{1}{2}}{1}{0}{\frac{3}{4}}$$
 
 \end{document}
