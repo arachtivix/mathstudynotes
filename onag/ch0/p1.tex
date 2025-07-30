@@ -1,16 +1,14 @@
 \subsection*{Problem Statement}
-\def \surr[#1][#2]{\{#1$|$#2\}}
 
-Verify that \surr[$n$][$\omega - n$]
-$=$
-\surr[$1,2,...,(n - 1)$][$\omega, \omega - 1, ..., \omega - (n - 1)$]
-$= \frac{\omega}{2}$
+Verify that $\surreal{n}{\omega - n}
+= \surreal{1,2,...,(n - 1)}{\omega, \omega - 1, ..., \omega - (n - 1)}
+= \frac{\omega}{2}$
 
 \subsection*{Notes}
-If $\{n|\omega - n\}=\frac{\omega}{2}$ then $\{n|\omega - n\} + \{n|\omega - n\}=\omega$.  The definition of addition is:
+If $\surreal{n}{\omega - n} = \frac{\omega}{2}$ then $\surreal{n}{\omega - n} + \surreal{n}{\omega - n}=\omega$.  The definition of addition is:
 
 \begin{equation*}
-    x + y = \{x^L + y, y^L + x | x^R + y, y^R + x\}
+    x + y = \surreal{x^L + y, y^L + x}{x^R + y, y^R + x}
 \end{equation*}
 
 \begin{equation*}
@@ -18,36 +16,28 @@ If $\{n|\omega - n\}=\frac{\omega}{2}$ then $\{n|\omega - n\} + \{n|\omega - n\}
 \end{equation*}
 
 \begin{align*}
-    x &= \{n|\omega - n\} \\
-    y &= \{n|\omega - n\} \\
-    X^L &= n \\
-    X^R &= \omega - n \\
-    Y^L &= n \\
-    Y^R &= \omega - n
+    x = & \surreal{n}{\omega - n} \\
+    y = & \surreal{n}{\omega - n} \\
+    X^L = & \{ 0, 1, 2 ... (n - 1) \} \\
+    X^R = & \{ \omega, \omega - 1, \omega - 2, ... \omega - (n - 1) \}\\
+    Y^L = & \{ 0, 1, 2 ... (n - 1) \} \\
+    Y^R = & \{ \omega, \omega - 1, \omega - 2, ... \omega - (n - 1) \} \\
+    X^L + y = & \{ (0 + \surreal{n}{\omega - n}), (1 + \surreal{n}{\omega - n}), ... (n - 1 + \surreal{n}{\omega - n}) \} \\
+    Y^L + x = & \{ (0 + \surreal{n}{\omega - n}), (1 + \surreal{n}{\omega - n}), ... (n - 1 + \surreal{n}{\omega - n}) \} \\
+    X^R + y = & \{ (\omega + \surreal{n}{\omega - n}), (\omega - 1 + \surreal{n}{\omega - n}), \\ & (\omega - 2 + \surreal{n}{\omega - n}), ... (\omega - (n - 1) + \surreal{n}{\omega - n}) \} \\
+    Y^L + x = & \{ (\omega + \surreal{n}{\omega - n}), (\omega - 1 + \surreal{n}{\omega - n}), \\ & (\omega - 2 + \surreal{n}{\omega - n}), ... (\omega - (n - 1) + \surreal{n}{\omega - n}) \}
 \end{align*}
+
+The symmetry of the operation due to having the same term added to itself reduces the number of things to do here.  Furthermore, the two sets are already quite conveniently ordered, so the construction can be reduced to the greatest of the left and the least of the right:
 
 \begin{align*}
-    z &= \{n|\omega - n\} + \{n|\omega - n\} \\
-    &= \{n + \{n|\omega - n\}, n + \{n|\omega - n\} | \omega - n + \{n|\omega - n\}, \omega - n + \{n|\omega - n\}\} \\
-    &= \{n + \{n|\omega - n\} | \omega - n + \{n|\omega - n\}\}
+    z = \surreal{n - 1 + \surreal{n}{\omega - n}}{\omega + \surreal{n}{\omega - n}}
 \end{align*}
 
-\begin{equation*}
-    x \geqslant y \Leftrightarrow \nexists x^R \leq y, \nexists y^L \geq x
-\end{equation*}
+The question now is whether this expression is equal to $\omega$.
 
-\subsubsection*{$z \ge^? \omega$}
+\surrealgeq{n - 1 + \surreal{n}{\omega - n}}{\omega + \surreal{n}{\omega - n}}{0, 1, 2, ...}{}
 
-\surrealgeqexplain
+and
 
-\noindent Applying the rule to the current question:
-
-\surrealgeq{n + \surreal{n}{\omega}}{\omega - n + \surreal{n}{\omega - n}}{1, 2, 3, ...}{\emptyset}
-
-The comparison of $\surrealinline{\omega - n + \surreal{n}{\omega - n}}$ with $\omega$ is fairly straightforward.  The left side of the expression has $omega$ in it, so the question really is whether $\surrealinline{n}{\omega - n}\geq 1 + n$.  Here's the analysis:
-
-$\surrealgeqinline{\omega - n - 1}{}{n}{}$
-
-The first condition is vacuously true and the second is fairly obvious, given that $\omega$ is greater than any finite $n$ or the fiddling around $n$ done in this formula.
-
-\subsubsection*{$\omega \ge^? z$}
+\surrealgeq{0, 1, 2, ...}{}{n - 1 + \surreal{n}{\omega - n}}{\omega + \surreal{n}{\omega - n}}
