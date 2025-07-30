@@ -24,3 +24,13 @@
 \newcommand{\surrealgeqsimple}[4]{%
   \surreal{#1}{#2} \geq \surreal{#3}{#4}%
 }
+
+% Left condition only: no r in x^R has r <= y
+\newcommand{\surrealgeqleft}[4]{%
+  \text{no } r \in \{#2\} \text{ has } r \leq \surreal{#3}{#4}%
+}
+
+% Right condition only: no l in y^L has x <= l
+\newcommand{\surrealgeqright}[4]{%
+  \text{no } l \in \{#3\} \text{ has } \surreal{#1}{#2} \leq l%
+}

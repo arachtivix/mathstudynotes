@@ -25,7 +25,7 @@ If $\surreal{n}{\omega - n} = \frac{\omega}{2}$ then $\surreal{n}{\omega - n} + 
     X^L + y = & \{ (0 + \surreal{n}{\omega - n}), (1 + \surreal{n}{\omega - n}), ... (n - 1 + \surreal{n}{\omega - n}) \} \\
     Y^L + x = & \{ (0 + \surreal{n}{\omega - n}), (1 + \surreal{n}{\omega - n}), ... (n - 1 + \surreal{n}{\omega - n}) \} \\
     X^R + y = & \{ (\omega + \surreal{n}{\omega - n}), (\omega - 1 + \surreal{n}{\omega - n}), \\ & (\omega - 2 + \surreal{n}{\omega - n}), ... (\omega - (n - 1) + \surreal{n}{\omega - n}) \} \\
-    Y^L + x = & \{ (\omega + \surreal{n}{\omega - n}), (\omega - 1 + \surreal{n}{\omega - n}), \\ & (\omega - 2 + \surreal{n}{\omega - n}), ... (\omega - (n - 1) + \surreal{n}{\omega - n}) \}
+    Y^R + x = & \{ (\omega + \surreal{n}{\omega - n}), (\omega - 1 + \surreal{n}{\omega - n}), \\ & (\omega - 2 + \surreal{n}{\omega - n}), ... (\omega - (n - 1) + \surreal{n}{\omega - n}) \}
 \end{align*}
 
 The symmetry of the operation due to having the same term added to itself reduces the number of things to do here.  Furthermore, the two sets are already quite conveniently ordered, so the construction can be reduced to the greatest of the left and the least of the right:
@@ -38,6 +38,11 @@ The question now is whether this expression is equal to $\omega$.
 
 \surrealgeq{n - 1 + \surreal{n}{\omega - n}}{\omega + \surreal{n}{\omega - n}}{0, 1, 2, ...}{}
 
-and
-
+The assertion $\surrealgeqright{n - 1 + \surreal{n}{\omega - n}}{\omega + \surreal{n}{\omega - n}}{0, 1, 2, ...}{}$ seems trivial, as $\omega$ plus anything positive quantity will be creater than $\omega$.  The assertion $\surrealgeqleft{n - 1 + \surreal{n}{\omega - n}}{\omega + \surreal{n}{\omega - n}}{0, 1, 2, ...}{}$ is similarly not hard to be convinced of.
 \surrealgeq{0, 1, 2, ...}{}{n - 1 + \surreal{n}{\omega - n}}{\omega + \surreal{n}{\omega - n}}
+
+The fact that $\surrealgeqright{0, 1, 2, ...}{}{n - 1 + \surreal{n}{\omega - n}}{\omega + \surreal{n}{\omega - n}}$ is vacuously true.  The assertion $\surrealgeqleft{0, 1, 2, ...}{}{n - 1 + \surreal{n}{\omega - n}}{\omega + \surreal{n}{\omega - n}}$ may require another iteration on the comparison.
+
+\surrealgeq{n + \surreal{n}{\omega - 1}}{}{0, 1, 2 ...}{}
+
+The assertion $\surrealgeqright{n + \surreal{n}{\omega - 1}}{}{0, 1, 2 ...}{}$ is vacuously true.  Since $\surreal{n}{\omega - 1}$ is greater than any finite number, the assertion $\surrealgeqleft{n + \surreal{n}{\omega - 1}}{}{0, 1, 2 ...}{}$ holds and so then does the idea that $\omega \geq z \geq \omega$ and therefore that in fact $z = \omega$.  Remembering that $z$ is two times $\surreal{n}{\omega - n}$ it seems proven that $\surreal{n}{\omega - n} = \frac{\omega}{2}$.
