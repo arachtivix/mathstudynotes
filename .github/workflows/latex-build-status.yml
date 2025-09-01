@@ -1,0 +1,78 @@
+name: LaTeX Build Status
+
+on:
+  push:
+    paths:
+      - 'project_euler/**/*.tex'
+      - 'project_euler/**/*.edn'
+      - 'project_euler/render_latex.py'
+      - 'project_euler/build_status.py'
+  pull_request:
+    paths:
+      - 'project_euler/**/*.tex'
+      - 'project_euler/**/*.edn'
+      - 'project_euler/render_latex.py'
+      - 'project_euler/build_status.py'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  build-status:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended
+
+      - name: Install Python dependencies
+        run: |
+          cd project_euler
+          pip install -r requirements.txt
+
+      - name: Run build status check
+        run: |
+          cd project_euler
+          # Check if LaTeX is available, use dry-run if not
+          if command -v pdflatex >/dev/null 2>&1; then
+            echo "LaTeX detected, running full build..."
+            python build_status.py build-and-report
+          else
+            echo "LaTeX not available, running dry-run mode..."
+            python build_status.py dry-run-and-report
+          fi
+
+      - name: Upload build status artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: build-status
+          path: |
+            project_euler/proj/src/proj/build_status.json
+            project_euler/**/*.pdf
+          retention-days: 30
+
+      - name: Commit build status updates
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          cd project_euler
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Check if build_status.json has changes
+          git add proj/src/proj/build_status.json BUILD_STATUS.md
+          
+          if git diff --cached --quiet; then
+            echo "No changes to build status files"
+          else
+            git commit -m "Update LaTeX build status [automated]" || echo "No changes to commit"
+            git push
+          fi

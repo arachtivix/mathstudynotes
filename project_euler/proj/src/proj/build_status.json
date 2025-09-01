@@ -1,0 +1,225 @@
+{
+  "last_updated": "2025-09-01T17:05:11.506856",
+  "problems": {
+    "3": {
+      "status": "missing",
+      "message": "No LaTeX files found",
+      "timestamp": "2025-09-01T17:05:11.505733",
+      "files": []
+    },
+    "4": {
+      "status": "missing",
+      "message": "No LaTeX files found",
+      "timestamp": "2025-09-01T17:05:11.505764",
+      "files": []
+    },
+    "7": {
+      "status": "missing",
+      "message": "No LaTeX files found",
+      "timestamp": "2025-09-01T17:05:11.505793",
+      "files": []
+    },
+    "9": {
+      "status": "missing",
+      "message": "No LaTeX files found",
+      "timestamp": "2025-09-01T17:05:11.505816",
+      "files": []
+    },
+    "10": {
+      "status": "missing",
+      "message": "No LaTeX files found",
+      "timestamp": "2025-09-01T17:05:11.505838",
+      "files": []
+    },
+    "12": {
+      "status": "missing",
+      "message": "No LaTeX files found",
+      "timestamp": "2025-09-01T17:05:11.505862",
+      "files": []
+    },
+    "15": {
+      "status": "missing",
+      "message": "No LaTeX files found",
+      "timestamp": "2025-09-01T17:05:11.505884",
+      "files": []
+    },
+    "16": {
+      "status": "missing",
+      "message": "No LaTeX files found",
+      "timestamp": "2025-09-01T17:05:11.505911",
+      "files": []
+    },
+    "26": {
+      "status": "success",
+      "message": "Built 1 of 1 files successfully",
+      "timestamp": "2025-09-01T17:05:11.505973",
+      "files": [
+        {
+          "file": "p26.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p26/p26.tex",
+          "success": true
+        }
+      ]
+    },
+    "28": {
+      "status": "success",
+      "message": "Built 1 of 1 files successfully",
+      "timestamp": "2025-09-01T17:05:11.506037",
+      "files": [
+        {
+          "file": "p28.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p28/p28.tex",
+          "success": true
+        }
+      ]
+    },
+    "51": {
+      "status": "success",
+      "message": "Built 1 of 1 files successfully",
+      "timestamp": "2025-09-01T17:05:11.506097",
+      "files": [
+        {
+          "file": "p51.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p51/p51.tex",
+          "success": true
+        }
+      ]
+    },
+    "95": {
+      "status": "missing",
+      "message": "No LaTeX files found",
+      "timestamp": "2025-09-01T17:05:11.506126",
+      "files": []
+    },
+    "123": {
+      "status": "success",
+      "message": "Built 1 of 1 files successfully",
+      "timestamp": "2025-09-01T17:05:11.506183",
+      "files": [
+        {
+          "file": "p123.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p123/p123.tex",
+          "success": true
+        }
+      ]
+    },
+    "202": {
+      "status": "success",
+      "message": "Built 1 of 1 files successfully",
+      "timestamp": "2025-09-01T17:05:11.506258",
+      "files": [
+        {
+          "file": "p202.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p202/p202.tex",
+          "success": true
+        }
+      ]
+    },
+    "203": {
+      "status": "success",
+      "message": "Built 1 of 1 files successfully",
+      "timestamp": "2025-09-01T17:05:11.506315",
+      "files": [
+        {
+          "file": "p203.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p203/p203.tex",
+          "success": true
+        }
+      ]
+    },
+    "204": {
+      "status": "success",
+      "message": "Built 1 of 1 files successfully",
+      "timestamp": "2025-09-01T17:05:11.506373",
+      "files": [
+        {
+          "file": "p204.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p204/p204.tex",
+          "success": true
+        }
+      ]
+    },
+    "205": {
+      "status": "success",
+      "message": "Built 2 of 2 files successfully",
+      "timestamp": "2025-09-01T17:05:11.506458",
+      "files": [
+        {
+          "file": "p205.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p205/p205.tex",
+          "success": true
+        },
+        {
+          "file": "piecewise_example.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p205/piecewise_example.tex",
+          "success": true
+        }
+      ]
+    },
+    "206": {
+      "status": "success",
+      "message": "Built 8 of 8 files successfully",
+      "timestamp": "2025-09-01T17:05:11.506748",
+      "files": [
+        {
+          "file": "p206_solution_approaches.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p206/p206_solution_approaches.tex",
+          "success": true
+        },
+        {
+          "file": "p206_brute_force.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p206/p206_brute_force.tex",
+          "success": true
+        },
+        {
+          "file": "p206_preamble.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p206/p206_preamble.tex",
+          "success": true
+        },
+        {
+          "file": "p206_decimal_expansion.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p206/p206_decimal_expansion.tex",
+          "success": true
+        },
+        {
+          "file": "p206_pattern_matching.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p206/p206_pattern_matching.tex",
+          "success": true
+        },
+        {
+          "file": "p206_implementation.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p206/p206_implementation.tex",
+          "success": true
+        },
+        {
+          "file": "p206_main.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p206/p206_main.tex",
+          "success": true
+        },
+        {
+          "file": "p206_another_formula_for_nsq.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p206/p206_another_formula_for_nsq.tex",
+          "success": true
+        }
+      ]
+    },
+    "361": {
+      "status": "success",
+      "message": "Built 1 of 1 files successfully",
+      "timestamp": "2025-09-01T17:05:11.506805",
+      "files": [
+        {
+          "file": "solution.tex",
+          "path": "/home/runner/work/mathstudynotes/mathstudynotes/project_euler/proj/src/proj/p361/solution.tex",
+          "success": true
+        }
+      ]
+    },
+    "879": {
+      "status": "missing",
+      "message": "No LaTeX files found",
+      "timestamp": "2025-09-01T17:05:11.506837",
+      "files": []
+    }
+  }
+}
