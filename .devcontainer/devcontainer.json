@@ -45,7 +45,7 @@
     "forwardPorts": [3000, 8080, 9500],
     
     // Use 'postAttachCommand' to run commands after attaching to the container
-    "postAttachCommand": "echo 'Welcome to the Electric Underpants dev environment! 🩲⚡'",
+    "postAttachCommand": "echo 'Welcome to the Electric Underpants dev environment! 🩲⚡' && .devcontainer/test-environment.sh",
 
     // Enable Codespaces prebuilds for faster startup
     "codespaces": {

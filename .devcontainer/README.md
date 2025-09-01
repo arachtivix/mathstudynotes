@@ -35,6 +35,14 @@ This devcontainer is configured for GitHub Codespaces prebuilds, which means:
 
 ## Usage
 
+### Testing the Environment
+After the container is set up, you can test that everything is working:
+```bash
+.devcontainer/test-environment.sh
+```
+
+This will verify all development tools are properly installed and working.
+
 ### In GitHub Codespaces
 1. Open the repository in Codespaces
 2. The prebuild will provide a fully configured environment
