@@ -1,0 +1,57 @@
+{
+    "name": "Electric Underpants Clojure Dev Environment",
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    
+    // Features to install
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "17"
+        },
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "18"
+        },
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": true,
+            "configureZshAsDefaultShell": true,
+            "installOhMyZsh": true
+        }
+    },
+
+    // Install additional packages
+    "postCreateCommand": ".devcontainer/setup-clojure.sh && sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-extra",
+
+    // Configure VS Code extensions for Clojure development
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "betterthantomorrow.calva",
+                "DavidAnson.vscode-markdownlint",
+                "ms-vscode.vscode-json",
+                "James-Yu.latex-workshop",
+                "redhat.vscode-yaml",
+                "ms-vscode.vscode-typescript-next"
+            ],
+            "settings": {
+                "calva.paredit.defaultKeyMap": "strict",
+                "calva.fmt.formatAsYouType": true,
+                "calva.highlight.enableBracketColors": true,
+                "latex-workshop.latex.autoBuild.run": "onSave",
+                "latex-workshop.view.pdf.viewer": "tab"
+            }
+        }
+    },
+
+    // Forward ports for development servers
+    "forwardPorts": [3000, 8080, 9500],
+    
+    // Use 'postAttachCommand' to run commands after attaching to the container
+    "postAttachCommand": "echo 'Welcome to the Electric Underpants dev environment! 🩲⚡'",
+
+    // Enable Codespaces prebuilds for faster startup
+    "codespaces": {
+        "prebuildCommand": "clojure --version && echo 'Prebuild complete!'"
+    },
+
+    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+    "remoteUser": "codespace"
+}

@@ -1,0 +1,25 @@
+name: Build and publish dev container
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.devcontainer/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (GitHub)
+        uses: actions/checkout@v4
+
+      - name: Build and run dev container task
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ghcr.io/${{ github.repository }}/electric-underpants-devcontainer
+          cacheFrom: ghcr.io/${{ github.repository }}/electric-underpants-devcontainer
+          push: always
+          env: |
+            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
