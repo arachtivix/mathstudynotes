@@ -1,0 +1,405 @@
+{
+  "metadata": {
+    "generated": "2025-09-01 16:46:00",
+    "description": "Master catalog of all root LaTeX documents in the mathstudynotes repository",
+    "total_documents": 39
+  },
+  "documents": {
+    "aocp_v1": [
+      {
+        "path": "aocp_v1/ch_1_3_1/p16/aocp_v1_ch1.3.1_p16.tex",
+        "title": "AOCP v1 ch 1.3.1 Problem 16",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_1_3_1/p20/aocp_v1_ch1.3.1_p20.tex",
+        "title": "AOCP v1 ch 1.3.1 Problem 20",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_1_3_1/p21/aocp_v1_ch1.3.1_p21.tex",
+        "title": "AOCP v1 ch 1.3.1 Problem 21",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_1_3_1/p22/pow13.tex",
+        "title": "AOCP v1 ch 1.3.1 Problem 22",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_1_3_1/p23/writeup.tex",
+        "title": "Art of Computer Programming Chapter 1.3 Problem 23",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "writeup",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_1_3_1/p8/aocp_v1_ch1.3.1_p8.tex",
+        "title": "AOCP V1 Ch 1.3.1 P8",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_2_1/overview.tex",
+        "title": "AOCP V1 Ch 2.1 Top Level Notes",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "overview",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_2_1/p1/writeup.tex",
+        "title": "The Art of Computer Programming, Chapter 2.1, problem 1",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "writeup",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_2_1/p2/writeup.tex",
+        "title": "The Art Of Computer Programming -- Chapter 2.1, problem 2",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "writeup",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_2_1/p3/writeup.tex",
+        "title": "The Art of Computer Programming -- Chapter 2.1, Problem 3",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "writeup",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_2_1/p4/writeup.tex",
+        "title": "The Art of Computer Programming -- Chapter 2.1 Problem 4",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "writeup",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_2_2_1/p2/writeup.tex",
+        "title": "The Art of Computer Programming -- Chapter 2.2, problem 2",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "writeup",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_2_2_1/p3/writeup.tex",
+        "title": "The Art of Computer Programming -- Chapter 2.2.1 Problem 3",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "writeup",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "aocp_v1/ch_2_2_1/p4/writeup.tex",
+        "title": "The Art of Computer Programming -- Chapter 2.2.1 Problem 4",
+        "author": "Daniel Werner",
+        "subject": "aocp_v1",
+        "type": "writeup",
+        "documentclass": "article",
+        "dependencies": []
+      }
+    ],
+    "concrete_math": [
+      {
+        "path": "concrete_math/ch2p27/ch2p27.tex",
+        "title": "Concrete Math Chapter 2 Problem 27",
+        "author": "Daniel Werner",
+        "subject": "concrete_math",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "concrete_math/multimultis/multimultis.tex",
+        "title": "Concrete Math Ch 2 Problem 26",
+        "author": "Daniel Werner",
+        "subject": "concrete_math",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      }
+    ],
+    "onag": [
+      {
+        "path": "onag/ch0/problems.tex",
+        "title": "ONAG Ch 0",
+        "author": "Daniel Werner",
+        "subject": "onag",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": [
+          "../reusable/surreal_comparison.tex",
+          "../reusable/surreal_construction.tex",
+          "../reusable/surreal_geq_explanation.tex",
+          "p1.tex"
+        ]
+      },
+      {
+        "path": "onag/reusable/demo.tex",
+        "title": "Surreal Number Construction Demo",
+        "author": null,
+        "subject": "onag",
+        "type": "demo",
+        "documentclass": "article",
+        "dependencies": [
+          "surreal_construction.tex",
+          "surreal_comparison.tex"
+        ]
+      }
+    ],
+    "project_euler": [
+      {
+        "path": "project_euler/proj/notes.tex",
+        "title": "General Notes for Project Euler",
+        "author": "Daniel Werner",
+        "subject": "project_euler",
+        "type": "notes",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "project_euler/proj/src/proj/p001/problem001.tex",
+        "title": "Project Euler - Problem 1",
+        "author": "Test",
+        "subject": "project_euler",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "project_euler/proj/src/proj/p123/p123.tex",
+        "title": "Project Euler - Problem 123",
+        "author": "Solution",
+        "subject": "project_euler",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": [
+          "../shared_preamble.tex"
+        ]
+      },
+      {
+        "path": "project_euler/proj/src/proj/p202/p202.tex",
+        "title": "Project Euler - Problem 202",
+        "author": "Solution",
+        "subject": "project_euler",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": [
+          "../shared_preamble.tex"
+        ]
+      },
+      {
+        "path": "project_euler/proj/src/proj/p203/p203.tex",
+        "title": "Project Euler - Problem 203",
+        "author": "Solution",
+        "subject": "project_euler",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": [
+          "../shared_preamble.tex"
+        ]
+      },
+      {
+        "path": "project_euler/proj/src/proj/p204/p204.tex",
+        "title": "Project Euler - Problem 204",
+        "author": "Solution",
+        "subject": "project_euler",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": [
+          "../shared_preamble.tex"
+        ]
+      },
+      {
+        "path": "project_euler/proj/src/proj/p205/p205.tex",
+        "title": "Project Euler - Problem 205",
+        "author": "Solution",
+        "subject": "project_euler",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": [
+          "../shared_preamble.tex"
+        ]
+      },
+      {
+        "path": "project_euler/proj/src/proj/p206/p206_main.tex",
+        "title": "p206_main",
+        "author": null,
+        "subject": "project_euler",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": [
+          "../shared_preamble.tex",
+          "p206_preamble.tex",
+          "p206_brute_force.tex",
+          "p206_decimal_expansion.tex",
+          "p206_another_formula_for_nsq.tex",
+          "p206_implementation.tex",
+          "p206_pattern_matching.tex",
+          "p206_solution_approaches.tex"
+        ]
+      },
+      {
+        "path": "project_euler/proj/src/proj/p26/p26.tex",
+        "title": "Project Euler - Problem 26",
+        "author": "Solution",
+        "subject": "project_euler",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "project_euler/proj/src/proj/p28/p28.tex",
+        "title": "Project Euler - Problem 28",
+        "author": "Solution",
+        "subject": "project_euler",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "project_euler/proj/src/proj/p361/solution.tex",
+        "title": "Project Euler P361",
+        "author": "Daniel Werner",
+        "subject": "project_euler",
+        "type": "solution",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "project_euler/proj/src/proj/p51/p51.tex",
+        "title": "Project Euler - Problem 51",
+        "author": "Solution",
+        "subject": "project_euler",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": [
+          "../shared_preamble.tex"
+        ]
+      },
+      {
+        "path": "project_euler/proj/src/proj/p6/solution.tex",
+        "title": "Project Euler P6",
+        "author": "Daniel Werner",
+        "subject": "project_euler",
+        "type": "solution",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "project_euler/proj/src/proj/test_problem/p999.tex",
+        "title": "Project Euler - Problem 999",
+        "author": "Test Problem",
+        "subject": "project_euler",
+        "type": "problem",
+        "documentclass": "article",
+        "dependencies": [
+          "../shared_preamble.tex"
+        ]
+      }
+    ],
+    "templates": [
+      {
+        "path": "templates/writeup.tex",
+        "title": "--Placeholder--",
+        "author": "Daniel Werner",
+        "subject": "templates",
+        "type": "writeup",
+        "documentclass": "article",
+        "dependencies": []
+      }
+    ],
+    "miscellaneous": [
+      {
+        "path": "test.tex",
+        "title": "Wordy Words",
+        "author": "Daniel Werner",
+        "subject": "miscellaneous",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      }
+    ],
+    "unbound": [
+      {
+        "path": "unbound/clojure_notes/reduce.tex",
+        "title": "Reduce",
+        "author": "Daniel Werner",
+        "subject": "unbound",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "unbound/egyptian-matt-parker/prob.tex",
+        "title": "Matt Parker Video Problem",
+        "author": "Daniel Werner",
+        "subject": "unbound",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "unbound/freethrows/freethrows.tex",
+        "title": "Freethrow Percentage Problem",
+        "author": "Daniel Werner",
+        "subject": "unbound",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "unbound/hand_numbers/analysis.tex",
+        "title": "Ideal Numerical Mapping for Unordered Card Selections",
+        "author": "Daniel Werner",
+        "subject": "unbound",
+        "type": "analysis",
+        "documentclass": "article",
+        "dependencies": []
+      },
+      {
+        "path": "unbound/partial-factions/partial-fractions.tex",
+        "title": "LibreTexts Math Partial Fractions",
+        "author": "Daniel Werner",
+        "subject": "unbound",
+        "type": "document",
+        "documentclass": "article",
+        "dependencies": []
+      }
+    ]
+  }
+}
