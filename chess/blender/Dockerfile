@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxcb-randr0 \
     libxcb-xfixes0 \
     xz-utils \
-    && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /opt/blender \
     && cd /opt/blender \
     && wget -q https://download.blender.org/release/Blender3.4/blender-3.4.1-linux-x64.tar.xz \
@@ -23,6 +22,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf blender-3.4.1-linux-x64.tar.xz blender-3.4.1-linux-x64 \
     && apt-get purge -y wget \
     && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* /var/tmp/*
 
 # Add Blender to PATH

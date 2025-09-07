@@ -1,5 +1,5 @@
-# Multi-stage build for space optimization
-FROM ubuntu:22.04 as base
+# Space-optimized development container for mathstudynotes
+FROM ubuntu:22.04
 
 # Set environment variables to avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
@@ -9,46 +9,40 @@ ENV TZ=UTC
 RUN groupadd --gid 1000 vscode \
     && useradd --uid 1000 --gid vscode --shell /bin/bash --create-home vscode
 
-# Install essential packages in a single layer with cleanup
+# Install essential packages in a single optimized layer
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    # Basic tools
+    # Basic development tools
     curl \
     wget \
     ca-certificates \
     git \
     unzip \
     sudo \
-    # Build tools (minimal)
+    # Build essentials (minimal)
     build-essential \
-    # Java for Clojure (OpenJDK 17)
+    # Java for Clojure development
     openjdk-17-jdk \
-    # Node.js for ClojureScript  
+    # Node.js for ClojureScript
     nodejs \
     npm \
-    # LaTeX (minimal install)
+    # LaTeX (minimal install - space optimized)
     texlive-latex-base \
     texlive-latex-recommended \
     texlive-fonts-recommended \
-    # Clojure development tools
+    # Clojure development helpers
     rlwrap \
-    # Clean up in same layer to reduce image size
+    # Clean up everything in the same layer to minimize image size
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/* \
-    # Add vscode user to sudo group
+    && rm -rf /var/cache/apt/* \
+    # Configure sudo for vscode user
     && usermod -aG sudo vscode \
     && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Set JAVA_HOME
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-
-# Copy and run setup script for Clojure tools
-COPY setup-clojure.sh /tmp/setup-clojure.sh
-RUN chmod +x /tmp/setup-clojure.sh && /tmp/setup-clojure.sh && rm /tmp/setup-clojure.sh
-
-# Final stage - clean minimal image
-FROM base as final
 
 # Reset environment
 ENV DEBIAN_FRONTEND=

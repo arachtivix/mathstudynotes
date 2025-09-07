@@ -23,6 +23,6 @@
     }
   },
   "forwardPorts": [3000, 8080, 9500],
-  "postCreateCommand": ".devcontainer/test-environment.sh",
+  "postCreateCommand": ".devcontainer/setup-clojure.sh && .devcontainer/test-environment.sh",
   "remoteUser": "vscode"
 }
