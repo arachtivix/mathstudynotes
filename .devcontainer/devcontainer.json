@@ -1,0 +1,28 @@
+{
+  "name": "Math Study Notes Dev Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "betterthantomorrow.calva",
+        "James-Yu.latex-workshop",
+        "ms-vscode.vscode-json"
+      ],
+      "settings": {
+        "calva.prettyPrintingOptions": {
+          "enabled": true,
+          "printEngine": "pprint",
+          "width": 120
+        },
+        "latex-workshop.latex.autoBuild.run": "never"
+      }
+    }
+  },
+  "forwardPorts": [3000, 8080, 9500],
+  "postCreateCommand": ".devcontainer/test-environment.sh",
+  "remoteUser": "vscode"
+}

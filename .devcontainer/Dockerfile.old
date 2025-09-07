@@ -1,0 +1,77 @@
+# Use Ubuntu base image for better package availability and smaller size than Debian
+FROM ubuntu:22.04
+
+# Set environment variables to avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
+# Create vscode user early
+RUN groupadd --gid 1000 vscode \
+    && useradd --uid 1000 --gid vscode --shell /bin/bash --create-home vscode
+
+# Install essential packages in a single layer with cleanup
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # Basic tools
+    curl \
+    wget \
+    ca-certificates \
+    git \
+    unzip \
+    sudo \
+    # Build tools (minimal)
+    build-essential \
+    # Java for Clojure (OpenJDK 17)
+    openjdk-17-jdk \
+    # Node.js for ClojureScript
+    nodejs \
+    npm \
+    # LaTeX (minimal install)
+    texlive-latex-base \
+    texlive-latex-recommended \
+    texlive-fonts-recommended \
+    # Clojure tools (install from packages where possible)
+    rlwrap \
+    # Clean up in same layer to reduce image size
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/* \
+    # Add vscode user to sudo group
+    && usermod -aG sudo vscode \
+    && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Set JAVA_HOME
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
+# Install Clojure tools in a more robust way
+# Use fallback approach with --insecure flag for environments with certificate issues
+RUN cd /tmp \
+    && (curl -L -o linux-install.sh https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh \
+        || curl -L --insecure -o linux-install.sh https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh) \
+    && chmod +x linux-install.sh \
+    && ./linux-install.sh \
+    && rm linux-install.sh
+
+# Install Leiningen
+RUN cd /tmp \
+    && (curl -L -o lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein \
+        || curl -L --insecure -o lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein) \
+    && mv lein /usr/local/bin/lein \
+    && chmod +x /usr/local/bin/lein
+
+# Install clj-kondo
+RUN cd /tmp \
+    && (curl -sLO https://raw.githubusercontent.com/clj-kondo/clj-kondo/master/script/install-clj-kondo \
+        || curl -sL --insecure -O https://raw.githubusercontent.com/clj-kondo/clj-kondo/master/script/install-clj-kondo) \
+    && chmod +x install-clj-kondo \
+    && ./install-clj-kondo \
+    && rm -rf /tmp/*
+
+# Reset environment
+ENV DEBIAN_FRONTEND=
+
+# Set working directory
+WORKDIR /workspace
+
+# Default command
+CMD ["/bin/bash"]

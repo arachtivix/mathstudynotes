@@ -9,3 +9,10 @@
 .clj-kondo/*
 !.clj-kondo/config.edn
 .lsp/
+
+# Docker build context files
+.devcontainer/.docker/
+node_modules/
+target/
+.DS_Store
+*.class

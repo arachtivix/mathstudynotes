@@ -1,17 +1,21 @@
 FROM alpine:latest
 
-RUN apk update
-RUN apk add lftp
-RUN apk add make
-RUN apk add glib-dev
-RUN apk add glib
-RUN apk add build-base
-RUN apk add gcc
-RUN apk add intltool
-
-RUN lftp -c "open ftp://ftp.gnu.org/pub/gnu/mdk; get v1.3.0/mdk-1.3.0.tar.gz"
-RUN tar xfvz mdk-1.3.0.tar.gz
-RUN mdk-1.3.0/configure
-RUN cd mdk-1.3.0
-RUN make
-RUN make install
+# Install dependencies, download, build and install MDK in a single layer to minimize space
+RUN apk update && apk add --no-cache \
+    lftp \
+    make \
+    glib-dev \
+    glib \
+    build-base \
+    gcc \
+    intltool \
+    && lftp -c "open ftp://ftp.gnu.org/pub/gnu/mdk; get v1.3.0/mdk-1.3.0.tar.gz" \
+    && tar xfvz mdk-1.3.0.tar.gz \
+    && cd mdk-1.3.0 \
+    && ./configure \
+    && make \
+    && make install \
+    && cd .. \
+    && rm -rf mdk-1.3.0 mdk-1.3.0.tar.gz \
+    && apk del lftp build-base gcc \
+    && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*

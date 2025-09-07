@@ -1,7 +1,7 @@
 FROM public.ecr.aws/docker/library/debian:stable-slim
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
+# Install dependencies and download Blender in a single layer to minimize space
+RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     libxrender1 \
     libxi6 \
@@ -14,17 +14,16 @@ RUN apt-get update && apt-get install -y \
     libxcb-randr0 \
     libxcb-xfixes0 \
     xz-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create directory for Blender
-WORKDIR /opt/blender
-
-# Download and extract Blender 3.4.1
-RUN wget https://download.blender.org/release/Blender3.4/blender-3.4.1-linux-x64.tar.xz \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /opt/blender \
+    && cd /opt/blender \
+    && wget -q https://download.blender.org/release/Blender3.4/blender-3.4.1-linux-x64.tar.xz \
     && tar -xf blender-3.4.1-linux-x64.tar.xz \
-    && rm blender-3.4.1-linux-x64.tar.xz \
     && mv blender-3.4.1-linux-x64/* . \
-    && rmdir blender-3.4.1-linux-x64
+    && rm -rf blender-3.4.1-linux-x64.tar.xz blender-3.4.1-linux-x64 \
+    && apt-get purge -y wget \
+    && apt-get autoremove -y \
+    && rm -rf /tmp/* /var/tmp/*
 
 # Add Blender to PATH
 ENV PATH="/opt/blender:$PATH"
