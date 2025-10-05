@@ -1,0 +1,85 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      - name: Install Leiningen
+        run: |
+          wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+          chmod +x lein
+          sudo mv lein /usr/local/bin/
+          lein version
+      
+      - name: Build and test project_euler/proj
+        run: |
+          cd project_euler/proj
+          lein deps
+          lein test
+          lein uberjar
+      
+      - name: Build and test winning_ways/cutcake
+        run: |
+          cd winning_ways/cutcake
+          lein deps
+          lein test
+          lein uberjar
+      
+      - name: Build and test unbound/hand_numbers
+        run: |
+          cd unbound/hand_numbers
+          lein deps
+          lein test
+          lein uberjar
+      
+      - name: Build and test cloj-brv-tru/ch1/clojure-noob
+        run: |
+          cd cloj-brv-tru/ch1/clojure-noob
+          lein deps
+          lein test
+          lein uberjar
+      
+      - name: Generate timestamp for release tag
+        id: timestamp
+        run: echo "timestamp=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+      
+      - name: Create Release and Upload JARs
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: release-${{ steps.timestamp.outputs.timestamp }}
+          name: Release ${{ steps.timestamp.outputs.timestamp }}
+          body: |
+            Automated release of JAR files from main branch.
+            
+            This release includes JAR files for:
+            - project_euler/proj
+            - winning_ways/cutcake
+            - unbound/hand_numbers
+            - cloj-brv-tru/ch1/clojure-noob
+            
+            These JAR files can be used as dependencies in other projects.
+          draft: false
+          prerelease: false
+          files: |
+            project_euler/proj/target/proj-0.1.0-SNAPSHOT-standalone.jar
+            winning_ways/cutcake/target/cutcake-0.1.0-SNAPSHOT-standalone.jar
+            unbound/hand_numbers/target/hand_numbers-0.1.0-SNAPSHOT-standalone.jar
+            cloj-brv-tru/ch1/clojure-noob/target/clojure-noob-0.1.0-SNAPSHOT-standalone.jar

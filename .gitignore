@@ -9,3 +9,7 @@
 .clj-kondo/*
 !.clj-kondo/config.edn
 .lsp/
+target/
+*.jar
+.nrepl-port
+pom.xml.asc
